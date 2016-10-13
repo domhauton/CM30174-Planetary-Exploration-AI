@@ -69,15 +69,15 @@ public class RoverDisplay extends JFrame implements ActionListener,WindowListene
 
 		String[] scenarios = new String[scenarioKeys.length];
         for (int i =0;i<scenarioKeys.length;i++)
-            scenarios[i] = "Scenario "+scenarioKeys[i].intValue();
+            scenarios[i] = "Scenario "+ scenarioKeys[i];
 
 		scenarioList = new JComboBox(scenarios);
 
 		String[] zooms = { "Zoom 10", "Zoom 9", "Zoom 8", "Zoom 7", "Zoom 6", "Zoom 5", "Zoom 4", "Zoom 3", "Zoom 2", "Zoom 1" };
-		zoomList = new JComboBox(zooms);
+		zoomList = new JComboBox<>(zooms);
 		
 		String[] speeds = {"1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x" };
-		speedList = new JComboBox(speeds);
+		speedList = new JComboBox<>(speeds);
 		
 		roverTableModel = new RoverTableModel();		
 		roverTable = new JTable(roverTableModel); 
@@ -223,7 +223,13 @@ public class RoverDisplay extends JFrame implements ActionListener,WindowListene
 
     @Override
     public void windowClosed(WindowEvent windowEvent) {
-        service.stopWorld();
+		try {
+			//service = sb.bind(IRoverService.class);
+			String value = (String)scenarioList.getSelectedItem();
+			service.resetWorld(Integer.parseInt(value.split(" ")[1]));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
     }
 
     @Override

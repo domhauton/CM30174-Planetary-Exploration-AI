@@ -17,7 +17,6 @@ public class MonitorAgent extends Agent  {
 	private static final long serialVersionUID = 1L;
 
 	private IRoverService service;
-	
 	private ServiceBroker sb;
 	private RoverDisplay display;
 	
@@ -36,43 +35,17 @@ public class MonitorAgent extends Agent  {
 
 	@Override
 	public void run() {
-		
 		sb = getServiceBroker();
-				
-
-
-        //Runnable createDisplay = new Runnable() {
-          //  @Override
-          //  public void run() {
-
-                display = new RoverDisplay(sb);
-
-                display.setVisible(true);
-            //}
-        //};
-
-        //SwingUtilities.invokeLater(createDisplay);
-
+        display = new RoverDisplay(sb);
+        display.setVisible(true);
 		runMonitor();
-
-		
 	}
 
-
-
-	
 	private void runMonitor() {
-
                 boolean connected = true;
-                Runnable updateDisplay = new Runnable() {
-                    @Override
-                    public void run() {
-                        display.UpdateDisplay(service.getWorldInfo());
+                Runnable updateDisplay = () -> display.UpdateDisplay(service.getWorldInfo());
 
-                    }
-                };
-
-				while(display.isVisible() &&  connected) {
+				while(display.isVisible() && connected) {
 
                     try {
                         service = sb.bind(IRoverService.class);
@@ -81,48 +54,18 @@ public class MonitorAgent extends Agent  {
                     } catch (ServiceException s) {
                         connected = false;
                         return;
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
-
                         return;
                     }
-
                     SwingUtilities.invokeLater(updateDisplay);
-					
-					/*
-					
-					boolean found = false;
-					
-					for(Rover r : m.getRovers()) {
-						Log.console("[monitor] Rover " + r.getKey() + " x:" + r.getX() + " y:" + r.getY() + " energy:" + r.getEnergy() + " load:" + r.getCurrentLoad());
-						if(r.getEnergy() > 0) {
-							found = true;
-						}
-					}
-					
-					if(!found) {
-						//all rovers are out of energy
-						Log.console("[monitor] All rovers dead.");
-						
-						for(Team t  : m.getTeams()) {
-							Log.console("[monitor] Team " + t.getTeamName() + " collected: " + t.getTotalCollected());
-						}
-						
-						break;
-					}
-					*/
-					
-					
+
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
-				
-
-
 	}
 	
 

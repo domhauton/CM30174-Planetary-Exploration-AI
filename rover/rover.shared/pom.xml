@@ -10,8 +10,8 @@
   </parent>
   <properties>
     <org.iids.aos.install.type>shared</org.iids.aos.install.type>
-    <org.iids.aos.install.path>/home/suegy/Documents/projects/agentscape/2.0.0/</org.iids.aos.install.path>
-    <as.dir>${user.home}/Documents/projects/agentscape</as.dir>
+    <org.iids.aos.install.path>$AGENTSCAPE_HOME/2.0.0</org.iids.aos.install.path>
+    <as.dir>${user.home}/programming/agentscape</as.dir>
   <!-- optional -->
   </properties>
   <repositories>

@@ -3,7 +3,7 @@ package rover;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MonitorInfo  implements Serializable {
+public class MonitorInfo implements Serializable {
 
 	public abstract class WorldObject implements Serializable {
 		private double x;

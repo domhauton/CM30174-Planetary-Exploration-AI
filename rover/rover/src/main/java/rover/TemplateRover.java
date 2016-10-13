@@ -2,8 +2,6 @@ package rover;
 
 import java.util.Random;
 
-
-
 public class TemplateRover extends Rover {
 
 	public TemplateRover() {
@@ -30,7 +28,7 @@ public class TemplateRover extends Rover {
 		
 		try {
 			//move somewhere initially
-			move(5,5,2);
+			move(5,0,2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
