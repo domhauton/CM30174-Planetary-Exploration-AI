@@ -5,11 +5,17 @@ import com.google.common.collect.ImmutableList;
 import org.iids.aos.api.AgentCloseRule;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
-import rover.mediators.RoverActionService;
-import rover.mediators.RoverMessageService;
-import rover.mediators.RoverUpdateBus;
-import rover.mediators.message.InboundMessage;
+import controller.RoverController;
+import rover.mediators.RoverFacade;
+import rover.mediators.bus.RoverBus;
+import rover.mediators.bus.RoverBusSubProvider;
+import rover.mediators.data.RoverScenarioInfo;
+import rover.mediators.bus.RoverBusFactory;
+import rover.mediators.data.RoverStateInfo;
+import rover.mediators.data.message.InboundMessage;
+import rover.mediators.data.update.UpdateEvent;
 import util.ImmutableListCollector;
 
 
@@ -17,25 +23,22 @@ import util.ImmutableListCollector;
  * Created by dominic on 23/10/16.
  */
 public class RoverDecorator extends Rover {
-
-  private static final int TOTAL_ATTRIBUTE_POINTS = 9;
   private static final String DEFAULT_TEAM_NAME = "dh499";
-
-  private final RoverUpdateBus roverUpdateBus;
+  private final Consumer<PollResult> pollResultConsumer;
 
   @Override
   void begin() {
-
+    getLog().info("Bot has been started.");
   }
 
   @Override
   void end() {
-
+    getLog().info("Bot has been ended.");
   }
 
   @Override
   void poll(PollResult pr) {
-    roverUpdateBus.push(pr);
+    pollResultConsumer.accept(pr);
   }
 
   public RoverDecorator() {
@@ -61,19 +64,27 @@ public class RoverDecorator extends Rover {
     setTeam(teamName);
     setCloseRule(AgentCloseRule.KeepRunning);
 
-    RoverActionService roverActionService = new RoverActionService(this);
-    RoverMessageService roverMessageService = new RoverMessageService(this);
-    RoverScenarioInfo roverScenarioInfo = getWorldInfo();
-    roverUpdateBus = new RoverUpdateBus();
+    // Service Setup
+
+    RoverFacade roverFacade = new RoverFacade(this);
+    RoverBus<PollResult, UpdateEvent> roverUpdateBus
+            = RoverBusFactory.getRoverUpdateService();
+    pollResultConsumer = roverUpdateBus::push;
+    RoverBusSubProvider<UpdateEvent> updateSubService
+            = roverUpdateBus.getSubProvider();
+
+    RoverController roverController = new RoverController(roverFacade,
+            updateSubService,
+            RoverBusFactory.getRoverMessageService(this::fetchNewMessages),
+            RoverBusFactory.getRoverScenarioService(this::getWorldInfo),
+            RoverBusFactory.getRoverStateService(this::getRoverInfo),
+            getLog());
   }
 
-
-
-  public synchronized ImmutableList<InboundMessage> getMessages() {
+  private synchronized ImmutableList<String> fetchNewMessages() {
     super.retrieveMessages();
-    ImmutableList<InboundMessage> messagesList = messages
+    ImmutableList<String> messagesList = messages
             .stream()
-            .map(InboundMessage::new)
             .collect(new ImmutableListCollector<>());
     messages.clear();
     return messagesList;

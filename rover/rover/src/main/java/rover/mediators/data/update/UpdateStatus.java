@@ -1,4 +1,4 @@
-package rover.mediators.update;
+package rover.mediators.data.update;
 
 import rover.PollResult;
 

@@ -1,14 +1,16 @@
 package rover.mediators;
 
 import rover.Rover;
+import rover.mediators.data.message.OutboundTeamMessage;
+import rover.mediators.data.message.OutboundUserMessage;
 
 /**
  * Created by dominic on 25/10/16.
  */
-public class RoverActionService {
+public class RoverFacade {
   private final Rover rover;
 
-  public RoverActionService(Rover rover) {
+  public RoverFacade(Rover rover) {
     this.rover = rover;
   }
 
@@ -55,5 +57,13 @@ public class RoverActionService {
       throw new RoverActionException(
               "Error stopping action. Action may have completed.", e);
     }
+  }
+
+  public void sendMessage(OutboundTeamMessage outboundTeamMessage) {
+    rover.broadCastToTeam(outboundTeamMessage.getMessage());
+  }
+
+  public void sendMessage(OutboundUserMessage outboundUserMessage) {
+    rover.broadCastToUnit(outboundUserMessage.getTargetUserId(), outboundUserMessage.getMessage());
   }
 }

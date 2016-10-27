@@ -1,8 +1,8 @@
-package rover.mediators.update;
+package rover.mediators.data.update;
 
 import com.google.common.collect.ImmutableList;
 
-import rover.mediators.update.item.ScannerItem;
+import rover.mediators.data.update.item.ScannerItem;
 
 /**
  * Created by dominic on 26/10/16.

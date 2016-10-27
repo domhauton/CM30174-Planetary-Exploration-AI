@@ -1,4 +1,4 @@
-package rover;
+package rover.mediators.data;
 
 /**
  * Created by dominic on 24/10/16.

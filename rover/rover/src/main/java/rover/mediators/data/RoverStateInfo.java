@@ -1,4 +1,4 @@
-package rover;
+package rover.mediators.data;
 
 import com.google.common.base.Objects;
 

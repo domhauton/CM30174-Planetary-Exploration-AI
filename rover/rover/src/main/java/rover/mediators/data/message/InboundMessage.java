@@ -1,4 +1,4 @@
-package rover.mediators.message;
+package rover.mediators.data.message;
 
 /**
  * Created by dominic on 24/10/16.
