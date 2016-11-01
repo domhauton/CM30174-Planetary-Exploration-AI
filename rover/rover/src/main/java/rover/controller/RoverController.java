@@ -1,4 +1,4 @@
-package controller;
+package rover.controller;
 
 
 import org.slf4j.Logger;

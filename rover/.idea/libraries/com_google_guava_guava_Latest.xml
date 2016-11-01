@@ -3,12 +3,15 @@
     <properties maven-id="com.google.guava:guava:LATEST" />
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/guava-18.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-20.0.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/lib/guava-18.0-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-20.0-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/lib/guava-18.0-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-20.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
