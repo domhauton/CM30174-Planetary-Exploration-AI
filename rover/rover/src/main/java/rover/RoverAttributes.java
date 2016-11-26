@@ -4,28 +4,30 @@ package rover;
  * Created by dominic on 26/10/16.
  */
 public enum RoverAttributes {
-  DEFAULT(3, 3, 3);
+  DEFAULT(3, 3, 3),
+  FAST(5, 2, 2),
+  SLOW(1, 4, 4);
 
-  private final int speed, scan, range;
+  private final int maxSpeed, scanRange, maxLoad;
 
-  RoverAttributes(int speed, int scan, int range) {
-    if(speed + scan + range != 9) {
+  RoverAttributes(int maxSpeed, int scanRange, int maxLoad) {
+    if(maxSpeed + scanRange + maxLoad != 9) {
       throw new IllegalArgumentException("Attributes must add up to 9");
     }
-    this.speed = speed;
-    this.scan = scan;
-    this.range = range;
+    this.maxSpeed = maxSpeed;
+    this.scanRange = scanRange;
+    this.maxLoad = maxLoad;
   }
 
-  public int getSpeed() {
-    return speed;
+  public int getMaxSpeed() {
+    return maxSpeed;
   }
 
-  public int getScan() {
-    return scan;
+  public int getScanRange() {
+    return scanRange;
   }
 
-  public int getRange() {
-    return range;
+  public int getMaxLoad() {
+    return maxLoad;
   }
 }

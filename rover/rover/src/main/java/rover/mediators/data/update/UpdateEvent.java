@@ -1,6 +1,7 @@
 package rover.mediators.data.update;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Collections;
+import java.util.List;
 
 import rover.mediators.data.update.item.ScannerItem;
 
@@ -12,11 +13,16 @@ import rover.mediators.data.update.item.ScannerItem;
 public class UpdateEvent {
   private final UpdateEventType updateEventType;
   private final UpdateStatus updateStatus;
-  private final ImmutableList<ScannerItem> scannerItems;
+  private final List<ScannerItem> scannerItems;
+
+  public UpdateEvent(UpdateEventType updateEventType,
+                     UpdateStatus updateStatus) {
+    this(updateEventType, updateStatus, Collections.emptyList());
+  }
 
   public UpdateEvent(UpdateEventType updateEventType,
                      UpdateStatus updateStatus,
-                     ImmutableList<ScannerItem> scannerItems) {
+                     List<ScannerItem> scannerItems) {
     this.updateEventType = updateEventType;
     this.updateStatus = updateStatus;
     this.scannerItems = scannerItems;
@@ -30,7 +36,16 @@ public class UpdateEvent {
     return updateStatus;
   }
 
-  public ImmutableList<ScannerItem> getScannerItems() {
+  public List<ScannerItem> getScannerItems() {
     return scannerItems;
+  }
+
+  @Override
+  public String toString() {
+    return "UpdateEvent{" +
+            "updateEventType=" + updateEventType +
+            ", updateStatus=" + updateStatus +
+            ", scannerItems=" + scannerItems +
+            '}';
   }
 }

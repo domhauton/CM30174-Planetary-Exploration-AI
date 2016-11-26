@@ -1,7 +1,5 @@
 package rover.mediators.data;
 
-import com.google.common.base.Objects;
-
 import java.util.Optional;
 
 /**
@@ -47,19 +45,42 @@ public class RoverStateInfo {
   }
 
   @Override
+  public String toString() {
+    return "RoverStateInfo{" +
+            "load=" + load +
+            ", energy=" + energy +
+            ", isStarted=" + isStarted +
+            ", teamName='" + teamName + '\'' +
+            ", id='" + id + '\'' +
+            '}';
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof RoverStateInfo)) return false;
+
     RoverStateInfo that = (RoverStateInfo) o;
-    return Objects.equal(load, that.load) &&
-            Objects.equal(energy, that.energy) &&
-            Objects.equal(isStarted, that.isStarted) &&
-            Objects.equal(teamName, that.teamName) &&
-            Objects.equal(id, that.id);
+
+    if (getLoad() != null ? !getLoad().equals(that.getLoad()) : that.getLoad() != null)
+      return false;
+    if (getEnergy() != null ? !getEnergy().equals(that.getEnergy()) : that.getEnergy() != null)
+      return false;
+    if (isStarted != null ? !isStarted.equals(that.isStarted) : that.isStarted != null)
+      return false;
+    if (getTeamName() != null ? !getTeamName().equals(that.getTeamName()) : that.getTeamName() != null)
+      return false;
+    return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(load, energy, isStarted, teamName, id);
+    int result = getLoad() != null ? getLoad().hashCode() : 0;
+    result = 31 * result + (getEnergy() != null ? getEnergy().hashCode() : 0);
+    result = 31 * result + (isStarted != null ? isStarted.hashCode() : 0);
+    result = 31 * result + (getTeamName() != null ? getTeamName().hashCode() : 0);
+    result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+    return result;
   }
 }

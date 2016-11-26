@@ -15,5 +15,5 @@ public class RoverBusSubProvider<T> {
 
   public synchronized void subscribe(Consumer<T> subscriber) {
       subscriptionAcceptor.accept(subscriber);
-    }
+  }
 }

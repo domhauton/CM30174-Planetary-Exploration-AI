@@ -28,7 +28,7 @@ public class ScanItem implements Serializable {
 	
 	public ScanItem(String s) {
 		String[] bits = s.split(",");
-		
+
 		if(bits[0].equals("resource")) {
 			itemType = RESOURCE;
 		} else if(bits[0].equals("rover")) {

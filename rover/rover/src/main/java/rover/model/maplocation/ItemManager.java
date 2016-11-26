@@ -6,10 +6,10 @@ import java.util.LinkedList;
 /**
  * Created by dominic on 31/10/16.
  */
-public class LocationManager {
+public class ItemManager {
   private Collection<Resource> resources;
 
-  public LocationManager() {
+  public ItemManager() {
     resources = new LinkedList<>();
   }
 

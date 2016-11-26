@@ -1,47 +1,35 @@
 package rover;
 
-import com.google.common.collect.ImmutableList;
+import org.slf4j.LoggerFactory;
 
-import org.iids.aos.api.AgentCloseRule;
-
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import rover.controller.RoverController;
 import rover.mediators.RoverFacade;
 import rover.mediators.bus.RoverBus;
-import rover.mediators.bus.RoverBusSubProvider;
-import rover.mediators.data.RoverScenarioInfo;
 import rover.mediators.bus.RoverBusFactory;
+import rover.mediators.bus.RoverBusSubProvider;
+import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.RoverStateInfo;
 import rover.mediators.data.update.UpdateEvent;
-import util.ImmutableListCollector;
 
 
 /**
  * Created by dominic on 23/10/16.
  */
+@SuppressWarnings("unused")
 public class RoverDecorator extends Rover {
   private static final String DEFAULT_TEAM_NAME = "dh499";
-  private final Consumer<PollResult> pollResultConsumer;
+  private Consumer<PollResult> pollResultConsumer;
+  private RoverController roverController;
+  private org.slf4j.Logger log;
 
-  @Override
-  void begin() {
-    getLog().info("Bot has been started.");
-  }
-
-  @Override
-  void end() {
-    getLog().info("Bot has been ended.");
-  }
-
-  @Override
-  void poll(PollResult pr) {
-    pollResultConsumer.accept(pr);
-  }
-
+  @SuppressWarnings("unused")
   public RoverDecorator() {
-    this(RoverAttributes.DEFAULT);
+    this(RoverAttributes.FAST);
   }
 
   private RoverDecorator(RoverAttributes roverAttributes) {
@@ -51,20 +39,30 @@ public class RoverDecorator extends Rover {
   private RoverDecorator(String teamName, RoverAttributes roverAttributes)
           throws IllegalArgumentException {
     super();
+    log = LoggerFactory.getLogger("AGENT");
+    setTeam(teamName);
     try {
       setAttributes(
-              roverAttributes.getSpeed(),
-              roverAttributes.getScan(),
-              roverAttributes.getRange());
+              roverAttributes.getMaxSpeed(),
+              roverAttributes.getScanRange(),
+              roverAttributes.getMaxLoad());
     } catch (Exception e) {
+      log.error("Failed to set attributes. Cannot start bot.");
       throw new IllegalArgumentException("Failed to set attributes. Cannot start bot. "
               + e.getMessage());
     }
-    setTeam(teamName);
-    setCloseRule(AgentCloseRule.KeepRunning);
+  }
 
+  @Override
+  void begin() {
+    log.info("Bot has been started.");
+    try {
+      move(0, 0, 1);
+    } catch (Exception e) {
+      log.error(e.toString());
+    }
+    log.info("Dummy step to trigger poll.");
     // Service Setup
-
     RoverFacade roverFacade = new RoverFacade(this);
     RoverBus<PollResult, UpdateEvent> roverUpdateBus
             = RoverBusFactory.getRoverUpdateService();
@@ -72,25 +70,39 @@ public class RoverDecorator extends Rover {
     RoverBusSubProvider<UpdateEvent> updateSubService
             = roverUpdateBus.getSubProvider();
 
-    RoverController roverController = new RoverController(roverFacade,
+    RoverBusFactory.getRoverMessageService(this::fetchNewMessages);
+    RoverBusFactory.getRoverScenarioService(this::getWorldInfo);
+    RoverBusFactory.getRoverStateService(this::getRoverInfo);
+
+    roverController = new RoverController(roverFacade,
             updateSubService,
             RoverBusFactory.getRoverMessageService(this::fetchNewMessages),
             RoverBusFactory.getRoverScenarioService(this::getWorldInfo),
-            RoverBusFactory.getRoverStateService(this::getRoverInfo),
-            getLog());
+            RoverBusFactory.getRoverStateService(this::getRoverInfo));
+
   }
 
-  private synchronized ImmutableList<String> fetchNewMessages() {
+  @Override
+  void end() {
+    log.info("Bot has been ended.");
+  }
+
+  @Override
+  void poll(PollResult pr) {
+    pollResultConsumer.accept(pr);
+  }
+
+  private synchronized List<String> fetchNewMessages() {
     super.retrieveMessages();
-    ImmutableList<String> messagesList = messages
+    List<String> messagesList = messages
             .stream()
-            .collect(new ImmutableListCollector<>());
+            .collect(Collectors.toList());
     messages.clear();
     return messagesList;
   }
 
-  private RoverScenarioInfo getWorldInfo() {
-    return new RoverScenarioInfo(
+  private ScenarioInfo getWorldInfo() {
+    return new ScenarioInfo(
             getWorldHeight(),
             getWorldWidth(),
             isWorldCompetitive(),

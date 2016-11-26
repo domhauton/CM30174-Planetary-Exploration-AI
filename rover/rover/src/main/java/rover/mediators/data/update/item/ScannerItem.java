@@ -21,4 +21,31 @@ public class ScannerItem {
   public RelativeCoordinates getRelativeCoordinates() {
     return relativeCoordinates;
   }
+
+  @Override
+  public String toString() {
+    return "ScannerItem{" +
+            "scannerItemType=" + scannerItemType +
+            ", relativeCoordinates=" + relativeCoordinates +
+            '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ScannerItem)) return false;
+
+    ScannerItem that = (ScannerItem) o;
+
+    if (getScannerItemType() != that.getScannerItemType()) return false;
+    return getRelativeCoordinates() != null ? getRelativeCoordinates().equals(that.getRelativeCoordinates()) : that.getRelativeCoordinates() == null;
+
+  }
+
+  @Override
+  public int hashCode() {
+    int result = getScannerItemType() != null ? getScannerItemType().hashCode() : 0;
+    result = 31 * result + (getRelativeCoordinates() != null ? getRelativeCoordinates().hashCode() : 0);
+    return result;
+  }
 }

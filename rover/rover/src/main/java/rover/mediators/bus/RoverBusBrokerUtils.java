@@ -1,7 +1,8 @@
 package rover.mediators.bus;
 
-import com.google.common.collect.ImmutableList;
-
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import rover.PollResult;
@@ -13,7 +14,6 @@ import rover.mediators.data.update.UpdateStatus;
 import rover.mediators.data.update.item.RelativeCoordinates;
 import rover.mediators.data.update.item.ScannerItem;
 import rover.mediators.data.update.item.ScannerItemType;
-import util.ImmutableListCollector;
 
 /**
  * Created by dominic on 27/10/16.
@@ -29,10 +29,15 @@ abstract class RoverBusBrokerUtils {
   static UpdateEvent pollResultToUpdate(PollResult pollResult) {
     final UpdateEventType updateEventType = UpdateEventType.fromInt(pollResult.getResultType());
     final UpdateStatus updateStatus = UpdateStatus.fromInt(pollResult.getResultStatus());
-    final ImmutableList<ScannerItem> scannerItems = Stream.of(pollResult.getScanItems())
-            .map(RoverBusBrokerUtils::itemConverter)
-            .collect(new ImmutableListCollector<>());
-    return new UpdateEvent(updateEventType, updateStatus, scannerItems);
+    final ScanItem[] scanItems = pollResult.getScanItems();
+    if(scanItems == null) {
+      return new UpdateEvent(updateEventType, updateStatus, Collections.emptyList());
+    } else {
+      final List<ScannerItem> scannerItems = Stream.of(pollResult.getScanItems())
+              .map(RoverBusBrokerUtils::itemConverter)
+              .collect(Collectors.toList());
+      return new UpdateEvent(updateEventType, updateStatus, scannerItems);
+    }
   }
 
   private static ScannerItem itemConverter(ScanItem scanItem) {

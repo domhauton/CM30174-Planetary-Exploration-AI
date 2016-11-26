@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.function.Supplier;
 
 import rover.PollResult;
-import rover.mediators.data.RoverScenarioInfo;
+import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.RoverStateInfo;
 import rover.mediators.data.message.InboundMessage;
 import rover.mediators.data.update.UpdateEvent;
@@ -29,10 +29,10 @@ public abstract class RoverBusFactory {
     return new RoverBus<>(RoverBusBrokerUtils::pollResultToUpdate);
   }
 
-  public static RoverBusSubProvider<RoverScenarioInfo> getRoverScenarioService(
-          Supplier<RoverScenarioInfo> supplier) {
-    return new RoverPollingBus<>(
-            (RoverScenarioInfo item) -> item,
+  public static RoverBusSubProvider<ScenarioInfo> getRoverScenarioService(
+          Supplier<ScenarioInfo> supplier) {
+    return new RoverMonitoringBus<>(
+            (ScenarioInfo item) -> item,
             Duration.ofMillis(100),
             () -> Collections.singleton(supplier.get()))
             .getSubProvider();
@@ -40,7 +40,7 @@ public abstract class RoverBusFactory {
 
   public static RoverBusSubProvider<RoverStateInfo> getRoverStateService(
           Supplier<RoverStateInfo> supplier) {
-    return new RoverPollingBus<>(
+    return new RoverMonitoringBus<>(
             (RoverStateInfo item) -> item,
             Duration.ofMillis(100),
             () -> Collections.singleton(supplier.get()))
