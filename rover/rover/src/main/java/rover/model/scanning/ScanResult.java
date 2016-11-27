@@ -55,7 +55,12 @@ class ScanResult {
     newScanned.forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.SCANNED));
   }
 
-  public int calculateScanValue(ScanMap scanMap) {
+  public double discoveryChance(ScanMap scanMap, int resourcePilesRemaining) {
+    return (calculateScanSearchValue(scanMap) / scanMap.unscannedValue())
+            * (double) resourcePilesRemaining;
+  }
+
+  int calculateScanSearchValue(ScanMap scanMap) {
     int partialValue = newPartial.stream()
             .filter(val -> scanMap.get(val.getX(), val.getY()).getValue() < ScanState.PARTIAL.getValue())
             .mapToInt(val -> ScanState.PARTIAL.getValue() - scanMap.get(val.getX(), val.getY()).getValue())
@@ -65,5 +70,24 @@ class ScanResult {
             .mapToInt(val -> ScanState.SCANNED.getValue() - scanMap.get(val.getX(), val.getY()).getValue())
             .sum();
     return partialValue + scannedValue;
+  }
+
+  public int scanDesirability(ScanMap scanMap) {
+    int partialValue = newPartial.stream()
+            .filter(val -> scanMap.get(val.getX(), val.getY()).getDesirable() < ScanState.PARTIAL.getDesirable())
+            .mapToInt(val -> ScanState.PARTIAL.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
+            .sum();
+    int scannedValue = newScanned.stream()
+            .filter(val -> scanMap.get(val.getX(), val.getY()).getDesirable() < ScanState.SCANNED.getDesirable())
+            .mapToInt(val -> ScanState.SCANNED.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
+            .sum();
+    return partialValue + scannedValue;
+  }
+
+  public String toString(ScanMap scanMap) {
+    return "ScanResult{" +
+            "value=" + calculateScanSearchValue(scanMap) +
+            ", desire=" + scanDesirability(scanMap) +
+            '}';
   }
 }

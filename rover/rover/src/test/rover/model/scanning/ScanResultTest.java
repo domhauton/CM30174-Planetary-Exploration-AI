@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  */
 public class ScanResultTest {
 
-  private static int MAP_SIZE = 10;
+  private static int MAP_SIZE = 15;
 
   private ScanMap scanMap1;
 
@@ -53,25 +53,37 @@ public class ScanResultTest {
   @Test
   public void testBasicValuation() throws Exception {
     ScanResult scanResult = new ScanResult(0, 0, 1);
-    Assert.assertEquals(1, scanResult.calculateScanValue(scanMap1));
+    Assert.assertEquals(1, scanResult.calculateScanSearchValue(scanMap1));
     scanResult.applyScan(scanMap1);
-    Assert.assertEquals(0, scanResult.calculateScanValue(scanMap1));
+    Assert.assertEquals(0, scanResult.calculateScanSearchValue(scanMap1));
   }
 
   @Test
   public void testBasicValuationLarge() throws Exception {
     ScanResult scanResult = new ScanResult(2, 2, 2);
-    Assert.assertEquals(6, scanResult.calculateScanValue(scanMap1));
+    Assert.assertEquals(6, scanResult.calculateScanSearchValue(scanMap1));
     scanResult.applyScan(scanMap1);
-    Assert.assertEquals(0, scanResult.calculateScanValue(scanMap1));
+    Assert.assertEquals(0, scanResult.calculateScanSearchValue(scanMap1));
   }
 
   @Test
   public void testBasicValuationOffSet() throws Exception {
     testBasicValuationLarge();
     ScanResult scanResult = new ScanResult(3, 2, 2);
-    Assert.assertEquals(4, scanResult.calculateScanValue(scanMap1));
+    Assert.assertEquals(4, scanResult.calculateScanSearchValue(scanMap1));
     scanResult.applyScan(scanMap1);
-    Assert.assertEquals(0, scanResult.calculateScanValue(scanMap1));
+    Assert.assertEquals(0, scanResult.calculateScanSearchValue(scanMap1));
+  }
+
+  @Test
+  public void testDesireCalculation() throws Exception {
+    ScanResult scanResult1 = new ScanResult(3, 3, 3);
+    ScanResult scanResult4 = new ScanResult(3, 6, 3);
+    ScanResult scanResult5 = new ScanResult(3, 7, 3);
+    ScanResult scanResult6 = new ScanResult(3, 7, 3);
+    scanResult1.applyScan(scanMap1);
+    Assert.assertTrue(scanResult4.scanDesirability(scanMap1) > scanResult5.scanDesirability(scanMap1));
+    Assert.assertTrue(scanResult4.scanDesirability(scanMap1) > scanResult6.scanDesirability(scanMap1));
+    scanResult4.applyScan(scanMap1);
   }
 }

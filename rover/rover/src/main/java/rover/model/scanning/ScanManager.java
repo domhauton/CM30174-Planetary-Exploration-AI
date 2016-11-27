@@ -1,29 +1,18 @@
 package rover.model.scanning;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 /**
  * Created by dominic on 24/11/16.
  */
 public class ScanManager {
-  private final double mapWidthX;
-  private final double mapWidthY;
-  private final double scanningCoverageResolution;
+  private final double gridWidthInRealUnits;
+  private final ScanMap scanMap;
 
-  public ScanManager(int mapWidthX, int mapWidthY, double scanningCoverageResolution) {
-    this.mapWidthX = mapWidthX;
-    this.mapWidthY = mapWidthY;
-    this.scanningCoverageResolution = scanningCoverageResolution;
-    int xGridSize = (int) (mapWidthX/scanningCoverageResolution);
-    int yGridSize = (int) (mapWidthY/scanningCoverageResolution);
+  public ScanManager(int realMapWidthX, int realMapWidthY, double gridWidthInRealUnits) {
+    this.gridWidthInRealUnits = gridWidthInRealUnits;
+    scanMap = new ScanMap(realToGridConverter(realMapWidthX), realToGridConverter(realMapWidthY));
   }
 
-//  public int getScanUsefulness(double x, double y, double range) {
-//
-//  }
-
-
+  public int realToGridConverter(int val) {
+    return (int) ((double) val / gridWidthInRealUnits);
+  }
 }

@@ -2,7 +2,6 @@ package rover.model.action;
 
 import rover.mediators.RoverFacade;
 import rover.mediators.data.update.UpdateEvent;
-import rover.mediators.data.update.UpdateStatus;
 import rover.model.action.primitives.RoverAction;
 
 /**

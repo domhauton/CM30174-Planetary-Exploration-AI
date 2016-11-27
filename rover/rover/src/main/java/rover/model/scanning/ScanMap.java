@@ -1,8 +1,6 @@
 package rover.model.scanning;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,7 +12,7 @@ public class ScanMap {
 
   public ScanMap(int xSize, int ySize) {
     scanStates = new ScanState[xSize][ySize];
-    for (ScanState[] line: scanStates) {
+    for (ScanState[] line : scanStates) {
       Arrays.fill(line, ScanState.UNKNOWN);
     }
   }
@@ -22,7 +20,7 @@ public class ScanMap {
   void put(int x, int y, ScanState state) {
     int normX = normaliseCoordinate(x, scanStates[0].length);
     int normY = normaliseCoordinate(y, scanStates.length);
-    if(scanStates[normX][normY].getValue() < state.getValue()) {
+    if (scanStates[normX][normY].getValue() < state.getValue()) {
       scanStates[normX][normY] = state;
     }
   }
@@ -34,10 +32,20 @@ public class ScanMap {
   }
 
   private int normaliseCoordinate(int val, int size) {
-    while(val < 0) {
+    while (val < 0) {
       val += size;
     }
-    return val%size;
+    return val % size;
+  }
+
+  /**
+   * Value of making every tile scanned that would guarantee finding all resources
+   */
+  int unscannedValue() {
+    return Stream.of(scanStates)
+            .flatMap(Stream::of)
+            .mapToInt(state -> 2 - state.getValue())
+            .sum();
   }
 
   @Override
@@ -53,9 +61,7 @@ public class ScanMap {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof ScanMap)) return false;
-
     ScanMap scanMap = (ScanMap) o;
-
     return Arrays.deepEquals(scanStates, scanMap.scanStates);
 
   }
