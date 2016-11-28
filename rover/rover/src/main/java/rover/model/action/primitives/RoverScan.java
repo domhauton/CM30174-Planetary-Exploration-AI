@@ -2,6 +2,7 @@ package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
 import rover.model.RoverInfo;
+import rover.model.scanning.ScanResult;
 
 /**
  * Created by dominic on 23/11/16.
@@ -9,11 +10,14 @@ import rover.model.RoverInfo;
 public class RoverScan extends RoverAction{
 
   private double scanPower;
+  private ScanResult scanResult;
 
   public RoverScan(RoverInfo roverInfo,
-                   double scanPower) {
+                   double scanPower,
+                   ScanResult scanResult) {
     super(roverInfo);
     this.scanPower = scanPower;
+    this.scanResult = scanResult;
   }
 
   @Override
@@ -30,7 +34,7 @@ public class RoverScan extends RoverAction{
 
   @Override
   public void complete() {
-    //TODO Add Scanned Areas
+    roverInfo.getScanManager().applyScan(scanResult);
   }
 
   @Override

@@ -4,32 +4,32 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import rover.RoverAttributes;
+import rover.mediators.data.RoverStateInfo;
 import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.update.item.ScannerItemType;
 import rover.model.maplocation.Coordinate;
 import rover.model.maplocation.ItemManager;
+import rover.model.scanning.ScanManager;
 
 /**
  * Created by dominic on 27/10/16.
  */
 public class RoverInfo {
+  private static final int SCAN_RESOLUTION = 2;
+
   private final RoverAttributes attributes;
   private Coordinate coordinate;
   private Queue<ScannerItemType> payload;
-  private ItemManager itemManager;
   private ScenarioInfo scenarioInfo;
+  private RoverStateInfo roverStateInfo;
+  private ScanManager scanManager;
 
-  public RoverInfo(RoverAttributes attributes) {
+  public RoverInfo(RoverAttributes attributes, RoverStateInfo roverStateInfo, ScenarioInfo scenarioInfo) {
+    setScenarioInfo(scenarioInfo);
+    setRoverStateInfo(roverStateInfo);
     this.attributes = attributes;
-    coordinate = CoordinateFactory.buildCartesian(0, 0);
-    itemManager = new ItemManager();
+    coordinate = new Coordinate(0, 0);
     payload = new LinkedBlockingQueue<>();
-    scenarioInfo = new ScenarioInfo(
-            Integer.MAX_VALUE,
-            Integer.MAX_VALUE,
-            false,
-            Integer.MAX_VALUE,
-            1);
   }
 
   public RoverAttributes getAttributes() {
@@ -44,12 +44,25 @@ public class RoverInfo {
             scenarioInfo.getHeight());
   }
 
-  public Coordinate getPosition() {
-    return coordinate;
+  public void setScenarioInfo(ScenarioInfo scenarioInfo) {
+    this.scenarioInfo = scenarioInfo;
+    scanManager = new ScanManager(scenarioInfo.getWidth(), attributes.getScanRange(), SCAN_RESOLUTION);
   }
 
   public ScenarioInfo getScenarioInfo() {
     return scenarioInfo;
+  }
+
+  public RoverStateInfo getRoverStateInfo() {
+    return roverStateInfo;
+  }
+
+  public void setRoverStateInfo(RoverStateInfo roverStateInfo) {
+    this.roverStateInfo = roverStateInfo;
+  }
+
+  public Coordinate getPosition() {
+    return coordinate;
   }
 
   public void addPayload(ScannerItemType scannerItemType) {
@@ -58,5 +71,9 @@ public class RoverInfo {
 
   public ScannerItemType removePayload() {
     return payload.remove();
+  }
+
+  public ScanManager getScanManager() {
+    return scanManager;
   }
 }

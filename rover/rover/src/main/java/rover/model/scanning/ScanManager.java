@@ -18,6 +18,14 @@ public class ScanManager {
     scanBruteForcer = new ScanBruteForcer(gridSize, gridPerUnit, real2Grid(realScanRange));
   }
 
+  public void applyScan(ScanResult scanResult) {
+    scanResult.applyScan(scanMap);
+  }
+
+  public double getDiscoveryChance(ScanResult scanResult) {
+    return scanResult.discoveryChance(scanMap);
+  }
+
   public ScanResult getNextBest(Coordinate realRoverCoordinate, int realMoveSpeed) {
     int gridMoveSpeed = real2Grid(realMoveSpeed);
     GridPos roverPos = real2Grid(realRoverCoordinate);
@@ -42,6 +50,10 @@ public class ScanManager {
     }
   }
 
+  public Coordinate getRealScanCoordinates(ScanResult scanResult) {
+    return grid2Real(scanResult.getScanPos());
+  }
+
   private GridPos real2Grid(Coordinate real) {
     return new GridPos((int) Math.floor(real.getX() * gridPerUnit),
             (int) Math.floor(real.getY() * gridPerUnit));
@@ -51,7 +63,7 @@ public class ScanManager {
     return gridPerUnit * real;
   }
 
-  public Coordinate grid2Real(GridPos grid) {
+  private Coordinate grid2Real(GridPos grid) {
     return new Coordinate((double) (grid.getX() / gridPerUnit), (double) (grid.getY() / gridPerUnit));
   }
 }
