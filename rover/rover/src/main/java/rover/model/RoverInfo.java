@@ -8,7 +8,6 @@ import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.update.item.ScannerItemType;
 import rover.model.maplocation.Coordinate;
 import rover.model.maplocation.ItemManager;
-import rover.model.maplocation.CoordinateFactory;
 
 /**
  * Created by dominic on 27/10/16.

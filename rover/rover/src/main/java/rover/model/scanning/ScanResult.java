@@ -16,8 +16,8 @@ import util.Pair;
  * Created by dominic on 25/11/16.
  */
 class ScanResult {
-  private static double COLLECT_EFFORT_IMPORTANCE = 0.0;
-  private static double MOVE_TO_SCAN_EFFORT_IMPORTANCE = 0.3;
+  private static double COLLECT_EFFORT_IMPORTANCE = 0.3;
+  private static double MOVE_TO_SCAN_EFFORT_IMPORTANCE = 0.7;
 
   private final Set<GridPos> newScanned;
   private final Set<GridPos> newPartial;
@@ -64,7 +64,7 @@ class ScanResult {
     return coordinateSet;
   }
 
-  public void applyScan(ScanMap scanMap) {
+  void applyScan(ScanMap scanMap) {
     newPartial.forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.PARTIAL));
     newScanned.forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.SCANNED));
   }
@@ -95,7 +95,7 @@ class ScanResult {
     return findBestNearby(scanMap, roverPos, movementDesire, new HashSet<>());
   }
 
-  Pair<ScanResult, Integer> findBestNearby(
+  private Pair<ScanResult, Integer> findBestNearby(
           final ScanMap scanMap,
           final GridPos roverPos,
           int movementDesire,
@@ -108,7 +108,7 @@ class ScanResult {
             previouslyTried);
   }
 
-  Pair<ScanResult, Integer> findBestNearby(
+  private Pair<ScanResult, Integer> findBestNearby(
           final ScanMap scanMap,
           final GridPos roverPos,
           int movementDesire,
@@ -166,7 +166,7 @@ class ScanResult {
     return partialValue + scannedValue;
   }
 
-  public Integer moveScanCollectDesirability(ScanMap scanMap,
+  Integer moveScanCollectDesirability(ScanMap scanMap,
                                                final GridPos roverPos,
                                                int movementDesire) {
     double collectEffort = (scanPos.distanceToOrigin(scanMap.getSize())/scanMap.getLongestTravelDistance())
@@ -174,16 +174,18 @@ class ScanResult {
     return (int) (moveScanDesirability(scanMap, roverPos, movementDesire) * (1-collectEffort));
   }
 
-  public Integer moveScanDesirability(ScanMap scanMap,
+  Integer moveScanDesirability(ScanMap scanMap,
                                      final GridPos roverPos,
                                      int movementDesire) {
     double moveEffort = (scanPos.distanceToPos(roverPos, scanMap.getSize())/scanMap.getLongestTravelDistance())
             * MOVE_TO_SCAN_EFFORT_IMPORTANCE;
-    moveEffort = moveEffort / movementDesire;
-    return (int) (scanDesirability(scanMap) * (1-moveEffort));
+    double moveMultiplierAdjusted = movementDesire/scanMap.getLongestTravelDistance();
+    moveMultiplierAdjusted = Math.min(moveMultiplierAdjusted, 1);
+    moveEffort = moveEffort * (1-moveMultiplierAdjusted);
+    return (int) (scanDesirability(scanMap) * ((1-moveEffort)/4));
   }
 
-  public Integer scanDesirability(ScanMap scanMap) {
+  Integer scanDesirability(ScanMap scanMap) {
     int partialValue = newPartial.stream()
             .filter(val -> scanMap.get(val.getX(), val.getY()).getDesirable() < ScanState.PARTIAL.getDesirable())
             .mapToInt(val -> ScanState.PARTIAL.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
@@ -195,11 +197,11 @@ class ScanResult {
     return partialValue + scannedValue;
   }
 
-  public GridPos getScanPos() {
+  GridPos getScanPos() {
     return scanPos;
   }
 
-  public int getScanRange() {
+  private int getScanRange() {
     return scanRange;
   }
 

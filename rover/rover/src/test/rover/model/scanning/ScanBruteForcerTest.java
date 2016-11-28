@@ -15,7 +15,7 @@ public class ScanBruteForcerTest {
   private final int MAP_SIZE = 400;
   private final int SCAN_RANGE = 40;
   private final int SCAN_RESOLUTION = 10;
-  private final int MOVE_SPEED = 3;
+  private final int MOVE_SPEED = 10;
 
   private ScanMap scanMap;
 

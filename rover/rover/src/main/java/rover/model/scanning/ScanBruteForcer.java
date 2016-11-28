@@ -15,13 +15,13 @@ import util.Pair;
 /**
  * Created by dominic on 27/11/16.
  */
-public class ScanBruteForcer {
+class ScanBruteForcer {
 
   private ScanResult[][] scanResults;
   private int resolution;
   private Logger logger;
 
-  public ScanBruteForcer(int size, int resolution, int scanRange) throws IllegalArgumentException {
+  ScanBruteForcer(int size, int resolution, int scanRange) throws IllegalArgumentException {
     logger = LoggerFactory.getLogger("AGENT");
     if( ((Math.sqrt(2)/2) * resolution) > scanRange) {
       logger.error("Logger resolution too low for scan range.");
@@ -37,14 +37,18 @@ public class ScanBruteForcer {
     }
   }
 
-  public List<ScanResult> getMostDesirable(final ScanMap scanMap,
+  public ScanResult getMostDesirable(final ScanMap scanMap,
+                                     final GridPos roverPos,
+                                     final int movementDesire){
+    return getMostDesirable(scanMap, roverPos, movementDesire, 1).get(0);
+  }
+
+  List<ScanResult> getMostDesirable(final ScanMap scanMap,
                                            final GridPos roverPos,
                                            final int movementDesire,
                                            final int limit) {
-    HashSet<GridPos> usedGridPos = new HashSet<>();
     return Stream.of(scanResults)
             .flatMap(Stream::of)
-            //.map((ScanResult scan) -> scan.findBestNearby(scanMap, roverPos, movementDesire, usedGridPos))
             .map((ScanResult scan) -> new Pair<>(scan, scan.moveScanCollectDesirability(scanMap, roverPos, movementDesire)))
             .sorted((o1, o2) -> -o1.getB().compareTo(o2.getB()))
             .map(Pair::getA)

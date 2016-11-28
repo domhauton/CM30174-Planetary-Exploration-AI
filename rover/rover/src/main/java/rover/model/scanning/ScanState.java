@@ -8,7 +8,7 @@ import util.PrintUtil;
 enum ScanState {
   SCANNED(PrintUtil.ANSI_GREEN + "S" + PrintUtil.ANSI_RESET, 2, 400),
   PARTIAL(PrintUtil.ANSI_YELLOW + "P" + PrintUtil.ANSI_RESET, 1, 0),
-  UNKNOWN(PrintUtil.ANSI_RED + "U" + PrintUtil.ANSI_RESET, 0, 200);
+  UNKNOWN(PrintUtil.ANSI_RED + "U" + PrintUtil.ANSI_RESET, 0, 150);
 
   private final String tile;
   private final int value;
