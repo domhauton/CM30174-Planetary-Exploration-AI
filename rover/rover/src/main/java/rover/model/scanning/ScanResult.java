@@ -66,7 +66,7 @@ public class ScanResult {
   }
 
   double discoveryChance(ScanMap scanMap) {
-    return (calculateScanSearchValue(scanMap) / scanMap.unscannedValue());
+    return ((double) calculateScanSearchValue(scanMap) / (double) scanMap.unscannedValue());
   }
 
   Pair<ScanResult, Integer> findBestRandom(ScanMap scanMap,

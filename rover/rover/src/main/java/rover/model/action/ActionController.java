@@ -24,7 +24,9 @@ public class ActionController {
     switch(updateEvent.getUpdateStatus()) {
       case COMPLETE:
       case CANCELLED:
-        previousAction.complete();
+        if(previousAction != null){
+          previousAction.complete();
+        }
         //TODO Clear Failed Action List
         break;
       case FAILED:

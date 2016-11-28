@@ -40,7 +40,7 @@ public class ScanTask extends Task {
 			
 			if(rsi.getCount() > 0) {			
 				if(impl.calcDistance(getRover().getX(), getRover().getY(), rsi.getX(), rsi.getY()) < scanDist * scanMultiplier) {
-					ScanItem  si = new ScanItem(ScanItem.RESOURCE,impl.calcOffset(getRover().getX(), rsi.getX(),true), impl.calcOffset(getRover().getY(), rsi.getY(),false)) ;
+					ScanItem  si = new ScanItem(ScanItem.RESOURCE,impl.calcOffset(getRover().getX(), rsi.getX(),true), impl.calcOffset(getRover().getY(), rsi.getY(),false), rsi.getType()) ;
 					items.add(si);
 				}			
 			}

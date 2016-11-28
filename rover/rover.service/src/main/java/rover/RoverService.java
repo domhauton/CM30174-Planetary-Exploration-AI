@@ -96,12 +96,25 @@ public class RoverService extends AbstractDefaultService implements
             }
 
         }
-
+	int[] resourceTypes = new int[selectedScenario.getResourceTypeDist().length];
+        int resourceType;
         for(int i = 0; i < selectedScenario.getResourceCount(); i++) {
-            resources.add(new ResourceInfo(rand.nextDouble() * selectedScenario.getWidth(), rand.nextDouble() * selectedScenario.getHeight(), selectedScenario.getResourceDistribution()));
+            resourceType = getResourceType(selectedScenario.getResourceTypeDist(),resourceTypes);
+            resources.add(new ResourceInfo(rand.nextDouble() * selectedScenario.getWidth(), rand.nextDouble() * selectedScenario.getHeight(), selectedScenario.getResourceDistribution(), resourceType));
+            resourceTypes[resourceType-1] += 1;
             totalResources += selectedScenario.getResourceDistribution();
         }
 
+    }
+
+    private int getResourceType(int[] resourceTypeDist, int[] resourceTypes) {
+        if (resourceTypeDist.length <= 1) { return 1; }
+        Random rand = new Random();
+	int sum = 0; for (int i = 0; i < resourceTypeDist.length; i++) { sum += resourceTypeDist[i]; }
+	int val = rand.nextInt(sum);
+	int culm = 0; int current = 1;
+	while ((val <= culm) && (current < resourceTypeDist.length)) { culm += resourceTypeDist[current-1]; if (val <= culm) { current++; }  }
+	return current;
     }
 
     @Override
@@ -295,6 +308,9 @@ public class RoverService extends AbstractDefaultService implements
             for(ResourceInfo rsi : getResources()) {
                 if(calcDistance(ri.getX(), ri.getY(), rsi.getX(), rsi.getY()) < .1) {
                     if(rsi.getCount() > 0) {
+                        if (rsi.getType() != ri.getCollector()) {
+				throw new Exception("Rover has wrong collector type for resource");
+			}
                         rs = rsi;
                         break;
                     }
@@ -424,6 +440,12 @@ public class RoverService extends AbstractDefaultService implements
     @Override
     public void setAttributes(String client, int speed, int scanRange,
                               int maxLoad) throws Exception {
+        this.setAttributes(client,speed,scanRange,maxLoad,1);
+    }
+
+    @Override
+    public void setAttributes(String client, int speed, int scanRange,
+                              int maxLoad, int collector) throws Exception {
 
         if(started) {
             throw new Exception("attributes can't be changed after the world has been started");
@@ -451,6 +473,7 @@ public class RoverService extends AbstractDefaultService implements
             ri.setSpeed(speed);
             ri.setScanRange(scanRange);
             ri.setMaxLoad(maxLoad);
+            ri.setCollector(collector);
         }
 
     }
@@ -661,7 +684,7 @@ public class RoverService extends AbstractDefaultService implements
 
             for(ResourceInfo ri : getResources()) {
                 if(ri.getCount() > 0) {
-                    MonitorInfo.Resource r = m.new Resource(ri.getX(), ri.getY(), ri.getCount());
+                    MonitorInfo.Resource r = m.new Resource(ri.getX(), ri.getY(), ri.getCount(), ri.getType());
                     m.getResources().add(r);
                 }
             }
@@ -674,6 +697,7 @@ public class RoverService extends AbstractDefaultService implements
                 r.setMaxLoad(ri.getMaxLoad());
                 r.setScanRange(ri.getScanRange());
                 r.setSpeed(ri.getSpeed());
+		r.setCollector(ri.getCollector());
 
                 if(ri.getTask() != null) {
                     r.setTask(ri.getTask().taskNum());

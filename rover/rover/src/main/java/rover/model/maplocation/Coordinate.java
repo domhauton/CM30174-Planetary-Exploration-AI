@@ -27,6 +27,12 @@ public class Coordinate {
   public Coordinate moveCoordinate(double xOffset, double yOffset, double xSize, double ySize) {
     double newX = (x + xOffset) % xSize;
     double newY = (y + yOffset) % ySize;
+    while(newX < 0 ) {
+      newX += xSize;
+    }
+    while(newY < 0 ) {
+      newY += ySize;
+    }
     return new Coordinate(newX, newY);
   }
 

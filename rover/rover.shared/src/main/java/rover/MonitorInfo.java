@@ -3,7 +3,7 @@ package rover;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MonitorInfo implements Serializable {
+public class MonitorInfo  implements Serializable {
 
 	public abstract class WorldObject implements Serializable {
 		private double x;
@@ -57,7 +57,8 @@ public class MonitorInfo implements Serializable {
 		private String key;
 		private int speed;
 		private int scanRange;
-		private int maxLoad;		
+		private int maxLoad;	
+		private int collector;	
 		private int currentLoad;		
 		private double energy;
 		private int task;
@@ -92,6 +93,14 @@ public class MonitorInfo implements Serializable {
 		public void setCurrentLoad(int currentLoad) {
 			this.currentLoad = currentLoad;
 		}
+
+		public int getCollector() {
+			return collector;
+		}
+
+		public void setCollector(int collector) {
+			this.collector = collector;
+		}
 		public double getEnergy() {
 			return energy;
 		}
@@ -122,10 +131,12 @@ public class MonitorInfo implements Serializable {
 	
 	public class Resource extends WorldObject implements Serializable {
 		private int count;
+		private int type;
 
-		public Resource(double x, double y, int count) {
+		public Resource(double x, double y, int count, int type) {
 			super(x,y);
 			this.count = count;
+			this.type = type;
 		}
 		
 		public int getCount() {
@@ -134,6 +145,14 @@ public class MonitorInfo implements Serializable {
 
 		public void setCount(int count) {
 			this.count = count;
+		}
+
+		public int getType() {
+			return type;
+		}
+
+		public void setType(int type) {
+			this.type = type;
 		}
 	}
 	

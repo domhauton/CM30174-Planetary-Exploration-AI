@@ -22,6 +22,7 @@ public abstract class Rover extends Agent {
     private int speed;
     private int scanRange;
     private int maxLoad;
+    private int collector;
 
     private boolean started;
 
@@ -118,7 +119,7 @@ public abstract class Rover extends Agent {
                         try {
                             clientKey = service.registerClient(team);
                             //set our attributes with the service
-                            service.setAttributes(clientKey, speed, scanRange, maxLoad);
+                            service.setAttributes(clientKey, speed, scanRange, maxLoad, collector);
                             getLog().info("Connecting agent " + clientKey);
                             running = false;
                         } catch (Exception e) {
@@ -204,7 +205,7 @@ public abstract class Rover extends Agent {
     }
 
     //set the attributes for this rover.  Must be done before the world starts.
-    public void setAttributes(int speed, int scanRange, int maxLoad) throws Exception {
+    public void setAttributes(int speed, int scanRange, int maxLoad, int collector) throws Exception {
 
         if (started) {
             throw new Exception("attributes can't be changed after the world has been started");
@@ -219,6 +220,11 @@ public abstract class Rover extends Agent {
         this.speed = speed;
         this.scanRange = scanRange;
         this.maxLoad = maxLoad;
+        this.collector = collector;
+    }
+
+    public void setAttributes(int speed, int scanRange, int maxLoad) throws Exception {
+        this.setAttributes(speed,scanRange,maxLoad,1);
     }
 
     /**

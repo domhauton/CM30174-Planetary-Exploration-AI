@@ -19,6 +19,12 @@
       <id>agentscape-public</id>
       <url>http://nexus.agentscape.org/content/groups/public-agentscape/</url>
     </repository>
+    <repository>
+        <id>osssonatype</id>
+        <name>OSS Sonatype</name>
+        <url>https://repo1.maven.org/maven2/</url>
+        <layout>default</layout>
+    </repository>
   </repositories>
    <dependencies>
     <dependency>
@@ -38,6 +44,11 @@
         <artifactId>simple-xml</artifactId>
         <version>2.7.1</version>
     </dependency>
+<dependency>
+    <groupId>com.bugvm</groupId>
+    <artifactId>bugvm-dist-compiler</artifactId>
+    <version>1.0.7</version>
+</dependency>
   </dependencies>
   <build>
   <plugins>

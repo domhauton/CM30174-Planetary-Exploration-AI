@@ -58,8 +58,10 @@ public class WorldPanel extends JPanel {
                 g2.fill( new Rectangle2D.Double(t.getX() * scale, t.getY() * scale, 10 + scale, 10 + scale));
             }
 
-            g2.setPaint(Color.BLUE);
             for(MonitorInfo.Resource r : monitorInfo.getResources()) {
+            g2.setPaint(Color.BLUE);
+		if (r.getType() == 1) { g2.setPaint(Color.BLUE); }
+		if (r.getType() == 2) { g2.setPaint(Color.CYAN); }
                 g2.fill( new RoundRectangle2D.Double(r.getX() * scale, r.getY() * scale, 10 + scale, 10 + scale, 2 ,2 ));
             }
 

@@ -25,6 +25,8 @@ public class RoverInfo {
 	private int speed;
 	private int scanRange;
 	private int maxLoad;
+
+        private int collector;
 	
 	private int currentLoad;
 	
@@ -44,6 +46,14 @@ public class RoverInfo {
 		this.pollResult = null;
 		this.task = null;
 	}
+
+        public int getCollector() {
+            return collector;
+        }
+
+        public void setCollector(int collector) {
+            this.collector = collector;
+        }
 	
 	public int getSpeed() {
 		return speed;

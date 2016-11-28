@@ -39,17 +39,7 @@ public class RoverController {
     roverFacade.setErrorReporter(this::processUpdate);
     actionController = new ActionController(roverFacade);
     // ROVER FACADE MUST BE INITIALIZED FIRST. CAUTION!
-    RoverStateInfo currentRoverStateInfo = stateSubService
-            .fetch()
-            .stream()
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Unable to fetch initial rover state"));
-    ScenarioInfo currentScenarioInfo = scenarioSubService
-            .fetch()
-            .stream()
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Unable to fetch initial scenario"));
-    roverInfo = new RoverInfo(attributes, currentRoverStateInfo, currentScenarioInfo);
+    roverInfo = new RoverInfo(attributes);
     updateSubService.subscribe(this::processUpdate);
     messageSubService.subscribe(this::processMessage);
     scenarioSubService.subscribe(this::processScenarioUpdate);
@@ -71,12 +61,12 @@ public class RoverController {
   }
 
   private void processScenarioUpdate(ScenarioInfo scenarioInfo) {
-    logger.info("ROVER RECEIVED - {}", scenarioInfo.toString());
+    logger.trace("ROVER RECEIVED - {}", scenarioInfo.toString());
     roverInfo.setScenarioInfo(scenarioInfo);
   }
 
   private void processRoverUpdate(RoverStateInfo stateInfo) {
-    logger.info("ROVER RECEIVED - {}", stateInfo.toString());
+    logger.trace("ROVER RECEIVED - {}", stateInfo.toString());
     roverInfo.setRoverStateInfo(stateInfo);
   }
 

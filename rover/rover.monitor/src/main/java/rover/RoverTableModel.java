@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class RoverTableModel extends AbstractTableModel {
 
     private String[] columnNames = {
-            "Rover", "X", "Y", "Task", "% Complete", "Carrying", "Power", "Max Speed", "Max Range", "Max Load" };
+            "Rover", "X", "Y", "Task", "% Complete", "Carrying", "Power", "Max Speed", "Max Range", "Max Load", "Collector" };
 
     private ArrayList<Object[]> rowData = new ArrayList<Object[]>();
 

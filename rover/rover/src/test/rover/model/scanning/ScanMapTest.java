@@ -77,7 +77,7 @@ public class ScanMapTest {
   @Test
   public void putOverflow() throws Exception {
     scanMap1.put(0, 0, ScanState.PARTIAL);
-    scanMap2.put(MAP_SIZE+1, MAP_SIZE, ScanState.PARTIAL);
+    scanMap2.put(MAP_SIZE, MAP_SIZE, ScanState.PARTIAL);
     Assert.assertEquals(scanMap1, scanMap2);
   }
 

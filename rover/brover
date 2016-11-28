@@ -1,0 +1,4 @@
+cd ~/Documents/projects/IA-rover/rover
+cd rover
+mvn clean install
+cd ~/Documents/projects/IA-rover/rover

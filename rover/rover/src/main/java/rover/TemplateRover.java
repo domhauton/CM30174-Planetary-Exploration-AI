@@ -2,6 +2,8 @@ package rover;
 
 import java.util.Random;
 
+
+
 public class TemplateRover extends Rover {
 
 	public TemplateRover() {
@@ -14,7 +16,8 @@ public class TemplateRover extends Rover {
 			//set attributes for this rover
 			//speed, scan range, max load
 			//has to add up to <= 9
-			setAttributes(4, 4, 1);
+			//Fourth attribute is the collector type
+			setAttributes(4, 4, 1, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -28,7 +31,7 @@ public class TemplateRover extends Rover {
 		
 		try {
 			//move somewhere initially
-			move(5,0,2);
+			move(5,5,2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -72,7 +75,24 @@ public class TemplateRover extends Rover {
 						
 			for(ScanItem item : pr.getScanItems()) {
 				if(item.getItemType() == ScanItem.RESOURCE) {
-                    getLog().info("Resource found at: " + item.getxOffset() + ", " + item.getyOffset());
+                    getLog().info("Resource found at: " + item.getxOffset() + ", " + item.getyOffset() + " Type: "+item.getResourceType());
+		    if (item.getxOffset() < 0.1 && item.getyOffset() < 0.1) { 
+try {
+				getLog().info("Attempting a collect!");
+				collect();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		 } else {
+try {
+                getLog().info("Moving to resource.");
+				move(item.getxOffset(), item.getyOffset(), 4);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		     }
 				} else if(item.getItemType() == ScanItem.BASE) {
                     getLog().info("Base found at: " + item.getxOffset() + ", " + item.getyOffset());
 				} else {
@@ -91,7 +111,12 @@ public class TemplateRover extends Rover {
 			break;
 		case PollResult.COLLECT:
             getLog().info("Collect complete.");
-			
+			try {
+                getLog().info("Moving...");
+				move(1,1,4);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			break;
 		case PollResult.DEPOSIT:
             getLog().info("Deposit complete.");

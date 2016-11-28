@@ -24,12 +24,13 @@ import rover.mediators.data.update.UpdateEvent;
 public class RoverDecorator extends Rover {
   private static final String DEFAULT_TEAM_NAME = "dh499";
   private Consumer<PollResult> pollResultConsumer;
+  private RoverAttributes roverAttributes;
   private RoverController roverController;
   private org.slf4j.Logger log;
 
   @SuppressWarnings("unused")
   public RoverDecorator() {
-    this(RoverAttributes.FAST);
+    this(RoverAttributes.DEFAULT);
   }
 
   private RoverDecorator(RoverAttributes roverAttributes) {
@@ -39,6 +40,7 @@ public class RoverDecorator extends Rover {
   private RoverDecorator(String teamName, RoverAttributes roverAttributes)
           throws IllegalArgumentException {
     super();
+    this.roverAttributes = roverAttributes;
     log = LoggerFactory.getLogger("AGENT");
     setTeam(teamName);
     try {
@@ -74,7 +76,9 @@ public class RoverDecorator extends Rover {
     RoverBusFactory.getRoverScenarioService(this::getWorldInfo);
     RoverBusFactory.getRoverStateService(this::getRoverInfo);
 
-    roverController = new RoverController(roverFacade,
+    roverController = new RoverController(
+            roverAttributes,
+            roverFacade,
             updateSubService,
             RoverBusFactory.getRoverMessageService(this::fetchNewMessages),
             RoverBusFactory.getRoverScenarioService(this::getWorldInfo),

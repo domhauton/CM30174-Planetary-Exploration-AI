@@ -1,9 +1,11 @@
 package rover.model;
 
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import rover.RoverAttributes;
+import rover.Scenario;
 import rover.mediators.data.RoverStateInfo;
 import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.update.item.ScannerItemType;
@@ -24,12 +26,23 @@ public class RoverInfo {
   private RoverStateInfo roverStateInfo;
   private ScanManager scanManager;
 
-  public RoverInfo(RoverAttributes attributes, RoverStateInfo roverStateInfo, ScenarioInfo scenarioInfo) {
-    setScenarioInfo(scenarioInfo);
-    setRoverStateInfo(roverStateInfo);
+  public RoverInfo(RoverAttributes attributes) {
     this.attributes = attributes;
     coordinate = new Coordinate(0, 0);
     payload = new LinkedBlockingQueue<>();
+    setScenarioInfo(new ScenarioInfo(
+            Scenario.SCENARIO_0.getSize(),
+            Scenario.SCENARIO_0.getSize(),
+            Scenario.SCENARIO_0.isCompetitive(),
+            Scenario.SCENARIO_0.getResourcePiles() * Scenario.SCENARIO_0.getResourcePileSize(),
+            0
+    ));
+    setRoverStateInfo(new RoverStateInfo(
+            Optional.of(0),
+            Optional.of((double) Scenario.SCENARIO_0.getEnergy()),
+            false,
+            "dh499",
+            ""));
   }
 
   public RoverAttributes getAttributes() {
