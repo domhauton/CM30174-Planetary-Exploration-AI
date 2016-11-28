@@ -2,16 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9a3b0a6b-8005-471b-975b-5941409b0754" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/dominic.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/Scenario.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanOptimiser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanOptimiserTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanBruteForcer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/main/java/util/Pair.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/main/java/util/PrintUtil.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanBruteForcerTest.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanOptimiser.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanOptimiserTest.java" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanCoordinate.java" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/GridPos.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/action/ActionController.java" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/action/ActionController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanMap.java" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanMap.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java" afterPath="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java" afterPath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java" afterPath="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java" />
     </list>
     <ignored path="rover.iws" />
@@ -96,85 +99,64 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-          <file leaf-file-name="ScanManager.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="130">
-                  <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-                  <folding>
-                    <element signature="e#470#471#0" expanded="true" />
-                    <element signature="e#530#531#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="ScanMap.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanMap.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="546">
-                  <caret line="51" column="7" selection-start-line="50" selection-start-column="2" selection-end-line="57" selection-end-column="3" />
+                <state relative-caret-position="-287">
+                  <caret line="33" column="14" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="e#1143#1144#0" expanded="true" />
+                    <element signature="e#1181#1182#0" expanded="true" />
+                    <element signature="e#1207#1208#0" expanded="true" />
+                    <element signature="e#1228#1229#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ScanOptimiser.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanOptimiser.java">
+          <file leaf-file-name="ScanManager.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="311">
-                  <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ScanOptimiserTest.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanOptimiserTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1091">
-                  <caret line="54" column="32" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ScanResult.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="935">
-                  <caret line="89" column="50" selection-start-line="89" selection-start-column="50" selection-end-line="89" selection-end-column="50" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ScanCoordinate.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanCoordinate.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="182">
-                  <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+                <state relative-caret-position="286">
+                  <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ScanResultTest.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java">
+          <file leaf-file-name="ScanBruteForcer.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanBruteForcer.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1586">
+                  <caret line="61" column="41" selection-start-line="61" selection-start-column="41" selection-end-line="61" selection-end-column="41" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#1942#1943#0" expanded="true" />
+                    <element signature="e#1975#1976#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ScanBruteForcerTest.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanBruteForcerTest.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="805">
-                  <caret line="79" column="53" selection-start-line="79" selection-start-column="53" selection-end-line="79" selection-end-column="53" />
+                  <caret line="78" column="79" selection-start-line="78" selection-start-column="79" selection-end-line="78" selection-end-column="79" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="GridPos.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/GridPos.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="624">
+                  <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -182,25 +164,24 @@
           <file leaf-file-name="ScanMapTest.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="546">
-                  <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
-                  <folding>
-                    <element signature="imports" expanded="false" />
-                  </folding>
+                <state relative-caret-position="424">
+                  <caret line="21" column="35" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
+                  <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ScanState.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java">
+          <file leaf-file-name="ScanResult.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="182">
-                  <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+                <state relative-caret-position="649">
+                  <caret line="46" column="17" selection-start-line="46" selection-start-column="17" selection-end-line="46" selection-end-column="17" />
                   <folding>
-                    <element signature="e#407#408#0" expanded="true" />
-                    <element signature="e#429#430#0" expanded="true" />
-                    <element signature="e#460#461#0" expanded="true" />
-                    <element signature="e#486#487#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#9087#9088#0" expanded="true" />
+                    <element signature="e#9111#9112#0" expanded="true" />
+                    <element signature="e#9142#9143#0" expanded="true" />
+                    <element signature="e#9168#9169#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -209,20 +190,35 @@
           <file leaf-file-name="RoverInfo.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/RoverInfo.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="858">
+                <state relative-caret-position="727">
                   <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ScanResultTest.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-41">
+                  <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
                   <folding>
-                    <element signature="imports" expanded="false" />
-                    <element signature="e#1054#1055#0" expanded="false" />
-                    <element signature="e#1081#1082#0" expanded="false" />
-                    <element signature="e#1348#1349#0" expanded="false" />
-                    <element signature="e#1375#1376#0" expanded="false" />
-                    <element signature="e#1418#1419#0" expanded="false" />
-                    <element signature="e#1447#1448#0" expanded="false" />
-                    <element signature="e#1508#1509#0" expanded="false" />
-                    <element signature="e#1546#1547#0" expanded="false" />
-                    <element signature="e#1590#1591#0" expanded="false" />
-                    <element signature="e#1623#1624#0" expanded="false" />
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ScanState.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="260">
+                  <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
+                  <folding>
+                    <element signature="e#571#572#0" expanded="true" />
+                    <element signature="e#593#594#0" expanded="true" />
+                    <element signature="e#624#625#0" expanded="true" />
+                    <element signature="e#650#651#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -305,8 +301,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="JUnit4 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -326,11 +322,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/rover/pom.xml" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/util/ImmutableListCollector.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/mediators/bus/RoverBusBrokerUtils.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/Logger.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/mediators/data/RoverStateInfo.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/mediators/data/RoverScenarioInfo.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/mediators/bus/RoverBusFactory.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/mediators/data/update/UpdateEvent.java" />
@@ -365,18 +356,23 @@
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/action/primitives/RoverScan.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/action/primitives/RoverMove.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanSquare.java" />
-        <option value="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanCoordinateFlywheel.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/action/ActionController.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/Scenario.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanCoordinate.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/util/PrintUtil.java" />
         <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java" />
+        <option value="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java" />
         <option value="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanMap.java" />
-        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanOptimiser.java" />
         <option value="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanOptimiserTest.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/GridPos.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanOptimiser.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanMap.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/util/Pair.java" />
+        <option value="$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanBruteForcerTest.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanBruteForcer.java" />
+        <option value="$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java" />
       </list>
     </option>
   </component>
@@ -510,6 +506,32 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="maplocation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rover" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rover" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -740,7 +762,7 @@
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="js-jscs-nodeInterpreter" value="/usr/bin/node" />
     <property name="Downloaded.Files.Path.Enabled" value="true" />
@@ -769,8 +791,8 @@
       <recent name="$PROJECT_DIR$/rover.service/src/main/java/rover" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ScanOptimiserTest.singleScanMapTestDesire">
-    <configuration default="false" name="ScanResultTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager">
+    <configuration default="false" name="ScanBruteForcerTest.singleScanMapTestValue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="rover.model.scanning.*" />
@@ -781,85 +803,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="rover.model.scanning" />
-      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanResultTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="ScanOptimiserTest.emptyMapTestDesire" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="rover.model.scanning.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="rover-agent" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="rover.model.scanning" />
-      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanOptimiserTest" />
-      <option name="METHOD_NAME" value="emptyMapTestDesire" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="ScanOptimiserTest.emptyMapTestValue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="rover.model.scanning.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="rover-agent" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="rover.model.scanning" />
-      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanOptimiserTest" />
-      <option name="METHOD_NAME" value="emptyMapTestValue" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="ScanOptimiserTest.singleScanMapTestValue" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="rover.model.scanning.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="rover-agent" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="rover.model.scanning" />
-      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanOptimiserTest" />
+      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanBruteForcerTest" />
       <option name="METHOD_NAME" value="singleScanMapTestValue" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -874,7 +818,7 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="false" name="ScanOptimiserTest.singleScanMapTestDesire" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration default="false" name="ScanBruteForcerTest.singleScanMapTestDesire" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="rover.model.scanning.*" />
@@ -885,8 +829,86 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="rover.model.scanning" />
-      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanOptimiserTest" />
+      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanBruteForcerTest" />
       <option name="METHOD_NAME" value="singleScanMapTestDesire" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="ScanBruteForcerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="rover.model.scanning.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="rover-agent" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="rover.model.scanning" />
+      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanBruteForcerTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="ScanBruteForcerTest.fullAreaScanTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="rover.model.scanning.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="rover-agent" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="rover.model.scanning" />
+      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanBruteForcerTest" />
+      <option name="METHOD_NAME" value="fullAreaScanTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="ScanBruteForcerTest.fullAreaGradientAscentTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="rover.model.scanning.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="rover-agent" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="rover.model.scanning" />
+      <option name="MAIN_CLASS_NAME" value="rover.model.scanning.ScanBruteForcerTest" />
+      <option name="METHOD_NAME" value="fullAreaGradientAscentTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -1458,19 +1480,19 @@
       <item index="1" class="java.lang.String" itemvalue="JAR Application.agentscape-server-2.0.0" />
       <item index="2" class="java.lang.String" itemvalue="JAR Application.agentscape-launch-agent" />
       <item index="3" class="java.lang.String" itemvalue="Maven.rover.monitor [install] " />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ScanResultTest" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.emptyMapTestDesire" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.emptyMapTestValue" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.singleScanMapTestValue" />
-      <item index="8" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.singleScanMapTestDesire" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.singleScanMapTestValue" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.singleScanMapTestDesire" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest" />
+      <item index="7" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.fullAreaScanTest" />
+      <item index="8" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.fullAreaGradientAscentTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.singleScanMapTestDesire" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.singleScanMapTestValue" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.emptyMapTestValue" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.ScanOptimiserTest.emptyMapTestDesire" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.ScanResultTest" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.fullAreaScanTest" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.fullAreaGradientAscentTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.singleScanMapTestDesire" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.ScanBruteForcerTest.singleScanMapTestValue" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -1521,7 +1543,7 @@
       <workItem from="1479996327394" duration="8850000" />
       <workItem from="1480101911903" duration="20664000" />
       <workItem from="1480189000326" duration="2514000" />
-      <workItem from="1480198010981" duration="5819000" />
+      <workItem from="1480198010981" duration="33965000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented Mediators">
       <created>1477448046611</created>
@@ -1551,43 +1573,50 @@
       <option name="project" value="LOCAL" />
       <updated>1480162357618</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added scanning desire successfully">
+      <created>1480207471308</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1480207471308</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ScanOptimiserTest_emptyMapTestDesire - 2016.11.27 at 00h 38m 42s.xml">
-      <configuration name="ScanOptimiserTest.emptyMapTestDesire" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaGradientAscentTest - 2016.11.28 at 01h 37m 41s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaGradientAscentTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanOptimiserTest_emptyMapTestValue - 2016.11.27 at 00h 39m 05s.xml">
-      <configuration name="ScanOptimiserTest.emptyMapTestValue" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaGradientAscentTest - 2016.11.28 at 01h 38m 51s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaGradientAscentTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanOptimiserTest_singleScanMapTestDesire - 2016.11.27 at 00h 41m 25s.xml">
-      <configuration name="ScanOptimiserTest.singleScanMapTestDesire" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaGradientAscentTest - 2016.11.28 at 01h 39m 46s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaGradientAscentTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanOptimiserTest_singleScanMapTestDesire - 2016.11.27 at 00h 41m 59s.xml">
-      <configuration name="ScanOptimiserTest.singleScanMapTestDesire" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 43m 39s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanOptimiserTest_singleScanMapTestDesire - 2016.11.27 at 00h 43m 20s.xml">
-      <configuration name="ScanOptimiserTest.singleScanMapTestDesire" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 48m 03s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanOptimiserTest_singleScanMapTestValue - 2016.11.27 at 00h 40m 40s.xml">
-      <configuration name="ScanOptimiserTest.singleScanMapTestValue" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 51m 26s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanResultTest - 2016.11.26 at 22h 45m 29s.xml">
-      <configuration name="ScanResultTest" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 53m 35s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanResultTest_testDesireCalculation - 2016.11.26 at 22h 40m 32s.xml">
-      <configuration name="ScanResultTest.testDesireCalculation" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 54m 11s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanResultTest_testDesireCalculation - 2016.11.26 at 22h 40m 42s.xml">
-      <configuration name="ScanResultTest.testDesireCalculation" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 54m 40s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ScanResultTest_testDesireCalculation - 2016.11.26 at 22h 42m 19s.xml">
-      <configuration name="ScanResultTest.testDesireCalculation" configurationId="JUnit" />
+    <history-entry file="ScanBruteForcerTest_fullAreaScanTest - 2016.11.28 at 01h 57m 32s.xml">
+      <configuration name="ScanBruteForcerTest.fullAreaScanTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="163542000" />
+    <option name="totallyTimeSpent" value="191688000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1600,22 +1629,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="3200" y="8" width="3840" height="2121" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32992327" sideWeight="0.49893898" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3520695" sideWeight="0.5063593" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3515585" sideWeight="0.50741917" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23682864" sideWeight="0.50212204" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1474801" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3515585" sideWeight="0.4936407" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3515585" sideWeight="0.4925808" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295861" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13751987" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3398058" sideWeight="0.49576047" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24963397" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1629,7 +1659,6 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" x="84" y="-4" width="3640" height="1929" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39940828" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3398058" sideWeight="0.49576047" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1678,7 +1707,8 @@
     <MESSAGE value="Complete Rover Controller&#10;" />
     <MESSAGE value="Added Rover Model Location and Intention Logic" />
     <MESSAGE value="Working Scan Manager" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working Scan Manager" />
+    <MESSAGE value="Added scanning desire successfully" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added scanning desire successfully" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1708,34 +1738,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/rover.service/src/main/java/rover/RoverService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3844">
-          <caret line="500" column="14" selection-start-line="500" selection-start-column="14" selection-end-line="500" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/mediators/bus/RoverMonitoringBus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/mediators/bus/RoverBusFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="27" column="49" selection-start-line="27" selection-start-column="16" selection-end-line="27" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/mediators/bus/RoverBus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/mediators/bus/RoverBusSubProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -1932,26 +1934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/RoverInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="858">
-          <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1054#1055#0" expanded="false" />
-            <element signature="e#1081#1082#0" expanded="false" />
-            <element signature="e#1348#1349#0" expanded="false" />
-            <element signature="e#1375#1376#0" expanded="false" />
-            <element signature="e#1418#1419#0" expanded="false" />
-            <element signature="e#1447#1448#0" expanded="false" />
-            <element signature="e#1508#1509#0" expanded="false" />
-            <element signature="e#1546#1547#0" expanded="false" />
-            <element signature="e#1590#1591#0" expanded="false" />
-            <element signature="e#1623#1624#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/default-java/jre/lib/rt.jar!/java/util/Arrays.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="640">
@@ -1961,16 +1943,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanSquare.java" />
     <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanCoordinateFlywheel.java" />
-    <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/action/ActionController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -1982,63 +1954,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanCoordinate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/Scenario.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
           <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding>
-            <element signature="e#407#408#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
-            <element signature="e#460#461#0" expanded="true" />
-            <element signature="e#486#487#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="805">
-          <caret line="79" column="53" selection-start-line="79" selection-start-column="53" selection-end-line="79" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-          <folding>
-            <element signature="e#470#471#0" expanded="true" />
-            <element signature="e#530#531#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="89" column="50" selection-start-line="89" selection-start-column="50" selection-end-line="89" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2058,33 +1978,150 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/util/PrintUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/default-java/jre/lib/rt.jar!/java/lang/Math.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="271" column="22" selection-start-line="271" selection-start-column="22" selection-end-line="271" selection-end-column="22" />
+          <folding>
+            <element signature="e#7352#7353#0" expanded="true" />
+            <element signature="e#7394#7395#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/util/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+          <folding>
+            <element signature="e#208#209#0" expanded="true" />
+            <element signature="e#226#227#0" expanded="true" />
+            <element signature="e#247#248#0" expanded="true" />
+            <element signature="e#265#266#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/default-java/jre/lib/rt.jar!/java/util/AbstractCollection.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="116" column="0" selection-start-line="116" selection-start-column="0" selection-end-line="116" selection-end-column="0" />
+          <folding>
+            <element signature="e#3231#3232#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanMapTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="21" column="35" selection-start-line="21" selection-start-column="35" selection-end-line="21" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanResultTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-41">
+          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/RoverInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="727">
+          <caret line="43" column="27" selection-start-line="43" selection-start-column="27" selection-end-line="43" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanBruteForcerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="805">
+          <caret line="78" column="79" selection-start-line="78" selection-start-column="79" selection-end-line="78" selection-end-column="79" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanBruteForcer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1586">
+          <caret line="61" column="41" selection-start-line="61" selection-start-column="41" selection-end-line="61" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1942#1943#0" expanded="true" />
+            <element signature="e#1975#1976#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/GridPos.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="28" column="55" selection-start-line="28" selection-start-column="55" selection-end-line="28" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="10" column="65" selection-start-line="10" selection-start-column="65" selection-end-line="10" selection-end-column="65" />
+          <folding>
+            <element signature="e#571#572#0" expanded="true" />
+            <element signature="e#593#594#0" expanded="true" />
+            <element signature="e#624#625#0" expanded="true" />
+            <element signature="e#650#651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="51" column="7" selection-start-line="50" selection-start-column="2" selection-end-line="57" selection-end-column="3" />
+        <state relative-caret-position="-287">
+          <caret line="33" column="14" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1143#1144#0" expanded="true" />
+            <element signature="e#1181#1182#0" expanded="true" />
+            <element signature="e#1207#1208#0" expanded="true" />
+            <element signature="e#1228#1229#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanOptimiser.java">
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanResult.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        <state relative-caret-position="649">
+          <caret line="46" column="17" selection-start-line="46" selection-start-column="17" selection-end-line="46" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#9087#9088#0" expanded="true" />
+            <element signature="e#9111#9112#0" expanded="true" />
+            <element signature="e#9142#9143#0" expanded="true" />
+            <element signature="e#9168#9169#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rover/src/test/rover/model/scanning/ScanOptimiserTest.java">
+    <entry file="file://$PROJECT_DIR$/rover/src/main/java/rover/model/scanning/ScanManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1091">
-          <caret line="54" column="32" selection-start-line="54" selection-start-column="32" selection-end-line="54" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="286">
+          <caret line="11" column="59" selection-start-line="11" selection-start-column="59" selection-end-line="11" selection-end-column="59" />
+          <folding />
         </state>
       </provider>
     </entry>

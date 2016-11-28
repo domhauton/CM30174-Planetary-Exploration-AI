@@ -9,33 +9,47 @@ import java.util.stream.Stream;
  */
 public class ScanMap {
   private ScanState[][] scanStates;
+  private final int size;
+  private final double longestTravelDistance;
 
-  public ScanMap(int xSize, int ySize) {
-    scanStates = new ScanState[xSize][ySize];
+  private static double HALF_SQRT2 = Math.sqrt(2.0)/2;
+
+  public ScanMap(int size) {
+    scanStates = new ScanState[size][size];
+    this.size = size;
+    longestTravelDistance = size*HALF_SQRT2;
     for (ScanState[] line : scanStates) {
       Arrays.fill(line, ScanState.UNKNOWN);
     }
   }
 
   void put(int x, int y, ScanState state) {
-    int normX = normaliseCoordinate(x, scanStates[0].length);
-    int normY = normaliseCoordinate(y, scanStates.length);
+    int normX = normaliseCoordinate(x);
+    int normY = normaliseCoordinate(y);
     if (scanStates[normX][normY].getValue() < state.getValue()) {
       scanStates[normX][normY] = state;
     }
   }
 
   ScanState get(int x, int y) {
-    int normX = normaliseCoordinate(x, scanStates[0].length);
-    int normY = normaliseCoordinate(y, scanStates.length);
+    int normX = normaliseCoordinate(x);
+    int normY = normaliseCoordinate(y);
     return scanStates[normX][normY];
   }
 
-  private int normaliseCoordinate(int val, int size) {
+  int normaliseCoordinate(int val) {
     while (val < 0) {
       val += size;
     }
     return val % size;
+  }
+
+  public double getLongestTravelDistance() {
+    return longestTravelDistance;
+  }
+
+  public int getSize() {
+    return size;
   }
 
   /**

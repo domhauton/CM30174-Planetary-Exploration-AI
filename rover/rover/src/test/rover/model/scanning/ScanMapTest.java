@@ -18,8 +18,8 @@ public class ScanMapTest {
 
   @Before
   public void setUp() {
-    scanMap1 = new ScanMap(MAP_SIZE, MAP_SIZE);
-    scanMap2 = new ScanMap(MAP_SIZE, MAP_SIZE);
+    scanMap1 = new ScanMap(MAP_SIZE);
+    scanMap2 = new ScanMap(MAP_SIZE);
   }
 
   @Test

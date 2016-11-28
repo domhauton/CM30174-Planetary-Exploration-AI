@@ -7,9 +7,9 @@ public class ScanManager {
   private final double gridWidthInRealUnits;
   private final ScanMap scanMap;
 
-  public ScanManager(int realMapWidthX, int realMapWidthY, double gridWidthInRealUnits) {
+  public ScanManager(int realMapWidth, double gridWidthInRealUnits) {
     this.gridWidthInRealUnits = gridWidthInRealUnits;
-    scanMap = new ScanMap(realToGridConverter(realMapWidthX), realToGridConverter(realMapWidthY));
+    scanMap = new ScanMap(realToGridConverter(realMapWidth));
   }
 
   public int realToGridConverter(int val) {
