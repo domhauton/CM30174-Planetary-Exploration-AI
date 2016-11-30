@@ -1,7 +1,8 @@
 package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
-import rover.model.RoverInfo;
+import rover.model.roverinfo.RoverInfo;
+import rover.model.scanning.ScanManager;
 import rover.model.scanning.ScanResult;
 
 /**
@@ -11,8 +12,10 @@ public class RoverScan extends RoverAction{
 
   private double scanPower;
   private ScanResult scanResult;
+  private ScanManager scanManager;
 
   public RoverScan(RoverInfo roverInfo,
+                   ScanManager scanManager,
                    double scanPower,
                    ScanResult scanResult) {
     super(roverInfo);
@@ -24,7 +27,7 @@ public class RoverScan extends RoverAction{
   public ActionCost getActionCost() {
     return new ActionCost(
             (10.0*scanPower)/roverInfo.getAttributes().getScanRange(),
-            2);
+            5);
   }
 
   @Override
@@ -34,7 +37,7 @@ public class RoverScan extends RoverAction{
 
   @Override
   public void complete() {
-    roverInfo.getScanManager().applyScan(scanResult);
+    scanManager.applyScan(scanResult);
   }
 
   @Override

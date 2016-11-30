@@ -31,7 +31,7 @@ public class RoverFacade {
     this.errorReporter = errorReporter;
   }
 
-  public void deposit() throws RoverActionException {
+  public void deposit() {
     try {
       log.info("ROVER ACTION - DEPOSIT");
       rover.deposit();

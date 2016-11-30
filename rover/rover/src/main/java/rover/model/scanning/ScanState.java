@@ -6,9 +6,9 @@ import util.PrintUtil;
  * Created by dominic on 25/11/16.
  */
 enum ScanState {
-  SCANNED(PrintUtil.ANSI_GREEN + "S" + PrintUtil.ANSI_RESET, 2, 400),
-  PARTIAL(PrintUtil.ANSI_YELLOW + "P" + PrintUtil.ANSI_RESET, 1, 0),
-  UNKNOWN(PrintUtil.ANSI_RED + "U" + PrintUtil.ANSI_RESET, 0, 150);
+  SCANNED(PrintUtil.ANSI_GREEN + "S" + PrintUtil.ANSI_RESET, 2, 20),
+  PARTIAL(PrintUtil.ANSI_YELLOW + "P" + PrintUtil.ANSI_RESET, 1, -450),
+  UNKNOWN(PrintUtil.ANSI_RED + "U" + PrintUtil.ANSI_RESET, 0, 0);
 
   private final String tile;
   private final int value;

@@ -1,8 +1,7 @@
 package rover.model.action.primitives;
 
-import rover.Rover;
 import rover.mediators.RoverFacade;
-import rover.model.RoverInfo;
+import rover.model.roverinfo.RoverInfo;
 import rover.model.maplocation.Coordinate;
 
 /**
@@ -13,23 +12,22 @@ public class RoverMove extends RoverAction {
   private double yOffset;
   private double speed;
 
-  public RoverMove(RoverFacade roverFacade,
-                   RoverInfo roverInfo,
+  public RoverMove(RoverInfo roverInfo,
                    Coordinate targetCoordinate) {
     this(roverInfo, roverInfo.getPosition(), targetCoordinate);
   }
 
-  public RoverMove(RoverInfo roverInfo,
-                    Coordinate startCoordinate,
-                    Coordinate targetCoordinate){
+   private RoverMove(RoverInfo roverInfo,
+                     Coordinate startCoordinate,
+                     Coordinate targetCoordinate){
     this(
             roverInfo,
-            distanceToMove(
+            Coordinate.distanceToMove(
                     startCoordinate.getX(),
                     targetCoordinate.getX(),
-                    roverInfo.getScenarioInfo().getWidth()
+                    roverInfo.getScenarioInfo().getSize()
             ),
-            distanceToMove(
+            Coordinate.distanceToMove(
                     startCoordinate.getY(),
                     targetCoordinate.getY(),
                     roverInfo.getScenarioInfo().getHeight()
@@ -38,10 +36,10 @@ public class RoverMove extends RoverAction {
     );
   }
 
-  public RoverMove(RoverInfo roverInfo,
-                   double xOffset,
-                   double yOffset,
-                   double speed) {
+  private RoverMove(RoverInfo roverInfo,
+                    double xOffset,
+                    double yOffset,
+                    double speed) {
     super(roverInfo);
     this.xOffset = xOffset;
     this.yOffset = yOffset;
@@ -53,7 +51,7 @@ public class RoverMove extends RoverAction {
     double distance = Math.sqrt((xOffset * xOffset) + (yOffset * yOffset));
     return new ActionCost(
             (2.0 * distance) / roverInfo.getAttributes().getMaxSpeed(),
-            distance * speed * 3);
+            distance / speed);
   }
 
   @Override
@@ -69,11 +67,6 @@ public class RoverMove extends RoverAction {
   @Override
   public void failed() {
     //TODO Shouldn't really fail to move, check max move speed and energy
-  }
-
-  private static double distanceToMove(double oldPosition, double targetPosition, double mapSize) {
-    double halfMapSize = mapSize/2;
-    return ((((targetPosition-oldPosition)+halfMapSize)%mapSize)-halfMapSize);
   }
 
   @Override
@@ -92,9 +85,9 @@ public class RoverMove extends RoverAction {
 
     RoverMove roverMove = (RoverMove) o;
 
-    if (Double.compare(roverMove.xOffset, xOffset) != 0) return false;
-    if (Double.compare(roverMove.yOffset, yOffset) != 0) return false;
-    return Double.compare(roverMove.speed, speed) == 0;
+    return Double.compare(roverMove.xOffset, xOffset) == 0
+            && Double.compare(roverMove.yOffset, yOffset) == 0
+            && Double.compare(roverMove.speed, speed) == 0;
 
   }
 

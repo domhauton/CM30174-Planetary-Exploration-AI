@@ -30,7 +30,7 @@ public class RoverDecorator extends Rover {
 
   @SuppressWarnings("unused")
   public RoverDecorator() {
-    this(RoverAttributes.DEFAULT);
+    this(RoverAttributes.CLOSE_SCAN);
   }
 
   private RoverDecorator(RoverAttributes roverAttributes) {
@@ -47,7 +47,8 @@ public class RoverDecorator extends Rover {
       setAttributes(
               roverAttributes.getMaxSpeed(),
               roverAttributes.getScanRange(),
-              roverAttributes.getMaxLoad());
+              roverAttributes.getMaxLoad(),
+              roverAttributes.getCargoType().getId());
     } catch (Exception e) {
       log.error("Failed to set attributes. Cannot start bot.");
       throw new IllegalArgumentException("Failed to set attributes. Cannot start bot. "

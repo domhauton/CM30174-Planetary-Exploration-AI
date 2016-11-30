@@ -4,30 +4,24 @@ package rover.mediators.data;
  * Created by dominic on 24/10/16.
  */
 public class ScenarioInfo {
-  private final Integer height;
-  private final Integer width;
+  private final Integer size;
   private final Boolean competitive;
   private final Integer totalWorldResources;
   private final Integer scenario;
 
-  public ScenarioInfo(Integer height,
-                      Integer width,
+  public ScenarioInfo(Integer size,
                       Boolean competitive,
                       Integer totalWorldResources,
                       Integer scenario) {
-    this.height = height;
-    this.width = width;
+    this.size = size;
     this.competitive = competitive;
     this.totalWorldResources = totalWorldResources;
     this.scenario = scenario;
   }
 
-  public Integer getHeight() {
-    return height;
-  }
 
-  public Integer getWidth() {
-    return width;
+  public Integer getSize() {
+    return size;
   }
 
   public Boolean getCompetitive() {
@@ -45,8 +39,7 @@ public class ScenarioInfo {
   @Override
   public String toString() {
     return "ScenarioInfo{" +
-            "height=" + height +
-            ", width=" + width +
+            ", size=" + size +
             ", competitive=" + competitive +
             ", totalWorldResources=" + totalWorldResources +
             ", scenario=" + scenario +
@@ -60,22 +53,16 @@ public class ScenarioInfo {
 
     ScenarioInfo that = (ScenarioInfo) o;
 
-    if (getHeight() != null ? !getHeight().equals(that.getHeight()) : that.getHeight() != null)
-      return false;
-    if (getWidth() != null ? !getWidth().equals(that.getWidth()) : that.getWidth() != null)
-      return false;
-    if (getCompetitive() != null ? !getCompetitive().equals(that.getCompetitive()) : that.getCompetitive() != null)
-      return false;
-    if (getTotalWorldResources() != null ? !getTotalWorldResources().equals(that.getTotalWorldResources()) : that.getTotalWorldResources() != null)
-      return false;
-    return getScenario() != null ? getScenario().equals(that.getScenario()) : that.getScenario() == null;
+    return getSize() != null ? getSize().equals(that.getSize()) : that.getSize() == null
+            && (getCompetitive() != null ? getCompetitive().equals(that.getCompetitive()) : that.getCompetitive() == null
+            && (getTotalWorldResources() != null ? getTotalWorldResources().equals(that.getTotalWorldResources()) : that.getTotalWorldResources() == null
+            && (getScenario() != null ? getScenario().equals(that.getScenario()) : that.getScenario() == null)));
 
   }
 
   @Override
   public int hashCode() {
-    int result = getHeight() != null ? getHeight().hashCode() : 0;
-    result = 31 * result + (getWidth() != null ? getWidth().hashCode() : 0);
+    int result = 31 * (getSize() != null ? getSize().hashCode() : 0);
     result = 31 * result + (getCompetitive() != null ? getCompetitive().hashCode() : 0);
     result = 31 * result + (getTotalWorldResources() != null ? getTotalWorldResources().hashCode() : 0);
     result = 31 * result + (getScenario() != null ? getScenario().hashCode() : 0);

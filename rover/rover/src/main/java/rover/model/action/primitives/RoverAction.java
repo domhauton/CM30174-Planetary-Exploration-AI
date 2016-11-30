@@ -1,7 +1,10 @@
 package rover.model.action.primitives;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import rover.mediators.RoverFacade;
-import rover.model.RoverInfo;
+import rover.model.roverinfo.RoverInfo;
 
 /**
  * Created by dominic on 23/11/16.
@@ -10,9 +13,11 @@ import rover.model.RoverInfo;
  */
 public abstract class RoverAction {
   final RoverInfo roverInfo;
+  final Logger logger;
 
   RoverAction(RoverInfo roverInfo) {
     this.roverInfo = roverInfo;
+    logger = LoggerFactory.getLogger("AGENT");
   }
 
   public abstract ActionCost getActionCost();

@@ -12,6 +12,7 @@ import rover.mediators.data.update.UpdateEvent;
 import rover.mediators.data.update.UpdateEventType;
 import rover.mediators.data.update.UpdateStatus;
 import rover.mediators.data.update.item.RelativeCoordinates;
+import rover.mediators.data.update.item.ResourceType;
 import rover.mediators.data.update.item.ScannerItem;
 import rover.mediators.data.update.item.ScannerItemType;
 
@@ -44,6 +45,7 @@ abstract class RoverBusBrokerUtils {
     RelativeCoordinates relativeCoordinates =
             new RelativeCoordinates(scanItem.getxOffset(), scanItem.getyOffset());
     ScannerItemType scannerItemType = ScannerItemType.fromInt(scanItem.getItemType());
-    return new ScannerItem(scannerItemType, relativeCoordinates);
+    ResourceType resourceType = ResourceType.getById(scanItem.getResourceType());
+    return new ScannerItem(scannerItemType, relativeCoordinates, resourceType);
   }
 }

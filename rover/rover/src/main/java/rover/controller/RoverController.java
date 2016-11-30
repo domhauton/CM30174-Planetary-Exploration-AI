@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import rover.RoverAttributes;
+import rover.Scenario;
 import rover.mediators.RoverFacade;
 import rover.mediators.bus.RoverBusSubProvider;
 import rover.mediators.data.ScenarioInfo;
@@ -12,7 +13,7 @@ import rover.mediators.data.RoverStateInfo;
 import rover.mediators.data.message.InboundMessage;
 import rover.mediators.data.update.UpdateEvent;
 import rover.model.IntentionGenerator;
-import rover.model.RoverInfo;
+import rover.model.roverinfo.RoverInfo;
 import rover.model.action.ActionController;
 import rover.model.action.primitives.RoverAction;
 
@@ -22,11 +23,10 @@ import rover.model.action.primitives.RoverAction;
  * Main controller for the rover
  */
 public class RoverController {
-  private final RoverInfo roverInfo;
+  private final RoverInfo liveRoverInfo;
   private final ActionController actionController;
   private final IntentionGenerator intentionGenerator;
   private final Logger logger;
-  private boolean first = true;
 
   public RoverController(RoverAttributes attributes,
                          RoverFacade roverFacade,
@@ -35,11 +35,12 @@ public class RoverController {
                          RoverBusSubProvider<ScenarioInfo> scenarioSubService,
                          RoverBusSubProvider<RoverStateInfo> stateSubService) {
     logger = LoggerFactory.getLogger("AGENT");
+    logger.info("Creating Rover Logic");
     intentionGenerator = new IntentionGenerator();
     roverFacade.setErrorReporter(this::processUpdate);
     actionController = new ActionController(roverFacade);
     // ROVER FACADE MUST BE INITIALIZED FIRST. CAUTION!
-    roverInfo = new RoverInfo(attributes);
+    liveRoverInfo = new RoverInfo(attributes, Scenario.SCENARIO_0);
     updateSubService.subscribe(this::processUpdate);
     messageSubService.subscribe(this::processMessage);
     scenarioSubService.subscribe(this::processScenarioUpdate);
@@ -51,7 +52,7 @@ public class RoverController {
   private void processUpdate(UpdateEvent updateEvent) {
     logger.info("ROVER RECEIVED - {}", updateEvent.toString());
     actionController.response(updateEvent);
-    RoverAction action = intentionGenerator.getNextBestAction(roverInfo);
+    RoverAction action = intentionGenerator.getNextBestAction(liveRoverInfo);
     actionController.executeAction(action);
   }
 
@@ -62,12 +63,12 @@ public class RoverController {
 
   private void processScenarioUpdate(ScenarioInfo scenarioInfo) {
     logger.trace("ROVER RECEIVED - {}", scenarioInfo.toString());
-    roverInfo.setScenarioInfo(scenarioInfo);
+    liveRoverInfo.setScenarioInfo(scenarioInfo);
   }
 
   private void processRoverUpdate(RoverStateInfo stateInfo) {
     logger.trace("ROVER RECEIVED - {}", stateInfo.toString());
-    roverInfo.setRoverStateInfo(stateInfo);
+    liveRoverInfo.setRoverStateInfo(stateInfo);
   }
 
   public void end() {
