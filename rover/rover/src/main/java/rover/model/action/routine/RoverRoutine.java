@@ -1,5 +1,6 @@
 package rover.model.action.routine;
 
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -11,19 +12,15 @@ import rover.model.action.primitives.RoverAction;
  * Created by dominic on 29/11/16.
  */
 public class RoverRoutine {
-  private final Queue<RoverAction> actionList;
+  private final LinkedList<RoverAction> actionList;
   private final RoutineType routineType;
   private final Double value;
-  private final String roverId;
-  private final Integer actionID;
   private RoverAction finalAction;
 
-  public RoverRoutine(RoutineType routineType, Double value, String roverId, Integer actionId) {
-    actionList = new LinkedBlockingQueue<>();
+  public RoverRoutine(RoutineType routineType, Double value) {
+    actionList = new LinkedList<>();
     this.routineType = routineType;
     this.value = value;
-    this.roverId = roverId;
-    this.actionID = actionId;
   }
 
   public synchronized void addAction(RoverAction roverAction) {
@@ -57,13 +54,7 @@ public class RoverRoutine {
     return actionList;
   }
 
-  public String getRoverId() {
-    return roverId;
-  }
-
-  public Integer getActionID() {
-    return actionID;
-  }
+  public RoverAction getFirstAction() { return actionList.getFirst(); }
 
   public RoverAction getFinalAction() {
     return finalAction;

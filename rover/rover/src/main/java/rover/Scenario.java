@@ -1,5 +1,7 @@
 package rover;
 
+import java.util.stream.Stream;
+
 /**
  * Created by dominic on 26/11/16.
  */
@@ -33,6 +35,13 @@ public enum Scenario {
     this.energy = energy;
     this.roverCount = roverCount;
     this.competitive = competitive;
+  }
+
+  public static Scenario getById(int id) {
+    return Stream.of(Scenario.values())
+            .filter(scenario -> scenario.id == id)
+            .findFirst()
+            .orElse(SCENARIO_0);
   }
 
   public int getId() {

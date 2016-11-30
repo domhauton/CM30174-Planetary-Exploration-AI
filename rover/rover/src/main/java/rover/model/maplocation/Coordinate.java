@@ -38,7 +38,9 @@ public class Coordinate {
   }
 
   public Double getDistanceTo(Coordinate coordinate, Integer mapSize) {
-    return distanceToMove(x, coordinate.getX(), mapSize) + distanceToMove(y, coordinate.getY(), mapSize);
+    double xDist = distanceToMove(x, coordinate.getX(), mapSize);
+    double yDist = distanceToMove(y, coordinate.getY(), mapSize);
+    return Math.sqrt((xDist*xDist)+(yDist*yDist));
   }
 
   public static double distanceToMove(double oldPosition, double targetPosition, double mapSize) {

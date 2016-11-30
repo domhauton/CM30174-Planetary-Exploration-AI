@@ -13,7 +13,7 @@ public class RoverDeposit extends RoverAction {
 
   @Override
   public ActionCost getActionCost() {
-    return new ActionCost(0, 0);
+    return new ActionCost(5, 5);
   }
 
   @Override

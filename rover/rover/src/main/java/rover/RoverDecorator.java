@@ -30,7 +30,7 @@ public class RoverDecorator extends Rover {
 
   @SuppressWarnings("unused")
   public RoverDecorator() {
-    this(RoverAttributes.CLOSE_SCAN);
+    this(RoverAttributes.DEFAULT);
   }
 
   private RoverDecorator(RoverAttributes roverAttributes) {
@@ -109,7 +109,6 @@ public class RoverDecorator extends Rover {
   private ScenarioInfo getWorldInfo() {
     return new ScenarioInfo(
             getWorldHeight(),
-            getWorldWidth(),
             isWorldCompetitive(),
             getWorldResources(),
             getScenario());

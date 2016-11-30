@@ -194,7 +194,10 @@ public class ScanResult {
             .filter(val -> scanMap.get(val.getX(), val.getY()).getDesirable() < ScanState.SCANNED.getDesirable())
             .mapToInt(val -> ScanState.SCANNED.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
             .sum();
-    return partialValue + scannedValue;
+    double fullPercentage = (double)positions.getA().size()/(double)(positions.getA().size()+positions.getB().size());
+    double partialPenaltyBlunter = Math.pow(fullPercentage, 7);
+    int partialPenalty = (int) ((double)partialValue * partialPenaltyBlunter);
+    return partialPenalty + scannedValue;
   }
 
   GridPos getScanPos() {

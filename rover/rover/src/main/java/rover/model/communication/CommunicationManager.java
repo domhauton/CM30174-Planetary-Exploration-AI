@@ -1,7 +1,6 @@
 package rover.model.communication;
 
 import rover.model.auction.bid.LocalAuctionBid;
-import rover.model.planner.PlannedAction;
 
 /**
  * Created by dominic on 30/11/16.
@@ -19,7 +18,7 @@ public class CommunicationManager {
     //TODO Implement
   }
 
-  public void sendAllPlannedAction(PlannedAction plannedAction) {
+  public void sendAllPlannedAction() {
     //TODO Implement
   }
 

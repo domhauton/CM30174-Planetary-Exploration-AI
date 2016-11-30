@@ -10,8 +10,6 @@ import rover.mediators.data.ScenarioInfo;
 import rover.model.auction.bid.AuctionBid;
 import rover.model.auction.bid.LocalAuctionBid;
 import rover.model.communication.CommunicationManager;
-import rover.model.planner.RoverPlanner;
-import rover.model.planner.PlannedAction;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.scanning.ScanManager;
 
@@ -21,7 +19,6 @@ import rover.model.scanning.ScanManager;
 public class AuctionManager {
   private final Logger log;
   private final int totalRemoteAuctionParticipants;
-  private final RoverPlanner roverPlanner;
   private final CommunicationManager communicationManager;
 
   private AuctionRound auctionRound;
@@ -35,15 +32,15 @@ public class AuctionManager {
     this.communicationManager = communicationManager;
     totalRemoteAuctionParticipants = totalRovers - 1;
     auctionRound = new AuctionRound(totalRemoteAuctionParticipants);
-    roverPlanner = new RoverPlanner();
+//    roverPlanner = new RoverPlanner();
   }
 
   public synchronized void executeBidRequest() {
     if(auctionRound.localBidSubmitted()) {
       log.info("Did not submit local bid. Already submitted.");
     } else {
-      LocalAuctionBid localAuctionBid = getBestAuctionBid();
-      submitBid(localAuctionBid);
+//      LocalAuctionBid localAuctionBid = getBestAuctionBid();
+//      submitBid(localAuctionBid);
     }
   }
 
@@ -52,10 +49,10 @@ public class AuctionManager {
     communicationManager.sendAllBid(localAuctionBid);
   }
 
-  public LocalAuctionBid getBestAuctionBid() {
-    //TODO    Find best worthwhile collectAction OR Pass
-    //TODO    Find best worthwhile searchAction OR Pass
-  }
+//  public LocalAuctionBid getBestAuctionBid() {
+//    //TODO    Find best worthwhile collectAction OR Pass
+//    //TODO    Find best worthwhile searchAction OR Pass
+//  }
 
   public synchronized void recieveRemoteBid(AuctionBid auctionBid) {
     auctionRound.addRemoteBid(auctionBid);
@@ -70,8 +67,8 @@ public class AuctionManager {
         if(winningBid.isLocalBid()) {
           String roverId = roverInfo.getRoverStateInfo().getId();
           LocalAuctionBid winningLocalBid = auctionRound.getLocalBid();
-          Set<PlannedAction> plannedActions = roverPlanner.createPlanFromRoutine(roverId, winningLocalBid.getRoverRoutine());
-          plannedActions.forEach(roverPlanner::addAction);
+//          Set<PlannedAction> plannedActions = roverPlanner.createPlanFromRoutine(roverId, winningLocalBid.getRoverRoutine());
+//          plannedActions.forEach(roverPlanner::addAction);
           //TODO Send planned actions to all rovers.
           //TODO Kick off action if it should.
         } else {

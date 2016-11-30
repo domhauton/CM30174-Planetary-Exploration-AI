@@ -21,6 +21,7 @@ public class RoverScan extends RoverAction{
     super(roverInfo);
     this.scanPower = scanPower;
     this.scanResult = scanResult;
+    this.scanManager = scanManager;
   }
 
   @Override

@@ -9,10 +9,12 @@ import rover.model.collection.Resource;
  * Created by dominic on 29/11/16.
  */
 public class RoverCollect extends RoverAction {
+  private Resource resource;
   private ItemManager itemManager;
 
   public RoverCollect(RoverInfo roverInfo, Resource resource, ItemManager itemManager) {
     super(roverInfo);
+    this.resource = resource;
     this.itemManager = itemManager;
   }
 
@@ -23,21 +25,20 @@ public class RoverCollect extends RoverAction {
 
   @Override
   public void execute(RoverFacade roverFacade) {
-    roverFacade.deposit();
+    roverFacade.collect();
   }
 
   @Override
   public void complete() {
     //FIXME COMPLETE Finisher
     roverInfo.addPayload();
-    trsd
+    resource.setCount(resource.getCount() - 1);
+    itemManager.recordItemCollected();
   }
 
   @Override
   public void failed() {
-    logger.error("Failed to pick up payload. Could be wrong type or cargo hold full. Please investigate.");
-    while(roverInfo.getCurrentPayload() > 0) {
-      roverInfo.removePayload();
-    }
+    logger.error("Failed to pick up payload. Scenario may have changed.");
+    resource.setCount(-1);
   }
 }

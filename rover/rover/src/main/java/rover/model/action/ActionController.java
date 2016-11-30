@@ -1,5 +1,8 @@
 package rover.model.action;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import rover.mediators.RoverFacade;
 import rover.mediators.data.update.UpdateEvent;
 import rover.model.action.primitives.RoverAction;
@@ -10,9 +13,11 @@ import rover.model.action.primitives.RoverAction;
 public class ActionController {
   private final RoverFacade roverFacade;
   private RoverAction previousAction;
+  private final Set<RoverAction> failedActions;
 
   public ActionController(RoverFacade roverFacade) {
     this.roverFacade = roverFacade;
+    this.failedActions = new HashSet<>();
   }
 
   public synchronized void executeAction(RoverAction action) {
@@ -27,13 +32,16 @@ public class ActionController {
         if(previousAction != null){
           previousAction.complete();
         }
-        //TODO Clear Failed Action List
+        failedActions.clear();
         break;
       case FAILED:
-        //TODO Add to Failed Action List
+        failedActions.add(previousAction);
         break;
     }
     previousAction = null;
   }
-  // Accept Response and run complete
+
+  public boolean isFailedAction(RoverAction action) {
+    return failedActions.contains(action);
+  }
 }

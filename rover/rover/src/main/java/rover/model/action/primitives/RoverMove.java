@@ -1,8 +1,8 @@
 package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
-import rover.model.roverinfo.RoverInfo;
 import rover.model.maplocation.Coordinate;
+import rover.model.roverinfo.RoverInfo;
 
 /**
  * Created by dominic on 23/11/16.
@@ -17,9 +17,9 @@ public class RoverMove extends RoverAction {
     this(roverInfo, roverInfo.getPosition(), targetCoordinate);
   }
 
-   private RoverMove(RoverInfo roverInfo,
-                     Coordinate startCoordinate,
-                     Coordinate targetCoordinate){
+  public RoverMove(RoverInfo roverInfo,
+                   Coordinate startCoordinate,
+                   Coordinate targetCoordinate) {
     this(
             roverInfo,
             Coordinate.distanceToMove(
@@ -30,7 +30,7 @@ public class RoverMove extends RoverAction {
             Coordinate.distanceToMove(
                     startCoordinate.getY(),
                     targetCoordinate.getY(),
-                    roverInfo.getScenarioInfo().getHeight()
+                    roverInfo.getScenarioInfo().getSize()
             ),
             roverInfo.getAttributes().getMaxSpeed()
     );
