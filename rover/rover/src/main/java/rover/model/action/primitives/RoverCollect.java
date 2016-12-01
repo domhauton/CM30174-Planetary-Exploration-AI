@@ -1,5 +1,6 @@
 package rover.model.action.primitives;
 
+import rover.Scenario;
 import rover.mediators.RoverFacade;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.collection.ItemManager;
@@ -33,7 +34,7 @@ public class RoverCollect extends RoverAction {
     //FIXME COMPLETE Finisher
     roverInfo.addPayload();
     resource.setCount(resource.getCount() - 1);
-    itemManager.recordItemCollected();
+    itemManager.recordItemCollected(resource.getCoordinate());
   }
 
   @Override

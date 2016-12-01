@@ -38,6 +38,12 @@ public class Resource {
     this.count = count;
   }
 
+  protected Resource clone() {
+    Resource newResource = new Resource(resourceType, coordinate);
+    newResource.setCount(count);
+    return newResource;
+  }
+
   public Double getDesirability(Coordinate roverPosition, Integer mapSize, Integer roverMoveEase, Integer roverRemainingPayloadSize) {
     Double moveDesire = 1.0 - (getTotalMoveDistance(roverPosition, mapSize)/ ((double)(mapSize*2)));
     logger.info("Collection move desire is: {}", moveDesire);

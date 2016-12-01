@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import rover.mediators.data.update.item.ResourceType;
-import rover.mediators.data.update.item.ScannerItem;
-import rover.model.IntentionGenerator;
 import rover.model.maplocation.Coordinate;
 import util.Pair;
 
@@ -19,12 +19,23 @@ import util.Pair;
 public class ItemManager {
   private Logger logger;
   private Collection<Resource> resources;
+  private Collection<Resource> plannedResources;
   private int totalItemsCollected;
+  private int plannedItemsCollected;
 
   public ItemManager() {
     logger = LoggerFactory.getLogger("AGENT");
     resources = new LinkedList<>();
     totalItemsCollected = 0;
+    revertPlannedCollections();
+  }
+
+  public void revertPlannedCollections() {
+    plannedResources = new LinkedList<>();
+    resources.stream()
+            .map(Resource::clone)
+            .forEach(plannedResources::add);
+    plannedItemsCollected = totalItemsCollected;
   }
 
   public Optional<Resource> getMostDesirable(Integer movementDesire,
@@ -33,7 +44,7 @@ public class ItemManager {
                                              Integer mapSize,
                                              ResourceType roverResourceCapability) {
 
-    return resources.stream()
+    return plannedResources.stream()
             .filter(resource -> resource.getResourceType() == roverResourceCapability)
             .filter(resource -> resource.getCount() > 0)
             .map(resource -> new Pair<>(resource, resource.getDesirability(roverPosition, mapSize, movementDesire, remainingCargoCapacity)))
@@ -43,23 +54,38 @@ public class ItemManager {
             .findFirst();
   }
 
-  public void clearItemManager() {
-    resources = new LinkedList<>();
+  public void recordItemCollectPlanned(Coordinate coordinate) {
+    collectFromResourceAtLocation(coordinate, plannedResources);
   }
 
-  public void recordItemCollected() {
-    totalItemsCollected++;
+  public void recordItemCollected(Coordinate coordinate) {
+    recordItemCollectPlanned(coordinate);
+    collectFromResourceAtLocation(coordinate, resources);
+  }
+
+  private void collectFromResourceAtLocation(Coordinate coordinate, Collection<Resource> resources) {
+    List<Resource> itemsAtLocation = resources.stream()
+            .filter(resource -> resource.getCoordinate().equals(coordinate))
+            .collect(Collectors.toList());
+    if(itemsAtLocation.size() == 1) {
+      Resource resource = itemsAtLocation.get(0);
+      resource.setCount(resource.getCount() - 1);
+      totalItemsCollected++;
+    } else {
+      logger.error("Could not determine correct item. Error!");
+    }
   }
 
   public int getTotalItemsCollected() {
-    return totalItemsCollected;
+    return plannedItemsCollected;
   }
 
-  public void addResource(Resource resource, Integer count) {
+  public void foundResource(Resource resource, Integer count) {
     if(!resources.contains(resource)) {
       resource.setCount(count);
       logger.info("Adding new resource: {}", resource);
       resources.add(resource);
+      plannedResources.add(resource.clone());
     } else {
       logger.info("Found pre-existing resource: {}", resource);
     }

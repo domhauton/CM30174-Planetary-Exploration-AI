@@ -14,13 +14,22 @@ public class ScanMap {
 
   private static double HALF_SQRT2 = Math.sqrt(2.0)/2;
 
-  public ScanMap(int size) {
-    scanStates = new ScanState[size][size];
+  ScanMap(int size) {
+    this(size, createEmptyStateMatrix(size));
+  }
+
+  private ScanMap(int size, ScanState[][] scanStates) {
     this.size = size;
     longestTravelDistance = size*HALF_SQRT2;
-    for (ScanState[] line : scanStates) {
+    this.scanStates = scanStates;
+  }
+
+  private static ScanState[][] createEmptyStateMatrix(int size) {
+    ScanState[][] retStates = new ScanState[size][size];
+    for (ScanState[] line : retStates) {
       Arrays.fill(line, ScanState.UNKNOWN);
     }
+    return retStates;
   }
 
   void put(int x, int y, ScanState state) {
@@ -60,6 +69,13 @@ public class ScanMap {
             .flatMap(Stream::of)
             .mapToInt(state -> 2 - state.getValue())
             .sum();
+  }
+
+  public ScanMap clone() {
+    ScanState[][] clonedStates = Arrays.stream(scanStates)
+            .map(ScanState[]::clone)
+            .toArray(ScanState[][]::new);
+    return new ScanMap(size, clonedStates);
   }
 
   @Override

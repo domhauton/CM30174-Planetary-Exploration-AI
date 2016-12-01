@@ -71,7 +71,7 @@ public class TemplateRover extends Rover {
 			
 			break;
 		case PollResult.SCAN:
-            getLog().info("Scan complete");
+            getLog().info("Action complete");
 						
 			for(ScanItem item : pr.getScanItems()) {
 				if(item.getItemType() == ScanItem.RESOURCE) {

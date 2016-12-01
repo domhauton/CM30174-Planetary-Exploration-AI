@@ -17,11 +17,16 @@ public class Coordinate {
     this.y = y;
   }
 
-  public double getX() {
+  public Coordinate(double x, double y, int mapSize) {
+    this(x, y);
+    moveCoordinate(0, 0, mapSize);
+  }
+
+  public Double getX() {
     return x;
   }
 
-  public double getY() {
+  public Double getY() {
     return y;
   }
 

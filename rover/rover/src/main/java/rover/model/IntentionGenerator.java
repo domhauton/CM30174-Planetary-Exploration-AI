@@ -104,7 +104,7 @@ public class IntentionGenerator {
     ScanResult bestScanResult = scanManager.getNextBestScanQuick(roverInfo.getPosition(),
             roverInfo.getAttributes().getMaxSpeed(), roverInfo.getAttributes().getScanRange());
     Coordinate bestScanCoordinates = scanManager.getRealScanCoordinates(bestScanResult);
-    log.info("Rover: {},{} Scan: {},{}. Discovery chance: {}",
+    log.info("Rover: {},{} Action: {},{}. Discovery chance: {}",
             roverInfo.getPosition().getX(),
             roverInfo.getPosition().getY(),
             bestScanCoordinates.getX(),

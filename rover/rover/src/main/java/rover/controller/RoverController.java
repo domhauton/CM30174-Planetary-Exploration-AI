@@ -12,7 +12,6 @@ import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.RoverStateInfo;
 import rover.mediators.data.message.InboundMessage;
 import rover.mediators.data.update.UpdateEvent;
-import rover.mediators.data.update.item.ScannerItem;
 import rover.mediators.data.update.item.ScannerItemType;
 import rover.model.IntentionGenerator;
 import rover.model.collection.ItemManager;
@@ -63,7 +62,7 @@ public class RoverController {
     updateEvent.getScannerItems().stream()
             .filter(scannerItem -> scannerItem.getScannerItemType() == ScannerItemType.RESOURCE)
             .map(scannerItem -> new Resource(scannerItem.getResourceType(), liveRoverInfo.getPosition().moveCoordinate(scannerItem.getRelativeCoordinates().getX(), scannerItem.getRelativeCoordinates().getY(), liveRoverInfo.getScenarioInfo().getSize())))
-            .forEach(resource -> itemManager.addResource(resource, Scenario.getById(liveRoverInfo.getScenarioInfo().getScenario()).getResourcePileSize()));
+            .forEach(resource -> itemManager.foundResource(resource, Scenario.getById(liveRoverInfo.getScenarioInfo().getScenario()).getResourcePileSize()));
     actionController.response(updateEvent);
     RoverAction action = intentionGenerator.getNextBestAction(liveRoverInfo);
     actionController.executeAction(action);

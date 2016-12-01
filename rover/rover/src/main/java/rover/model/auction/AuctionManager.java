@@ -46,7 +46,7 @@ public class AuctionManager {
 
   public synchronized void submitBid(LocalAuctionBid localAuctionBid) {
     auctionRound.addLocalBid(localAuctionBid);
-    communicationManager.sendAllBid(localAuctionBid);
+  //  communicationManager.sendAllBid(localAuctionBid);
   }
 
 //  public LocalAuctionBid getBestAuctionBid() {
@@ -78,7 +78,7 @@ public class AuctionManager {
         log.info("No-one won auction. Rovers should wait until current active rovers run out of actions.");
       }
       confirmEndOfAuction();
-      communicationManager.sendAllEndOfAuction();
+   //   communicationManager.sendAllEndOfAuction();
     } else {
       log.info("Waiting for more bids.");
     }

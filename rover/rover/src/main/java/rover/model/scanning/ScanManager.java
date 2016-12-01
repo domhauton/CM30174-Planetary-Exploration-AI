@@ -3,6 +3,10 @@ package rover.model.scanning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.List;
+
+import rover.model.communication.outbound.ScanInform;
 import rover.model.maplocation.Coordinate;
 import util.Pair;
 
@@ -15,6 +19,7 @@ public class ScanManager {
   private final ScanBruteForcer scanBruteForcer;
   private final Logger log;
   private ScanMap scanMap;
+  private ScanMap futureMap;
 
   public ScanManager(int realMapWidth, int realScanRange, int gridPerUnit) {
     log = LoggerFactory.getLogger("AGENT");
@@ -24,14 +29,26 @@ public class ScanManager {
     scanMap = new ScanMap(gridSize);
     log.info("Creating brute forcer of size {}x{}", realMapWidth, realMapWidth);
     scanBruteForcer = new ScanBruteForcer(gridSize, gridPerUnit*5, real2Grid(realScanRange));
+    revertToConfirmedMap();
   }
 
-  public void clearScanMap() {
-    scanMap = new ScanMap(gridSize);
+  public void revertToConfirmedMap() {
+    futureMap = scanMap.clone();
+  }
+
+  public void applyExternalScanPlanned(Coordinate realScanCoordinate, Integer range) {
+    ScanResult externalScanResult = new ScanResult(real2Grid(realScanCoordinate), real2Grid(range));
+    externalScanResult.applyScan(futureMap);
+  }
+
+  public void applyExternalScanComplete(Coordinate realScanCoordinate, Integer range) {
+    ScanResult externalScanResult = new ScanResult(real2Grid(realScanCoordinate), real2Grid(range));
+    applyScan(externalScanResult);
   }
 
   public void applyScan(ScanResult scanResult) {
     scanResult.applyScan(scanMap);
+    scanResult.applyScan(futureMap);
   }
 
   public double getDiscoveryChance(ScanResult scanResult) {
@@ -83,5 +100,11 @@ public class ScanManager {
     return new Coordinate((double) (grid.getX() / gridPerUnit), (double) (grid.getY() / gridPerUnit));
   }
 
-
+  @Override
+  public String toString() {
+    return "ScanManager{" +
+            "scanMap=" + scanMap +
+            ", futureMap=" + futureMap +
+            '}';
+  }
 }
