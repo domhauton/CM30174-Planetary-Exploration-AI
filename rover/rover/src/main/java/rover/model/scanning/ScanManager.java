@@ -3,10 +3,6 @@ package rover.model.scanning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-
-import rover.model.communication.outbound.ScanInform;
 import rover.model.maplocation.Coordinate;
 import util.Pair;
 
