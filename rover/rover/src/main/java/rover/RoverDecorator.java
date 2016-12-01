@@ -33,7 +33,7 @@ public class RoverDecorator extends Rover {
     this(RoverAttributes.DEFAULT);
   }
 
-  private RoverDecorator(RoverAttributes roverAttributes) {
+  protected RoverDecorator(RoverAttributes roverAttributes) {
     this(DEFAULT_TEAM_NAME, roverAttributes);
   }
 

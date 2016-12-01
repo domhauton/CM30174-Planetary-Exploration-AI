@@ -1,6 +1,11 @@
 package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
+import rover.model.communication.CommunicationManager;
+import rover.model.communication.ontology.inform.CollectionPlanned;
+import rover.model.communication.ontology.inform.ScanComplete;
+import rover.model.communication.ontology.inform.ScanPlanned;
+import rover.model.maplocation.Coordinate;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.scanning.ScanManager;
 import rover.model.scanning.ScanResult;
@@ -15,10 +20,11 @@ public class RoverScan extends RoverAction{
   private ScanManager scanManager;
 
   public RoverScan(RoverInfo roverInfo,
+                   CommunicationManager communicationManager,
                    ScanManager scanManager,
                    double scanPower,
                    ScanResult scanResult) {
-    super(roverInfo);
+    super(roverInfo, communicationManager);
     this.scanPower = scanPower;
     this.scanResult = scanResult;
     this.scanManager = scanManager;
@@ -32,6 +38,14 @@ public class RoverScan extends RoverAction{
   }
 
   @Override
+  public void selected() {
+    Coordinate scanCoordinate = scanManager.getRealScanCoordinates(scanResult);
+    String message = new ScanPlanned()
+            .generateCommand((int) scanPower, scanCoordinate.getX(), scanCoordinate.getY());
+    communicationManager.sendAll(message);
+  }
+
+  @Override
   public void execute(RoverFacade roverFacade) {
     roverFacade.scan(scanPower);
   }
@@ -39,11 +53,15 @@ public class RoverScan extends RoverAction{
   @Override
   public void complete() {
     scanManager.applyScan(scanResult);
+    Coordinate scanCoordinate = scanManager.getRealScanCoordinates(scanResult);
+    String message = new ScanComplete()
+            .generateCommand((int) scanPower, scanCoordinate.getX(), scanCoordinate.getY());
+    communicationManager.sendAll(message);
   }
 
   @Override
   public void failed() {
-    //TODO Shouldn't really fail to scan. Check energy levels and maxScanRange
+    // Nothing to change if failed
   }
 
   @Override

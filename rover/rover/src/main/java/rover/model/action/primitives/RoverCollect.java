@@ -1,7 +1,9 @@
 package rover.model.action.primitives;
 
-import rover.Scenario;
 import rover.mediators.RoverFacade;
+import rover.model.communication.CommunicationManager;
+import rover.model.communication.ontology.inform.CollectionComplete;
+import rover.model.communication.ontology.inform.CollectionPlanned;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.collection.ItemManager;
 import rover.model.collection.Resource;
@@ -13,8 +15,8 @@ public class RoverCollect extends RoverAction {
   private Resource resource;
   private ItemManager itemManager;
 
-  public RoverCollect(RoverInfo roverInfo, Resource resource, ItemManager itemManager) {
-    super(roverInfo);
+  public RoverCollect(RoverInfo roverInfo, CommunicationManager communicationManager, Resource resource, ItemManager itemManager) {
+    super(roverInfo, communicationManager);
     this.resource = resource;
     this.itemManager = itemManager;
   }
@@ -25,6 +27,13 @@ public class RoverCollect extends RoverAction {
   }
 
   @Override
+  public void selected() {
+    String message = new CollectionPlanned()
+            .generateCommand(resource.getCoordinate().getX(), resource.getCoordinate().getY());
+    communicationManager.sendAll(message);
+  }
+
+  @Override
   public void execute(RoverFacade roverFacade) {
     roverFacade.collect();
   }
@@ -32,7 +41,10 @@ public class RoverCollect extends RoverAction {
   @Override
   public void complete() {
     roverInfo.addPayload();
-    itemManager.recordItemCollected(resource.getCoordinate());
+    itemManager.itemCollected(resource.getCoordinate());
+    String message = new CollectionComplete()
+            .generateCommand(resource.getCoordinate().getX(), resource.getCoordinate().getY());
+    communicationManager.sendAll(message);
   }
 
   @Override

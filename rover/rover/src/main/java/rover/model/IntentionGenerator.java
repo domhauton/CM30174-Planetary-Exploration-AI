@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +17,7 @@ import rover.model.action.routine.RoutineType;
 import rover.model.action.routine.RoverRoutine;
 import rover.model.collection.ItemManager;
 import rover.model.collection.Resource;
+import rover.model.communication.CommunicationManager;
 import rover.model.maplocation.Coordinate;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.scanning.ScanManager;
@@ -32,10 +32,13 @@ public class IntentionGenerator {
   private Logger log;
   private ScanManager scanManager;
   private ItemManager itemManager;
+  private CommunicationManager commMan;
 
-  public IntentionGenerator(ItemManager itemManager, ScanManager scanManager) {
+  public IntentionGenerator(ItemManager itemManager, ScanManager scanManager, CommunicationManager commMan) {
     log = LoggerFactory.getLogger("AGENT");
     this.itemManager = itemManager;
+    this.scanManager = scanManager;
+    this.commMan = commMan;
   }
 
   public RoverRoutine getNextBestRoutine(RoverInfo roverInfo) {
@@ -63,14 +66,17 @@ public class IntentionGenerator {
     if (roverInfo.getCurrentPayload() != 0 && energyRemainingAfterRoutine < energyToDropPayloadAtBase) {
       return returnAndDepositRoutine;
     }
+    if(bestRoutine.getTotalCost().getEnergy() > roverInfo.getRoverStateInfo().getEnergy()) {
+      return getIdleRoutine();
+    }
     return bestRoutine;
   }
 
   private RoverRoutine getReturnAndDepositRoutine(RoverInfo roverInfo) {
     RoverRoutine depositRoutine = new RoverRoutine(RoutineType.COLLECT, Double.MAX_VALUE);
-    depositRoutine.addAction(new RoverMove(roverInfo));
+    depositRoutine.addAction(new RoverMove(roverInfo, commMan));
     for (int i = roverInfo.getCurrentPayload(); i > 0; i--) {
-      depositRoutine.addAction(new RoverDeposit(roverInfo));
+      depositRoutine.addAction(new RoverDeposit(roverInfo, commMan));
     }
     return depositRoutine;
   }
@@ -79,7 +85,7 @@ public class IntentionGenerator {
     if (roverInfo.shouldDeposit()) {
       RoverRoutine depositRoutine = new RoverRoutine(RoutineType.COLLECT, Double.MAX_VALUE);
       for (int i = roverInfo.getCurrentPayload(); i > 0; i--) {
-        depositRoutine.addAction(new RoverDeposit(roverInfo));
+        depositRoutine.addAction(new RoverDeposit(roverInfo, commMan));
       }
       return Optional.of(depositRoutine);
     } else {
@@ -99,7 +105,7 @@ public class IntentionGenerator {
 
   private RoverRoutine getReturnToBaseRoutine(RoverInfo roverInfo) {
     RoverRoutine roverRoutine = new RoverRoutine(RoutineType.COLLECT, Double.MAX_VALUE);
-    roverRoutine.addAction(new RoverMove(roverInfo));
+    roverRoutine.addAction(new RoverMove(roverInfo, commMan));
     return roverRoutine;
   }
 
@@ -127,10 +133,10 @@ public class IntentionGenerator {
               cargoSpaceRemaining);
       RoverRoutine roverCollectRoutine = new RoverRoutine(RoutineType.COLLECT, bestItemDesire);
       if (roverInfo.getPosition().getDistanceTo(bestItem.getCoordinate(), roverInfo.getScenarioInfo().getSize()) > 0.03) {
-        roverCollectRoutine.addAction(new RoverMove(roverInfo, roverInfo.getPosition(), bestItem.getCoordinate()));
+        roverCollectRoutine.addAction(new RoverMove(roverInfo, roverInfo.getPosition(), bestItem.getCoordinate(), commMan));
       }
       for (int i = Math.min(roverInfo.getAttributes().getMaxLoad(), bestItem.getCount()); i > 0; i--) {
-        roverCollectRoutine.addAction(new RoverCollect(roverInfo, bestItem, itemManager));
+        roverCollectRoutine.addAction(new RoverCollect(roverInfo, commMan, bestItem, itemManager));
       }
       log.info("Found best collection routine");
       return Optional.of(roverCollectRoutine);
@@ -154,10 +160,11 @@ public class IntentionGenerator {
     RoverRoutine roverRoutine = new RoverRoutine(RoutineType.SCAN,
             scanManager.getDiscoveryChance(bestScanResult));
     if (!bestScanCoordinates.equals(roverInfo.getPosition())) {
-      roverRoutine.addAction(new RoverMove(roverInfo, bestScanCoordinates));
+      roverRoutine.addAction(new RoverMove(roverInfo, bestScanCoordinates, commMan));
     }
     roverRoutine.addAction(
             new RoverScan(roverInfo,
+                    commMan,
                     scanManager,
                     roverInfo.getAttributes().getScanRange(),
                     bestScanResult));

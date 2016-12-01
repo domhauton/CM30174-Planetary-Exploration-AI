@@ -1,6 +1,7 @@
 package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
+import rover.model.communication.CommunicationManager;
 import rover.model.maplocation.Coordinate;
 import rover.model.roverinfo.RoverInfo;
 
@@ -12,39 +13,32 @@ public class RoverMove extends RoverAction {
   private double yOffset;
   private double speed;
 
-  public RoverMove(RoverInfo roverInfo) {
-    this(roverInfo, Coordinate.ORIGIN);
+  public RoverMove(RoverInfo roverInfo, CommunicationManager communicationManager) {
+    this(roverInfo, Coordinate.ORIGIN, communicationManager);
   }
 
   public RoverMove(RoverInfo roverInfo,
-                   Coordinate targetCoordinate) {
-    this(roverInfo, roverInfo.getPosition(), targetCoordinate);
+                   Coordinate targetCoordinate,
+                   CommunicationManager communicationManager) {
+    this(roverInfo, roverInfo.getPosition(), targetCoordinate, communicationManager);
   }
 
   public RoverMove(RoverInfo roverInfo,
                    Coordinate startCoordinate,
-                   Coordinate targetCoordinate) {
-    this(
-            roverInfo,
-            Coordinate.distanceToMove(
-                    startCoordinate.getX(),
-                    targetCoordinate.getX(),
-                    roverInfo.getScenarioInfo().getSize()
-            ),
-            Coordinate.distanceToMove(
-                    startCoordinate.getY(),
-                    targetCoordinate.getY(),
-                    roverInfo.getScenarioInfo().getSize()
-            ),
-            roverInfo.getAttributes().getMaxSpeed()
-    );
+                   Coordinate targetCoordinate,
+                   CommunicationManager communicationManager) {
+    this(roverInfo, communicationManager,
+            Coordinate.distanceToMove(startCoordinate.getX(), targetCoordinate.getX(), roverInfo.getScenarioInfo().getSize()),
+            Coordinate.distanceToMove(startCoordinate.getY(), targetCoordinate.getY(), roverInfo.getScenarioInfo().getSize()),
+            roverInfo.getAttributes().getMaxSpeed());
   }
 
   private RoverMove(RoverInfo roverInfo,
+                    CommunicationManager communicationManager,
                     double xOffset,
                     double yOffset,
                     double speed) {
-    super(roverInfo);
+    super(roverInfo, communicationManager);
     this.xOffset = xOffset;
     this.yOffset = yOffset;
     this.speed = speed;
@@ -56,6 +50,11 @@ public class RoverMove extends RoverAction {
     return new ActionCost(
             (2.0 * distance) / roverInfo.getAttributes().getMaxSpeed(),
             distance / speed);
+  }
+
+  @Override
+  public void selected() {
+    //Nothing to tell others.
   }
 
   @Override

@@ -4,22 +4,25 @@ package rover.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Random;
+
 import rover.RoverAttributes;
 import rover.Scenario;
 import rover.mediators.RoverFacade;
 import rover.mediators.bus.RoverBusSubProvider;
-import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.RoverStateInfo;
+import rover.mediators.data.ScenarioInfo;
 import rover.mediators.data.message.InboundMessage;
 import rover.mediators.data.update.UpdateEvent;
 import rover.mediators.data.update.item.ScannerItemType;
 import rover.model.IntentionGenerator;
+import rover.model.action.ActionController;
+import rover.model.action.routine.RoutineType;
 import rover.model.action.routine.RoverRoutine;
 import rover.model.collection.ItemManager;
 import rover.model.collection.Resource;
 import rover.model.communication.CommunicationManager;
 import rover.model.roverinfo.RoverInfo;
-import rover.model.action.ActionController;
 import rover.model.scanning.ScanManager;
 
 /**
@@ -40,6 +43,7 @@ public class RoverController {
   private Scenario scenario;
   private RoverInfo liveRoverInfo;
   private ScanManager scanManager;
+  Random rn = new Random();
 
   public RoverController(RoverAttributes attributes,
                          RoverFacade roverFacade,
@@ -50,15 +54,15 @@ public class RoverController {
     logger = LoggerFactory.getLogger("AGENT");
     logger.info("Creating Rover Logic");
     this.roverAttributes = attributes;
+    roverFacade.setErrorReporter(this::processUpdate);
     scenario = Scenario.SCENARIO_0;
     itemManager = new ItemManager();
     scanManager = new ScanManager(scenario.getSize(), attributes.getScanRange(), MAP_SCAN_RESOLUTION);
-    intentionGenerator = new IntentionGenerator(itemManager, scanManager);
-    roverFacade.setErrorReporter(this::processUpdate);
+    communicationManager = new CommunicationManager(roverFacade, liveRoverInfo, scanManager, itemManager);
+    intentionGenerator = new IntentionGenerator(itemManager, scanManager, communicationManager);
     actionController = new ActionController(roverFacade);
     // ROVER FACADE MUST BE INITIALIZED FIRST. CAUTION!
     liveRoverInfo = new RoverInfo(attributes, scenario);
-    communicationManager = new CommunicationManager(roverFacade, liveRoverInfo, scanManager, itemManager);
     updateSubService.subscribe(this::processUpdate);
     messageSubService.subscribe(this::processMessage);
     scenarioSubService.subscribe(this::processScenarioUpdate);
@@ -75,12 +79,31 @@ public class RoverController {
             .filter(resource -> itemManager.foundResource(resource, scenario.getResourcePileSize()))
             .forEach(communicationManager::informOthersAboutNewResource);
     actionController.response(updateEvent);
-    if(actionController.actionsRemainingInRoutine() == 0) {
-      RoverRoutine roverRoutine = intentionGenerator.getNextBestRoutine(liveRoverInfo);
-      logger.info("Setting new routine to execute");
-      actionController.setRoutineToExecute(roverRoutine);
+    if (actionController.actionsRemainingInRoutine() == 0) {
+      long startCounter, endCounter;
+      RoverRoutine roverRoutine;
+      do  {
+        logger.info("Finding new routine to do.");
+        startCounter = communicationManager.getReceivedMessageCounter();
+        roverRoutine = intentionGenerator.getNextBestRoutine(liveRoverInfo);
+        randomSleep();
+        endCounter = communicationManager.getReceivedMessageCounter();
+        if(startCounter != endCounter) {
+          logger.info("Got message since last routine. Finding Better option!");
+        }
+      } while (startCounter != endCounter);
+      if(roverRoutine.getRoutineType() != RoutineType.IDLE) {
+        logger.info("Setting new routine to execute");
+        actionController.setRoutineToExecute(roverRoutine);
+      } else {
+        logger.info("Setting Idle routine");
+      }
     }
-    actionController.executeAction();
+    if(actionController.actionsRemainingInRoutine() != 0) {
+      actionController.executeAction();
+    } else {
+      logger.info("Stopping bot. No more actions to do.");
+    }
   }
 
   private void processMessage(InboundMessage inboundMessage) {
@@ -92,6 +115,7 @@ public class RoverController {
     logger.trace("ROVER RECEIVED - {}", scenarioInfo.toString());
     scenario = Scenario.getById(scenarioInfo.getScenario());
     liveRoverInfo = new RoverInfo(roverAttributes, scenario);
+    communicationManager.setRoverInfo(liveRoverInfo);
     scanManager = new ScanManager(scenario.getSize(), liveRoverInfo.getAttributes().getScanRange(), MAP_SCAN_RESOLUTION);
     intentionGenerator.setScanManager(scanManager);
     communicationManager.setScanManager(scanManager);
@@ -102,8 +126,11 @@ public class RoverController {
     liveRoverInfo.setRoverStateInfo(stateInfo);
   }
 
-  public void end() {
-    logger.info("Shutting down agent Controller");
+  private void randomSleep() {
+    try {
+      Thread.sleep(rn.nextInt(500) + 1);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
-
 }

@@ -32,6 +32,7 @@ public class ActionController {
 
   public synchronized void setRoutineToExecute(RoverRoutine roverRoutine) {
     currentRoutine = roverRoutine;
+    roverRoutine.getActionList().forEach(RoverAction::selected);
     remainingActions = roverRoutine.getActionList();
   }
 

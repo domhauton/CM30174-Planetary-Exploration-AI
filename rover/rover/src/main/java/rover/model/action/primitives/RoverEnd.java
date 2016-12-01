@@ -1,6 +1,7 @@
 package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
+import rover.model.communication.CommunicationManager;
 import rover.model.roverinfo.RoverInfo;
 
 /**
@@ -8,13 +9,18 @@ import rover.model.roverinfo.RoverInfo;
  */
 public class RoverEnd extends RoverAction {
 
-  public RoverEnd(RoverInfo roverInfo) {
-    super(roverInfo);
+  public RoverEnd(RoverInfo roverInfo, CommunicationManager communicationManager) {
+    super(roverInfo, communicationManager);
   }
 
   @Override
   public ActionCost getActionCost() {
     return new ActionCost(0, 0);
+  }
+
+  @Override
+  public void selected() {
+    // Nothing to tell others.
   }
 
   @Override

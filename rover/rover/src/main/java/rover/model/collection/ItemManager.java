@@ -54,12 +54,12 @@ public class ItemManager {
             .findFirst();
   }
 
-  public void recordItemCollectPlanned(Coordinate coordinate) {
+  public void itemCollectPlanned(Coordinate coordinate) {
     collectFromResourceAtLocation(coordinate, plannedResources);
   }
 
-  public void recordItemCollected(Coordinate coordinate) {
-    recordItemCollectPlanned(coordinate);
+  public void itemCollected(Coordinate coordinate) {
+    itemCollectPlanned(coordinate);
     collectFromResourceAtLocation(coordinate, resources);
   }
 

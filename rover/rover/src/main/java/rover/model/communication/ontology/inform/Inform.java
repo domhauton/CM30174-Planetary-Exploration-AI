@@ -20,7 +20,9 @@ public class Inform implements MessageParser {
             new FoundLiquidResource(),
             new FoundSolidResource(),
             new ScanComplete(),
-            new ScanPlanned()
+            new ScanPlanned(),
+            new CollectionPlanned(),
+            new CollectionComplete()
     );
   }
 

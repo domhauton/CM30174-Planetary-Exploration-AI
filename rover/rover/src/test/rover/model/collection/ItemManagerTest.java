@@ -42,13 +42,13 @@ public class ItemManagerTest {
   public void addItemPlanRevert() throws Exception {
     Resource resource = new Resource(ResourceType.LIQUID, Coordinate.ORIGIN);
     itemManager.foundResource(resource, 1);
-    itemManager.recordItemCollectPlanned(Coordinate.ORIGIN);
+    itemManager.itemCollectPlanned(Coordinate.ORIGIN);
     Optional<Resource> desirableResource = itemManager.getMostDesirable(1, 1, Coordinate.ORIGIN, 10, ResourceType.LIQUID);
     Assert.assertFalse(desirableResource.isPresent());
     itemManager.revertPlannedCollections();
     Optional<Resource> desirableResource2 = itemManager.getMostDesirable(1, 1, Coordinate.ORIGIN, 10, ResourceType.LIQUID);
     Assert.assertTrue(desirableResource2.isPresent());
-    itemManager.recordItemCollected(Coordinate.ORIGIN);
+    itemManager.itemCollected(Coordinate.ORIGIN);
     Optional<Resource> desirableResource3 = itemManager.getMostDesirable(1, 1, Coordinate.ORIGIN, 10, ResourceType.LIQUID);
     Assert.assertFalse(desirableResource3.isPresent());
     itemManager.revertPlannedCollections();
@@ -61,7 +61,7 @@ public class ItemManagerTest {
     Resource resource = new Resource(ResourceType.LIQUID, Coordinate.ORIGIN);
     itemManager.foundResource(resource, 1);
     itemManager.foundResource(resource, 1);
-    itemManager.recordItemCollectPlanned(Coordinate.ORIGIN);
+    itemManager.itemCollectPlanned(Coordinate.ORIGIN);
     Optional<Resource> desirableResource = itemManager.getMostDesirable(1, 1, Coordinate.ORIGIN, 10, ResourceType.LIQUID);
     Assert.assertFalse(desirableResource.isPresent());
   }

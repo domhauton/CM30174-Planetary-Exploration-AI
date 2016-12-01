@@ -22,21 +22,27 @@ import rover.model.scanning.ScanManager;
 public class CommunicationManager {
   private final Logger logger;
   private final RoverFacade roverFacade;
+  private RoverInfo roverInfo;
   private final MessageReceiver messageReceiver;
   private final MessageRootParser messageRootParser;
+  private long receivedMessageCounter;
 
 
   public CommunicationManager(RoverFacade roverFacade, RoverInfo roverInfo, ScanManager scanManager, ItemManager itemManager) {
     this.roverFacade = roverFacade;
+    this.roverInfo = roverInfo;
     messageReceiver = new MessageReceiver(scanManager, itemManager, roverInfo);
     messageRootParser = new MessageRootParser();
+    receivedMessageCounter = 0;
     logger = LoggerFactory.getLogger("AGENT");
   }
 
-  public void receiveMessage(String message) {
+  public synchronized void receiveMessage(String message) {
+    logger.info("<< RCV: " + message);
     String[] splitMessage = message.split(" ");
     Optional<Runnable> resultantAction = messageRootParser.parse(splitMessage, messageReceiver);
     if (resultantAction.isPresent()) {
+      receivedMessageCounter++;
       resultantAction.get().run();
     } else {
       logger.error("Received unknown message.");
@@ -60,12 +66,22 @@ public class CommunicationManager {
   }
 
   public void sendAll(String message) {
-    System.out.println("Sending to all: " + message);
+    message = roverInfo.getRoverStateInfo().getId().toUpperCase() + " " + message;
+    logger.info("> TEAM: " + message);
     OutboundTeamMessage outboundTeamMessage = new OutboundTeamMessage(message);
     roverFacade.sendMessage(outboundTeamMessage);
   }
 
   public void setScanManager(ScanManager scanManager) {
     messageReceiver.setScanManager(scanManager);
+  }
+
+  public void setRoverInfo(RoverInfo roverInfo) {
+    this.roverInfo = roverInfo;
+    messageReceiver.setRoverInfo(roverInfo);
+  }
+
+  public long getReceivedMessageCounter() {
+    return receivedMessageCounter;
   }
 }

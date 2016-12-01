@@ -94,7 +94,7 @@ public class ScanManager {
   }
 
   private Coordinate grid2Real(GridPos grid) {
-    return new Coordinate((double) (grid.getX() / gridPerUnit), (double) (grid.getY() / gridPerUnit));
+    return new Coordinate(((double) grid.getX() / (double)gridPerUnit), ((double)grid.getY() / (double)gridPerUnit));
   }
 
   @Override
