@@ -79,6 +79,18 @@ public class RoverInfo {
     return currentPayload--;
   }
 
+  public boolean isRoverFull() {
+    return remainingCargoSpace() == 0;
+  }
+
+  public boolean shouldDeposit() {
+    return getDistanceToBase() < 0.05 && getCurrentPayload() != 0;
+  }
+
+  public int remainingCargoSpace() {
+    return getAttributes().getMaxLoad() - getCurrentPayload();
+  }
+
   public void resetRoverInfo() {
     logger.info("Resetting Rover Info");
     coordinate = Coordinate.ORIGIN;

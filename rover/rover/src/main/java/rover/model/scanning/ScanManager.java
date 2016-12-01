@@ -43,20 +43,21 @@ public class ScanManager {
   }
 
   public void applyScan(ScanResult scanResult) {
+    log.info("Applying scan result to both maps");
     scanResult.applyScan(scanMap);
     scanResult.applyScan(futureMap);
   }
 
   public double getDiscoveryChance(ScanResult scanResult) {
-    return scanResult.discoveryChance(scanMap);
+    return scanResult.discoveryChance(futureMap);
   }
 
   public ScanResult getNextBest(Coordinate realRoverCoordinate, int realMoveSpeed) {
     int gridMoveSpeed = real2Grid(realMoveSpeed);
     GridPos roverPos = real2Grid(realRoverCoordinate);
-    ScanResult bestScan = scanBruteForcer.getMostDesirable(scanMap, roverPos, gridMoveSpeed, 1)
+    ScanResult bestScan = scanBruteForcer.getMostDesirable(futureMap, roverPos, gridMoveSpeed, 1)
             .get(0);
-    return bestScan.findBestNearby(scanMap, roverPos, gridMoveSpeed).getA();
+    return bestScan.findBestNearby(futureMap, roverPos, gridMoveSpeed).getA();
   }
 
   public ScanResult getNextBestScanQuick(Coordinate realRoverCoordinate, int realMoveSpeed, int realScanRange) {
@@ -65,10 +66,10 @@ public class ScanManager {
     GridPos roverPos = real2Grid(realRoverCoordinate);
     log.info("Performing hill climb from current rover location");
     Pair<ScanResult, Integer> currentBest = new ScanResult(roverPos, gridScanRange)
-            .findBestNearby(scanMap, roverPos, gridMoveSpeed);
+            .findBestNearby(futureMap, roverPos, gridMoveSpeed);
     if(currentBest.getB() < 1000) {
       log.info("Performing hill climb from 10 random locations");
-      Pair<ScanResult, Integer> randomBest = currentBest.getA().findBestRandom(scanMap, roverPos, gridMoveSpeed, 10);
+      Pair<ScanResult, Integer> randomBest = currentBest.getA().findBestRandom(futureMap, roverPos, gridMoveSpeed, 10);
       currentBest = currentBest.getB() > randomBest.getB() ? currentBest : randomBest;
     }
     if (currentBest.getB() == 0) {

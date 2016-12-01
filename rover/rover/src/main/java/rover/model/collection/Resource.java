@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 import rover.mediators.data.update.item.ResourceType;
+import rover.model.communication.ontology.inform.Inform;
 import rover.model.maplocation.Coordinate;
 
 /**
@@ -18,10 +19,14 @@ public class Resource {
   private Integer count;
 
   public Resource(ResourceType resourceType, Coordinate coordinate) {
+    this(resourceType, coordinate, 1);
+  }
+
+  public Resource(ResourceType resourceType, Coordinate coordinate, Integer count) {
     logger = LoggerFactory.getLogger("AGENT");
     this.resourceType = resourceType;
     this.coordinate = coordinate;
-    count = 1;
+    this.count = count;
   }
 
   public ResourceType getResourceType() {
@@ -46,11 +51,11 @@ public class Resource {
 
   public Double getDesirability(Coordinate roverPosition, Integer mapSize, Integer roverMoveEase, Integer roverRemainingPayloadSize) {
     Double moveDesire = 1.0 - (getTotalMoveDistance(roverPosition, mapSize)/ ((double)(mapSize*2)));
-    logger.info("Collection move desire is: {}", moveDesire);
+    //logger.info("Collection move desire is: {}", moveDesire);
     Double collectionDesire = moveDesire * (double) roverMoveEase;
-    logger.info("Collection desire 1 is: {}", collectionDesire);
+    //logger.info("Collection desire 1 is: {}", collectionDesire);
     collectionDesire *= Math.min(roverRemainingPayloadSize, count);
-    logger.info("Collection desire 2 is: {}", collectionDesire);
+    //logger.info("Collection desire 2 is: {}", collectionDesire);
     return collectionDesire;
   }
 

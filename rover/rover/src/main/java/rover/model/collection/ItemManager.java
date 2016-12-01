@@ -80,14 +80,19 @@ public class ItemManager {
     return plannedItemsCollected;
   }
 
-  public void foundResource(Resource resource, Integer count) {
+  /**
+   * True if resource is new.
+   */
+  public boolean foundResource(Resource resource, Integer count) {
     if(!resources.contains(resource)) {
       resource.setCount(count);
       logger.info("Adding new resource: {}", resource);
       resources.add(resource);
       plannedResources.add(resource.clone());
+      return true;
     } else {
       logger.info("Found pre-existing resource: {}", resource);
+      return false;
     }
   }
 }

@@ -50,7 +50,7 @@ public class RoverRoutine {
     return value;
   }
 
-  public Queue<RoverAction> getActionList() {
+  public LinkedList<RoverAction> getActionList() {
     return actionList;
   }
 

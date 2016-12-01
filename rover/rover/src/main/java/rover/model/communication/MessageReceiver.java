@@ -11,7 +11,7 @@ import rover.model.scanning.ScanManager;
  * Created by dominic on 01/12/16.
  */
 public class MessageReceiver {
-  private final ScanManager scanManager;
+  private ScanManager scanManager;
   private final RoverInfo roverInfo;
   private final ItemManager itemManager;
 
@@ -47,5 +47,9 @@ public class MessageReceiver {
   public void newLiquidResourceFound(Integer count, double x, double y) {
     Coordinate coordinate = new Coordinate(x, y, roverInfo.getScenarioInfo().getSize());
     itemManager.foundResource(new Resource(ResourceType.LIQUID, coordinate), count);
+  }
+
+  public void setScanManager(ScanManager scanManager) {
+    this.scanManager = scanManager;
   }
 }

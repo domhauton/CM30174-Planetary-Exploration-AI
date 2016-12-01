@@ -12,6 +12,10 @@ public class RoverMove extends RoverAction {
   private double yOffset;
   private double speed;
 
+  public RoverMove(RoverInfo roverInfo) {
+    this(roverInfo, Coordinate.ORIGIN);
+  }
+
   public RoverMove(RoverInfo roverInfo,
                    Coordinate targetCoordinate) {
     this(roverInfo, roverInfo.getPosition(), targetCoordinate);

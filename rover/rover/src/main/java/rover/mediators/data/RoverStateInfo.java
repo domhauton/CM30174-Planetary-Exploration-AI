@@ -24,12 +24,12 @@ public class RoverStateInfo {
     this.id = id;
   }
 
-  public Optional<Integer> getLoad() {
-    return load;
+  public Integer getLoad() {
+    return load.orElse(0);
   }
 
-  public Optional<Double> getEnergy() {
-    return energy;
+  public Double getEnergy() {
+    return energy.orElse(0.0);
   }
 
   public Boolean getStarted() {

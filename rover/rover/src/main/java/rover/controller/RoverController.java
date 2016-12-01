@@ -14,11 +14,13 @@ import rover.mediators.data.message.InboundMessage;
 import rover.mediators.data.update.UpdateEvent;
 import rover.mediators.data.update.item.ScannerItemType;
 import rover.model.IntentionGenerator;
+import rover.model.action.routine.RoverRoutine;
 import rover.model.collection.ItemManager;
 import rover.model.collection.Resource;
+import rover.model.communication.CommunicationManager;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.action.ActionController;
-import rover.model.action.primitives.RoverAction;
+import rover.model.scanning.ScanManager;
 
 /**
  * Created by dominic on 26/10/16.
@@ -26,13 +28,18 @@ import rover.model.action.primitives.RoverAction;
  * Main controller for the rover
  */
 public class RoverController {
+  private final int MAP_SCAN_RESOLUTION = 2;
+
   private final RoverAttributes roverAttributes;
   private final ActionController actionController;
   private final IntentionGenerator intentionGenerator;
   private final ItemManager itemManager;
+  private final CommunicationManager communicationManager;
   private final Logger logger;
 
+  private Scenario scenario;
   private RoverInfo liveRoverInfo;
+  private ScanManager scanManager;
 
   public RoverController(RoverAttributes attributes,
                          RoverFacade roverFacade,
@@ -43,12 +50,15 @@ public class RoverController {
     logger = LoggerFactory.getLogger("AGENT");
     logger.info("Creating Rover Logic");
     this.roverAttributes = attributes;
+    scenario = Scenario.SCENARIO_0;
     itemManager = new ItemManager();
-    intentionGenerator = new IntentionGenerator(itemManager);
+    scanManager = new ScanManager(scenario.getSize(), attributes.getScanRange(), MAP_SCAN_RESOLUTION);
+    intentionGenerator = new IntentionGenerator(itemManager, scanManager);
     roverFacade.setErrorReporter(this::processUpdate);
     actionController = new ActionController(roverFacade);
     // ROVER FACADE MUST BE INITIALIZED FIRST. CAUTION!
-    liveRoverInfo = new RoverInfo(attributes, Scenario.SCENARIO_0);
+    liveRoverInfo = new RoverInfo(attributes, scenario);
+    communicationManager = new CommunicationManager(roverFacade, liveRoverInfo, scanManager, itemManager);
     updateSubService.subscribe(this::processUpdate);
     messageSubService.subscribe(this::processMessage);
     scenarioSubService.subscribe(this::processScenarioUpdate);
@@ -61,21 +71,30 @@ public class RoverController {
     logger.info("ROVER RECEIVED - {}", updateEvent.toString());
     updateEvent.getScannerItems().stream()
             .filter(scannerItem -> scannerItem.getScannerItemType() == ScannerItemType.RESOURCE)
-            .map(scannerItem -> new Resource(scannerItem.getResourceType(), liveRoverInfo.getPosition().moveCoordinate(scannerItem.getRelativeCoordinates().getX(), scannerItem.getRelativeCoordinates().getY(), liveRoverInfo.getScenarioInfo().getSize())))
-            .forEach(resource -> itemManager.foundResource(resource, Scenario.getById(liveRoverInfo.getScenarioInfo().getScenario()).getResourcePileSize()));
+            .map(scannerItem -> new Resource(scannerItem.getResourceType(), liveRoverInfo.getPosition().moveCoordinate(scannerItem.getRelativeCoordinates().getX(), scannerItem.getRelativeCoordinates().getY(), liveRoverInfo.getScenarioInfo().getSize()), scenario.getResourcePileSize()))
+            .filter(resource -> itemManager.foundResource(resource, scenario.getResourcePileSize()))
+            .forEach(communicationManager::informOthersAboutNewResource);
     actionController.response(updateEvent);
-    RoverAction action = intentionGenerator.getNextBestAction(liveRoverInfo);
-    actionController.executeAction(action);
+    if(actionController.actionsRemainingInRoutine() == 0) {
+      RoverRoutine roverRoutine = intentionGenerator.getNextBestRoutine(liveRoverInfo);
+      logger.info("Setting new routine to execute");
+      actionController.setRoutineToExecute(roverRoutine);
+    }
+    actionController.executeAction();
   }
 
   private void processMessage(InboundMessage inboundMessage) {
     logger.info("ROVER RECEIVED - {}", inboundMessage.toString());
-    //TODO Implement Message parsing
+    communicationManager.receiveMessage(inboundMessage.getMessage());
   }
 
   private void processScenarioUpdate(ScenarioInfo scenarioInfo) {
     logger.trace("ROVER RECEIVED - {}", scenarioInfo.toString());
-    liveRoverInfo = new RoverInfo(roverAttributes, Scenario.getById(scenarioInfo.getScenario()));
+    scenario = Scenario.getById(scenarioInfo.getScenario());
+    liveRoverInfo = new RoverInfo(roverAttributes, scenario);
+    scanManager = new ScanManager(scenario.getSize(), liveRoverInfo.getAttributes().getScanRange(), MAP_SCAN_RESOLUTION);
+    intentionGenerator.setScanManager(scanManager);
+    communicationManager.setScanManager(scanManager);
   }
 
   private void processRoverUpdate(RoverStateInfo stateInfo) {

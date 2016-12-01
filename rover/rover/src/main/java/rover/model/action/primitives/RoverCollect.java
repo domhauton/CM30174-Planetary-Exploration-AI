@@ -31,9 +31,7 @@ public class RoverCollect extends RoverAction {
 
   @Override
   public void complete() {
-    //FIXME COMPLETE Finisher
     roverInfo.addPayload();
-    resource.setCount(resource.getCount() - 1);
     itemManager.recordItemCollected(resource.getCoordinate());
   }
 
