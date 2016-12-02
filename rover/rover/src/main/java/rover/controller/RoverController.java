@@ -108,7 +108,7 @@ public class RoverController {
   private void bidOnAction() {
     logger.info("Finding bid for next action.");
     RoverRoutine nextBestRoutine = findNewAction();
-    double nudgedValue = nextBestRoutine.getValue() - (rn.nextDouble()/10);
+    double nudgedValue = nextBestRoutine.getValue() - (rn.nextDouble()/10.0);
     String bidToAll = new ActionBid().generateCommand(nudgedValue);
     communicationManager.sendAll(bidToAll);
     bidCollector.acceptPersonalBid(nudgedValue, nextBestRoutine);
@@ -132,7 +132,7 @@ public class RoverController {
 
   private void randomSleep() {
     try {
-      Thread.sleep(rn.nextInt(100) + 300);
+      Thread.sleep(rn.nextInt(300) + 200);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

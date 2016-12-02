@@ -32,6 +32,7 @@ public class RoverCollect extends RoverAction {
 
   @Override
   public void selected() {
+    itemManager.itemCollectPlanned(resource.getCoordinate());
     String message = new CollectionPlanned()
             .generateCommand(resource.getCoordinate().getX(), resource.getCoordinate().getY());
     communicationManager.sendAll(message);
@@ -62,6 +63,11 @@ public class RoverCollect extends RoverAction {
     itemManager.revertPlannedCollections();
     String resetMessage = new ClearPlannedCollects().generateCommand();
     communicationManager.sendAll(resetMessage);
+  }
+
+  @Override
+  public String getType() {
+    return "COLLECT";
   }
 
   @Override

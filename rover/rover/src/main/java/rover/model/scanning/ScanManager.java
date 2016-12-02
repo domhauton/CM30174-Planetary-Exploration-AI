@@ -67,8 +67,8 @@ public class ScanManager {
     log.info("Performing hill climb from current rover location");
     Pair<ScanResult, Integer> currentBest = new ScanResult(roverPos, gridScanRange)
             .findBestNearby(futureMap, roverPos, gridMoveSpeed);
-    if(currentBest.getB() < 1000) {
-      log.info("Performing hill climb from 10 random locations");
+    for(int i = 0; i < 5 && currentBest.getB() < 1000 ; i++) {
+      log.info("Performing hill climb from 10 random locations {} of 5 times", i);
       Pair<ScanResult, Integer> randomBest = currentBest.getA().findBestRandom(futureMap, roverPos, gridMoveSpeed, 10);
       currentBest = currentBest.getB() > randomBest.getB() ? currentBest : randomBest;
     }

@@ -23,10 +23,10 @@ public class RoverMove extends RoverAction {
     this(roverInfo, roverInfo.getPosition(), targetCoordinate, communicationManager);
   }
 
-  public RoverMove(RoverInfo roverInfo,
-                   Coordinate startCoordinate,
-                   Coordinate targetCoordinate,
-                   CommunicationManager communicationManager) {
+  private RoverMove(RoverInfo roverInfo,
+                    Coordinate startCoordinate,
+                    Coordinate targetCoordinate,
+                    CommunicationManager communicationManager) {
     this(roverInfo, communicationManager,
             Coordinate.distanceToMove(startCoordinate.getX(), targetCoordinate.getX(), roverInfo.getScenarioInfo().getSize()),
             Coordinate.distanceToMove(startCoordinate.getY(), targetCoordinate.getY(), roverInfo.getScenarioInfo().getSize()),
@@ -54,6 +54,7 @@ public class RoverMove extends RoverAction {
 
   @Override
   public void selected() {
+    logger.info("ROVER ACTION - MOVE - BEFORE MOVE: " + roverInfo.getPosition());
     //Nothing to tell others.
   }
 
@@ -65,11 +66,17 @@ public class RoverMove extends RoverAction {
   @Override
   public void complete() {
     roverInfo.adjustPosition(xOffset, yOffset);
+    logger.info("ROVER ACTION - MOVE - AFTER MOVE: " + roverInfo.getPosition());
   }
 
   @Override
   public void failed() {
     //TODO Shouldn't really fail to move, check max move speed and energy
+  }
+
+  @Override
+  public String getType() {
+    return "MOVE";
   }
 
   @Override

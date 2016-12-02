@@ -3,7 +3,6 @@ package rover.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.cert.PKIXRevocationChecker;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -28,8 +27,6 @@ import rover.model.scanning.ScanResult;
  * Created by dominic on 28/11/16.
  */
 public class IntentionGenerator {
-  private static final int SCAN_RESOLUTION = 2;
-
   private Logger log;
   private ScanManager scanManager;
   private ItemManager itemManager;
@@ -67,7 +64,7 @@ public class IntentionGenerator {
 
 
     Double energyToDropPayloadAtBase =  getReturnToBaseRoutine(roverInfo).orElse(new RoverRoutine(RoutineType.IDLE, 0.0)).getTotalCost().getEnergy()
-            + (roverInfo.getCurrentPayload() * 5) + 5;
+            + (roverInfo.getAttributes().getMaxLoad() * 5);
     if (roverInfo.getCurrentPayload() != 0 && energyRemainingAfterRoutine < energyToDropPayloadAtBase) {
       return returnAndDepositRoutine;
     }
@@ -79,10 +76,11 @@ public class IntentionGenerator {
 
   private Optional<RoverRoutine> getDepositRoutine(RoverInfo roverInfo) {
     if (roverInfo.shouldDeposit()) {
-      RoverRoutine depositRoutine = new RoverRoutine(RoutineType.COLLECT, Double.MAX_VALUE/2.0);
+      RoverRoutine depositRoutine = new RoverRoutine(RoutineType.COLLECT, (Double.MAX_VALUE/2.0) + (roverInfo.getAttributes().getMaxLoad() * 10));
       for (int i = roverInfo.getCurrentPayload(); i > 0; i--) {
         depositRoutine.addAction(new RoverDeposit(roverInfo, commMan));
       }
+      log.info("ROVER DECISION - DEPOSIT CURRENT - POSITION {}", roverInfo.getPosition());
       return Optional.of(depositRoutine);
     } else {
       return Optional.empty();
@@ -90,9 +88,10 @@ public class IntentionGenerator {
   }
 
   private Optional<RoverRoutine> getEarlyReturnToBaseRoutine(RoverInfo roverInfo) {
-    boolean isRoverFull = roverInfo.isRoverFull();
+    boolean isRoverFull = roverInfo.isRoverFull() && roverInfo.getAttributes().getMaxLoad() != 0;
     boolean allItemsCollected = (itemManager.getTotalItemsCollected() == roverInfo.getScenarioInfo().getTotalWorldResources());
     if (isRoverFull || allItemsCollected) {
+      log.info("ROVER DECISION - SHOULD RETURN TO BASE - POSITION {}", roverInfo.getPosition());
       return getReturnToBaseRoutine(roverInfo);
     } else {
       return Optional.empty();
@@ -103,7 +102,8 @@ public class IntentionGenerator {
     if(roverInfo.getDistanceToBase() < 0.05) {
       return Optional.empty();
     } else {
-      RoverRoutine roverRoutine = new RoverRoutine(RoutineType.COLLECT, Double.MAX_VALUE/2.0);
+      log.info("ROVER DECISION - RETURN TO BASE - POSITION {}", roverInfo.getPosition());
+      RoverRoutine roverRoutine = new RoverRoutine(RoutineType.COLLECT, (Double.MAX_VALUE/2.0) + (roverInfo.getCurrentPayload() * 10) );
       roverRoutine.addAction(new RoverMove(roverInfo, commMan));
       return Optional.of(roverRoutine);
     }
@@ -126,21 +126,20 @@ public class IntentionGenerator {
             roverInfo.getAttributes().getCargoType());
     if (bestItemOptional.isPresent()) {
       Resource bestItem = bestItemOptional.get();
-      log.info("Found item to collect: {}. Current Position: {}", bestItem, roverInfo.getPosition());
       Double bestItemDesire = bestItem.getDesirability(
               roverInfo.getPosition(),
               roverInfo.getScenarioInfo().getSize(),
               roverInfo.getAttributes().getMaxSpeed(),
               cargoSpaceRemaining);
 
-      RoverRoutine roverCollectRoutine = new RoverRoutine(RoutineType.COLLECT, bestItemDesire);
-      if (roverInfo.getPosition().getDistanceTo(bestItem.getCoordinate(), roverInfo.getScenarioInfo().getSize()) > 0.1) {
-        roverCollectRoutine.addAction(new RoverMove(roverInfo, roverInfo.getPosition(), bestItem.getCoordinate(), commMan));
+      RoverRoutine roverCollectRoutine = new RoverRoutine(RoutineType.COLLECT, bestItemDesire * Math.pow(roverInfo.getAttributes().getMaxLoad(), 3));
+      if (roverInfo.getPosition().getDistanceTo(bestItem.getCoordinate(), roverInfo.getScenarioInfo().getSize()) > 0.05) {
+        roverCollectRoutine.addAction(new RoverMove(roverInfo, bestItem.getCoordinate(), commMan));
       }
-      for (int i = Math.min(roverInfo.getAttributes().getMaxLoad(), bestItem.getCount()); i > 0; i--) {
+      for (int i = Math.min(cargoSpaceRemaining, bestItem.getCount()); i > 0; i--) {
         roverCollectRoutine.addAction(new RoverCollect(roverInfo, commMan, bestItem, itemManager));
       }
-      log.info("Found best collection routine");
+      log.info("ROVER DECISION - COLLECT {} - POSITION {}", bestItem, roverInfo.getPosition());
       return Optional.of(roverCollectRoutine);
     } else {
       log.info("No items to collect!");
@@ -174,6 +173,7 @@ public class IntentionGenerator {
                     roverInfo.getAttributes().getScanRange(),
                     bestScanResult));
     if (roverRoutine.getValue() > 0) {
+      log.info("ROVER DECISION - SCAN {} - POSITION {}", scanManager.getRealScanCoordinates(bestScanResult), roverInfo.getPosition());
       return Optional.of(roverRoutine);
     } else {
       return Optional.empty();

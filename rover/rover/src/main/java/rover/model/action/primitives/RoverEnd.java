@@ -37,4 +37,9 @@ public class RoverEnd extends RoverAction {
   public void failed() {
     //Nothing
   }
+
+  @Override
+  public String getType() {
+    return "END";
+  }
 }

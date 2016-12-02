@@ -6,8 +6,8 @@ import rover.RoverDecorator;
 /**
  * Created by dominic on 01/12/16.
  */
-public class Scenario3Scanner extends RoverDecorator {
-  public Scenario3Scanner() {
-    super(RoverAttributes.SCENARIO_3_SCANNER);
+public class ScannerMedium extends RoverDecorator {
+  public ScannerMedium() {
+    super(RoverAttributes.MEDIUM_RANGE_SCANNER);
   }
 }

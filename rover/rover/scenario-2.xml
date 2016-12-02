@@ -1,8 +1,7 @@
 <agentscape xmlns="http://www.agentscape.org/config">
   <application>
     <agent name="Monitor" clones="1" jar="rover-monitor-debug-0.0.1.jar" class="rover.MonitorAgent"/>
-    <agent name="Agent_1" clones="1" class="rover.rovers.MediumRangeScanCollectRover" jar="rover-agent-0.0.1.jar"/>
-    <agent name="Agent_1" clones="1" class="rover.rovers.ScannerClose" jar="rover-agent-0.0.1.jar"/>
+    <agent name="Agent_1" clones="2" class="rover.rovers.MediumRangeScanCollectRover" jar="rover-agent-0.0.1.jar"/>
     <agent name="Agent_1" clones="1" class="rover.rovers.CollectorSolidMed" jar="rover-agent-0.0.1.jar"/>
   </application>
 </agentscape>

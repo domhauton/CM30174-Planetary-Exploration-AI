@@ -12,7 +12,7 @@ import util.Pair;
  * Created by dominic on 25/11/16.
  */
 public class ScanResult {
-  private static double COLLECT_EFFORT_IMPORTANCE = 0.7;
+  private static double COLLECT_EFFORT_IMPORTANCE = 0.2;
   private static double MOVE_TO_SCAN_EFFORT_IMPORTANCE = 0.7;
 
   private final GridPos scanPos;
@@ -195,7 +195,7 @@ public class ScanResult {
             .mapToInt(val -> ScanState.SCANNED.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
             .sum();
     double fullPercentage = (double)positions.getA().size()/(double)(positions.getA().size()+positions.getB().size());
-    double partialPenaltyBlunter = Math.pow(fullPercentage, 7);
+    double partialPenaltyBlunter = Math.pow(fullPercentage, 13);
     int partialPenalty = (int) ((double)partialValue * partialPenaltyBlunter);
     return partialPenalty + scannedValue;
   }

@@ -73,10 +73,16 @@ public class RoverInfo {
     return currentPayload;
   }
 
-  public void addPayload() { currentPayload++; }
+  public void addPayload() {
+    if(currentPayload + 1 <= attributes.getMaxLoad()) {
+      currentPayload++;
+    }
+  }
 
-  public int removePayload() {
-    return currentPayload--;
+  public void removePayload() {
+    if(currentPayload - 1 >= 0) {
+      currentPayload--;
+    }
   }
 
   public boolean isRoverFull() {
@@ -84,7 +90,7 @@ public class RoverInfo {
   }
 
   public boolean shouldDeposit() {
-    return getDistanceToBase() < 0.05 && getCurrentPayload() > 0;
+    return getDistanceToBase() < 0.05 && remainingCargoSpace() < getAttributes().getMaxLoad();
   }
 
   private int remainingCargoSpace() {

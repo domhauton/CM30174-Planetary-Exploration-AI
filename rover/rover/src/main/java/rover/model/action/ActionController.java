@@ -36,8 +36,10 @@ public class ActionController {
   }
 
   public synchronized void setRoutineToExecute(RoverRoutine roverRoutine) {
+    logger.info("ROVER ACTION - ADDING NEW ROUTINE");
     currentRoutine = roverRoutine;
     roverRoutine.getActionList().forEach(RoverAction::selected);
+    roverRoutine.getActionList().forEach(action -> logger.info("ROVER ACTION - ADDING NEW ROUTINE -" + action));
     remainingActions = roverRoutine.getActionList();
   }
 
@@ -48,29 +50,38 @@ public class ActionController {
   }
 
   public synchronized void executeAction() {
+    if(previousAction != null) {
+      logger.error("ROVER ACTION - WARNING - NEW ACTION EXECUTED WHILE PREVIOUS NOT CLEARED.");
+    }
     Optional<RoverAction> roverActionOptional = Optional.ofNullable(remainingActions.pollFirst());
+
     if (roverActionOptional.isPresent()) {
+      logger.info("ROVER ACTION - EXECUTING ACTION - TYPE: {}", roverActionOptional.isPresent() ? roverActionOptional.get().getType() : "NULL");
       RoverAction roverAction = roverActionOptional.get();
-      roverAction.execute(roverFacade);
       previousAction = roverAction;
+      roverAction.execute(roverFacade);
     } else {
       currentRoutine = new RoverRoutine(RoutineType.IDLE, Double.MIN_VALUE/2.0);
+      //previousAction = null;
       decideOnNextAction.run();
     }
   }
 
-  public void response(UpdateEvent updateEvent) {
+  public synchronized void response(UpdateEvent updateEvent) {
+    RoverAction originalAction = previousAction;
+    logger.info("ROVER ACTION - RESPONSE - ORIGINAL ACTION TYPE: {}", originalAction != null ? originalAction.getType() : "NULL");
+    previousAction = null;
     switch (updateEvent.getUpdateStatus()) {
       case COMPLETE:
-        if (previousAction != null) {
-          previousAction.complete();
+        if (originalAction != null) {
+          originalAction.complete();
         }
         break;
       case CANCELLED:
       case FAILED:
-        if (previousAction != null) {
+        if (originalAction != null) {
           logger.info("Executing fail for failed action!");
-          previousAction.failed();
+          originalAction.failed();
           logger.info("Executing fail for remaining actions!");
           remainingActions.forEach(RoverAction::failed);
           logger.info("Clearing routine");
@@ -79,7 +90,6 @@ public class ActionController {
         }
         break;
     }
-    previousAction = null;
     executeAction();
   }
 }

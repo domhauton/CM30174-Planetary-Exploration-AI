@@ -65,6 +65,11 @@ public class RoverScan extends RoverAction{
   }
 
   @Override
+  public String getType() {
+    return "SCAN";
+  }
+
+  @Override
   public String toString() {
     return "RoverScan{" +
             "scanPower=" + scanPower +

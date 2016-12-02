@@ -30,6 +30,7 @@ public abstract class RoverAction {
   public abstract void execute(RoverFacade roverFacade);
   public abstract void complete();
   public abstract void failed();
+  public abstract String getType();
 
   @Override
   public boolean equals(Object o) {
@@ -44,5 +45,13 @@ public abstract class RoverAction {
   @Override
   public int hashCode() {
     return Objects.hash(roverInfo, communicationManager, logger);
+  }
+
+  @Override
+  public String toString() {
+    return "RoverAction{" +
+            "roverInfo=" + roverInfo +
+            ", communicationManager=" + communicationManager +
+            '}';
   }
 }

@@ -39,4 +39,9 @@ public class RoverDeposit extends RoverAction {
       roverInfo.removePayload();
     }
   }
+
+  @Override
+  public String getType() {
+    return "DEPOSIT";
+  }
 }

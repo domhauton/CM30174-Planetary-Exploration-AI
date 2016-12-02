@@ -17,7 +17,7 @@ public class CollectionFailed implements MessageParser {
   }
 
   public Optional<Runnable> parse(String[] message, MessageReceiver messageReceiver) {
-    return Optional.of(() -> messageReceiver.collectionComplete(
+    return Optional.of(() -> messageReceiver.processCollectionFailed(
             Double.parseDouble(message[1]),
             Double.parseDouble(message[2])));
   }

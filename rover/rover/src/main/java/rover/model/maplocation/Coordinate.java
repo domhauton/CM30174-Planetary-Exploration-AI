@@ -7,7 +7,7 @@ package rover.model.maplocation;
  */
 public class Coordinate {
   private static double ALLOWED_ERROR = Math.pow(10, -8);
-  public static Coordinate ORIGIN = new Coordinate(0, 0);
+  public final static Coordinate ORIGIN = new Coordinate(0, 0);
 
   private final double x;
   private final double y;
