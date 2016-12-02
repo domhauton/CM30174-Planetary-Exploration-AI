@@ -73,10 +73,6 @@ public class RoverDecorator extends Rover {
     RoverBusSubProvider<UpdateEvent> updateSubService
             = roverUpdateBus.getSubProvider();
 
-    RoverBusFactory.getRoverMessageService(this::fetchNewMessages);
-    RoverBusFactory.getRoverScenarioService(this::getWorldInfo);
-    RoverBusFactory.getRoverStateService(this::getRoverInfo);
-
     roverController = new RoverController(
             roverAttributes,
             roverFacade,
@@ -103,6 +99,9 @@ public class RoverDecorator extends Rover {
             .stream()
             .collect(Collectors.toList());
     messages.clear();
+    if(!messagesList.isEmpty()) {
+      getLog().info("Pushing {} new messages!", messagesList.size());
+    }
     return messagesList;
   }
 

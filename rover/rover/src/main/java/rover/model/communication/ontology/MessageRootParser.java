@@ -34,7 +34,6 @@ public class MessageRootParser implements MessageParser {
 
   public Optional<Runnable> parse(String[] message, MessageReceiver messageReceiver) {
     String[] cutMessage = Arrays.copyOfRange(message, 1, message.length);
-    System.out.println(Arrays.toString(cutMessage));
     return speechActs.stream()
             .filter(messageParser -> messageParser.isMessageType(cutMessage))
             .map(messageParser -> messageParser.parse(cutMessage, messageReceiver))

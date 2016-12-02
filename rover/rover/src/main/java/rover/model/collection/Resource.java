@@ -50,17 +50,15 @@ public class Resource {
   }
 
   public Double getDesirability(Coordinate roverPosition, Integer mapSize, Integer roverMoveEase, Integer roverRemainingPayloadSize) {
-    Double moveDesire = 1.0 - (getTotalMoveDistance(roverPosition, mapSize)/ ((double)(mapSize*2)));
-    //logger.info("Collection move desire is: {}", moveDesire);
-    Double collectionDesire = moveDesire * (double) roverMoveEase;
-    //logger.info("Collection desire 1 is: {}", collectionDesire);
-    collectionDesire *= Math.min(roverRemainingPayloadSize, count);
-    //logger.info("Collection desire 2 is: {}", collectionDesire);
+    Double moveDesire = 1.0 - (getTotalMoveDistance(roverPosition, mapSize)/ (mapSize*Math.sqrt(2)*2.0));
+    Double collectionDesire = moveDesire * ((double) roverMoveEase/4.0);
+    collectionDesire *= Math.min(roverRemainingPayloadSize, count) * ((double) roverRemainingPayloadSize * roverRemainingPayloadSize);
     return collectionDesire;
   }
 
-  public Double getTotalMoveDistance(Coordinate roverPosition, Integer mapSize) {
-    Double distance = coordinate.getDistanceTo(roverPosition, mapSize) + coordinate.getDistanceTo(Coordinate.ORIGIN, mapSize);
+  private Double getTotalMoveDistance(Coordinate roverPosition, Integer mapSize) {
+    Double distance = coordinate.getDistanceTo(roverPosition, mapSize)
+            + coordinate.getDistanceTo(Coordinate.ORIGIN, mapSize);
     logger.info("Total move distance: {}", distance);
     return Math.abs(distance);
   }

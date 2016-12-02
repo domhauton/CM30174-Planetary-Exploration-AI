@@ -1,8 +1,12 @@
 package rover.model.action.primitives;
 
+import java.util.Objects;
+
 import rover.mediators.RoverFacade;
 import rover.model.communication.CommunicationManager;
+import rover.model.communication.ontology.directive.ClearPlannedCollects;
 import rover.model.communication.ontology.inform.CollectionComplete;
+import rover.model.communication.ontology.inform.CollectionFailed;
 import rover.model.communication.ontology.inform.CollectionPlanned;
 import rover.model.roverinfo.RoverInfo;
 import rover.model.collection.ItemManager;
@@ -50,6 +54,28 @@ public class RoverCollect extends RoverAction {
   @Override
   public void failed() {
     logger.error("Failed to pick up payload. Scenario may have changed.");
-    resource.setCount(-1);
+    itemManager.itemNonExistent(resource.getCoordinate());
+    String message = new CollectionFailed()
+            .generateCommand(resource.getCoordinate().getX(), resource.getCoordinate().getY());
+    communicationManager.sendAll(message);
+
+    itemManager.revertPlannedCollections();
+    String resetMessage = new ClearPlannedCollects().generateCommand();
+    communicationManager.sendAll(resetMessage);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof RoverCollect)) return false;
+    if (!super.equals(o)) return false;
+    RoverCollect that = (RoverCollect) o;
+    return Objects.equals(resource, that.resource) &&
+            Objects.equals(itemManager, that.itemManager);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(super.hashCode(), resource, itemManager);
   }
 }

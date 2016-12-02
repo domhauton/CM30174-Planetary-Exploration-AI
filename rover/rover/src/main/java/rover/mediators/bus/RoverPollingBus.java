@@ -18,6 +18,7 @@ class RoverPollingBus<A, B> extends RoverBus<A, B> {
 
   RoverPollingBus(Function<A, B> converter, Duration pollingRate, Supplier<Collection<A>> supplier) {
     super(converter);
+    this.supplier = supplier;
     Executors.newSingleThreadScheduledExecutor()
             .scheduleAtFixedRate(() -> supplier.get().forEach(this::push), 0,
                     pollingRate.toMillis(), TimeUnit.MILLISECONDS);

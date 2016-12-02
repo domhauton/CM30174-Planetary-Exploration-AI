@@ -25,12 +25,20 @@ public class MessageRootParserTest {
   @Before
   public void setUp() throws Exception {
     messageRootParser = new MessageRootParser();
-    messageReceiver = new MessageReceiver(null, null, null);
+    messageReceiver = new MessageReceiver(null, null, null, null);
   }
 
   @Test
   public void testBasicInform() throws Exception {
     String message = "DH499-2 INFORM SCAN_COMPLETE 1 1.56 -2.23";
+    String[] splitMessage = message.split(" ");
+    Optional<Runnable> optionalAction = messageRootParser.parse(splitMessage, messageReceiver);
+    Assert.assertTrue(optionalAction.isPresent());
+  }
+
+  @Test
+  public void testBidInform() throws Exception {
+    String message = "DH499-1 INFORM BID_FOR_ACTION 0.031755";
     String[] splitMessage = message.split(" ");
     Optional<Runnable> optionalAction = messageRootParser.parse(splitMessage, messageReceiver);
     Assert.assertTrue(optionalAction.isPresent());

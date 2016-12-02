@@ -56,7 +56,7 @@ public class RoverFacade {
       log.info("ROVER ACTION - SCAN - range:{}", range);
       rover.scan(range);
     } catch (Exception e) {
-      log.error("ROVER ACTION FAIL - SCAN - Check requested scan range: ");
+      log.error("ROVER ACTION FAIL - SCAN - Check requested scan range: " + range);
       errorReporter.accept(new UpdateEvent(UpdateEventType.SCAN, UpdateStatus.FAILED));
     }
   }

@@ -1,5 +1,8 @@
 package rover.model.action;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -18,15 +21,17 @@ import rover.model.action.routine.RoverRoutine;
 public class ActionController {
   private final RoverFacade roverFacade;
   private RoverAction previousAction;
-  private final Set<RoverAction> failedActions;
+  private Logger logger;
 
   private RoverRoutine currentRoutine;
   private LinkedList<RoverAction> remainingActions;
+  private Runnable decideOnNextAction;
 
-  public ActionController(RoverFacade roverFacade) {
+  public ActionController(RoverFacade roverFacade, Runnable decideOnNextAction) {
+    logger = LoggerFactory.getLogger("AGENT");
+    this.decideOnNextAction = decideOnNextAction;
     this.roverFacade = roverFacade;
-    this.failedActions = new HashSet<>();
-    this.currentRoutine = new RoverRoutine(RoutineType.IDLE, 0.0);
+    this.currentRoutine = new RoverRoutine(RoutineType.IDLE, Double.MIN_VALUE/2.0);
     this.remainingActions = new LinkedList<>();
   }
 
@@ -36,10 +41,6 @@ public class ActionController {
     remainingActions = roverRoutine.getActionList();
   }
 
-  public synchronized int actionsRemainingInRoutine() {
-    return remainingActions.size();
-  }
-
   public synchronized ActionCost getRemainingRoutineCost() {
     RoverRoutine tmp = new RoverRoutine(currentRoutine.getRoutineType(), currentRoutine.getValue());
     remainingActions.forEach(tmp::addAction);
@@ -47,33 +48,38 @@ public class ActionController {
   }
 
   public synchronized void executeAction() {
-    Optional<RoverAction> roverAction = Optional.ofNullable(remainingActions.pollFirst());
-    if(roverAction.isPresent()) {
-      roverAction.get().execute(roverFacade);
-      previousAction = roverAction.get();
-    }
-    if(remainingActions.isEmpty()){
-      currentRoutine = new RoverRoutine(RoutineType.IDLE, 0.0);
+    Optional<RoverAction> roverActionOptional = Optional.ofNullable(remainingActions.pollFirst());
+    if (roverActionOptional.isPresent()) {
+      RoverAction roverAction = roverActionOptional.get();
+      roverAction.execute(roverFacade);
+      previousAction = roverAction;
+    } else {
+      currentRoutine = new RoverRoutine(RoutineType.IDLE, Double.MIN_VALUE/2.0);
+      decideOnNextAction.run();
     }
   }
 
   public void response(UpdateEvent updateEvent) {
-    switch(updateEvent.getUpdateStatus()) {
+    switch (updateEvent.getUpdateStatus()) {
       case COMPLETE:
-      case CANCELLED:
-        if(previousAction != null){
+        if (previousAction != null) {
           previousAction.complete();
         }
-        failedActions.clear();
         break;
+      case CANCELLED:
       case FAILED:
-        failedActions.add(previousAction);
+        if (previousAction != null) {
+          logger.info("Executing fail for failed action!");
+          previousAction.failed();
+          logger.info("Executing fail for remaining actions!");
+          remainingActions.forEach(RoverAction::failed);
+          logger.info("Clearing routine");
+          remainingActions.clear();
+          logger.info("Nothing more to do in routine. Bid instead by executing action.");
+        }
         break;
     }
     previousAction = null;
-  }
-
-  public boolean isFailedAction(RoverAction action) {
-    return failedActions.contains(action);
+    executeAction();
   }
 }

@@ -270,8 +270,10 @@ public abstract class Rover extends Agent {
      */
     public void retrieveMessages(){
         String[] post = service.receiveMessages(clientKey);
-        for (String message : post)
+        for (String message : post) {
+            getLog().info("Message passed through here! " + message);
             messages.add(message);
+        }
     }
 
 

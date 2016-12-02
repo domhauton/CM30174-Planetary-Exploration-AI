@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+import rover.controller.BidCollector;
 import rover.mediators.RoverFacade;
 import rover.mediators.data.message.OutboundTeamMessage;
 import rover.mediators.data.update.item.ResourceType;
@@ -28,10 +29,10 @@ public class CommunicationManager {
   private long receivedMessageCounter;
 
 
-  public CommunicationManager(RoverFacade roverFacade, RoverInfo roverInfo, ScanManager scanManager, ItemManager itemManager) {
+  public CommunicationManager(RoverFacade roverFacade, RoverInfo roverInfo, ScanManager scanManager, ItemManager itemManager, BidCollector bidCollector) {
     this.roverFacade = roverFacade;
     this.roverInfo = roverInfo;
-    messageReceiver = new MessageReceiver(scanManager, itemManager, roverInfo);
+    messageReceiver = new MessageReceiver(scanManager, itemManager, roverInfo, bidCollector);
     messageRootParser = new MessageRootParser();
     receivedMessageCounter = 0;
     logger = LoggerFactory.getLogger("AGENT");

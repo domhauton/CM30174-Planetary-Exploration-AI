@@ -7,7 +7,9 @@ import rover.mediators.data.update.item.ResourceType;
  */
 public enum RoverAttributes {
   DEFAULT(3, 3, 3, ResourceType.SOLID),
-  SCENARIO_1(2, 2, 5, ResourceType.SOLID);
+  SCENARIO_1(2, 2, 5, ResourceType.SOLID),
+  SCENARIO_3_SCANNER(3, 5, 1, ResourceType.SOLID),
+  SCENARIO_3_COLLECTOR(4, 0, 5, ResourceType.SOLID);
 
   private final int maxSpeed, scanRange, maxLoad;
   private final ResourceType cargoType;

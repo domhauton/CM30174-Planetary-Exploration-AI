@@ -3,6 +3,7 @@ package rover.model.communication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import rover.controller.BidCollector;
 import rover.mediators.data.update.item.ResourceType;
 import rover.model.collection.ItemManager;
 import rover.model.collection.Resource;
@@ -17,13 +18,15 @@ public class MessageReceiver {
   private Logger logger;
   private ScanManager scanManager;
   private RoverInfo roverInfo;
+  private final BidCollector bidCollector;
   private final ItemManager itemManager;
 
-  public MessageReceiver(ScanManager scanManager, ItemManager itemManager, RoverInfo roverInfo) {
+  public MessageReceiver(ScanManager scanManager, ItemManager itemManager, RoverInfo roverInfo, BidCollector bidCollector) {
     this.logger = LoggerFactory.getLogger("AGENT");
     this.scanManager = scanManager;
     this.roverInfo = roverInfo;
     this.itemManager = itemManager;
+    this.bidCollector = bidCollector;
   }
 
   public void applyScanPlanned(Integer scanRange, double x, double y) {
@@ -72,7 +75,17 @@ public class MessageReceiver {
     logger.info("PROCESSED MESSAGE COLLECTION COMPLETE.");
   }
 
-  public void setScanManager(ScanManager scanManager) {
+  public void processCollectionFailed(double x, double y) {
+    Coordinate coordinate = new Coordinate(x, y, roverInfo.getScenarioInfo().getSize());
+    itemManager.itemNonExistent(coordinate);
+    logger.info("PROCESSED MESSAGE COLLECTION FAILED.");
+  }
+
+  public void receiveActionBid(double x) {
+    bidCollector.acceptExternalBid(x);
+  }
+
+  void setScanManager(ScanManager scanManager) {
     this.scanManager = scanManager;
     logger.info("SET NEW SCAN MANAGER MESSAGE PROCESSOR.");
   }

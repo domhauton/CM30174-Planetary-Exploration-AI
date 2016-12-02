@@ -1,5 +1,8 @@
 package rover.mediators.bus;
 
+
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +27,7 @@ import rover.mediators.data.update.item.ScannerItemType;
 abstract class RoverBusBrokerUtils {
 
   static InboundMessage stringToMessage(String message) {
+    LoggerFactory.getLogger("AGENT").info("PROCESSING MESSAGE.");
     return new InboundMessage(message);
   }
 

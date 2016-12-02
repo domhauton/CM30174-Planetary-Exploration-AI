@@ -25,13 +25,15 @@ public class RoverBus<A, B> {
 
   RoverBus(Function<A, B> converter) {
     subscribers = new CopyOnWriteArrayList<>();
-    startBuffer = new ConcurrentLinkedQueue<B>();
+    startBuffer = new ConcurrentLinkedQueue<>();
     this.converter = converter;
     this.log = LoggerFactory.getLogger("AGENT");
   }
 
   private synchronized void subscribe(Consumer<B> consumer) {
+    log.info("New Subscriber!", startBuffer.size());
     if (subscribers.isEmpty()) {
+      log.info("Pushing {} messages out to new sub", startBuffer.size());
       startBuffer.forEach(consumer);
       startBuffer.clear();
     }
@@ -52,11 +54,10 @@ public class RoverBus<A, B> {
   }
 
   void updateSubs(B item) {
-    if (log.isTraceEnabled()) {
-      log.trace("Sent from interconnect: {}", item.toString());
-    }
+    //log.info("Sent from interconnect: {}", item.toString());
     if (subscribers.isEmpty()) {
       startBuffer.add(item);
+      log.info("Stored for later: {}. Current subs: {}", item.toString(), subscribers.size());
     } else {
       subscribers.forEach(sub -> sub.accept(item));
     }

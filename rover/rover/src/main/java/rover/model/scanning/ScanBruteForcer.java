@@ -23,9 +23,6 @@ class ScanBruteForcer {
 
   ScanBruteForcer(int size, int resolution, int scanRange) throws IllegalArgumentException {
     logger = LoggerFactory.getLogger("AGENT");
-    if( ((Math.sqrt(2)/2) * resolution) > scanRange * 2) {
-      logger.error("Logger resolution too low for scan range.");
-    }
     this.resolution = resolution;
     int relevantSize = posToOptimiserRes(size);
     logger.info("Creating {}x{} optimiser grid.", relevantSize, relevantSize);

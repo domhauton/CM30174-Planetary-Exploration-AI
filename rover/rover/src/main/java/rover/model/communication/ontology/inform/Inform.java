@@ -22,7 +22,9 @@ public class Inform implements MessageParser {
             new ScanComplete(),
             new ScanPlanned(),
             new CollectionPlanned(),
-            new CollectionComplete()
+            new CollectionComplete(),
+            new ActionBid(),
+            new CollectionFailed()
     );
   }
 

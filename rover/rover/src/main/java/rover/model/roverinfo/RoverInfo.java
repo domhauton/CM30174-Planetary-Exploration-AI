@@ -84,14 +84,14 @@ public class RoverInfo {
   }
 
   public boolean shouldDeposit() {
-    return getDistanceToBase() < 0.05 && getCurrentPayload() != 0;
+    return getDistanceToBase() < 0.05 && getCurrentPayload() > 0;
   }
 
-  public int remainingCargoSpace() {
+  private int remainingCargoSpace() {
     return getAttributes().getMaxLoad() - getCurrentPayload();
   }
 
-  public void resetRoverInfo() {
+  private void resetRoverInfo() {
     logger.info("Resetting Rover Info");
     coordinate = Coordinate.ORIGIN;
     currentPayload = 0;
