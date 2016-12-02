@@ -10,7 +10,6 @@
         <option value="$PROJECT_DIR$/rover.monitor/pom.xml" />
         <option value="$PROJECT_DIR$/rover.service/pom.xml" />
         <option value="$PROJECT_DIR$/rover/pom.xml" />
-        <option value="$PROJECT_DIR$/rover.monitor-debug/pom.xml" />
       </list>
     </option>
   </component>
