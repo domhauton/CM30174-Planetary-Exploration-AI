@@ -13,4 +13,9 @@ public abstract class OutboundMessage {
   public String getMessage() {
     return message;
   }
+
+  @Override
+  public String toString() {
+    return message;
+  }
 }

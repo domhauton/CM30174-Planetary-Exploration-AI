@@ -33,7 +33,7 @@ public class RoverDecorator extends Rover {
     this(RoverAttributes.DEFAULT);
   }
 
-  private RoverDecorator(RoverAttributes roverAttributes) {
+  protected RoverDecorator(RoverAttributes roverAttributes) {
     this(DEFAULT_TEAM_NAME, roverAttributes);
   }
 
@@ -47,7 +47,8 @@ public class RoverDecorator extends Rover {
       setAttributes(
               roverAttributes.getMaxSpeed(),
               roverAttributes.getScanRange(),
-              roverAttributes.getMaxLoad());
+              roverAttributes.getMaxLoad(),
+              roverAttributes.getCargoType().getId());
     } catch (Exception e) {
       log.error("Failed to set attributes. Cannot start bot.");
       throw new IllegalArgumentException("Failed to set attributes. Cannot start bot. "
@@ -71,10 +72,6 @@ public class RoverDecorator extends Rover {
     pollResultConsumer = roverUpdateBus::push;
     RoverBusSubProvider<UpdateEvent> updateSubService
             = roverUpdateBus.getSubProvider();
-
-    RoverBusFactory.getRoverMessageService(this::fetchNewMessages);
-    RoverBusFactory.getRoverScenarioService(this::getWorldInfo);
-    RoverBusFactory.getRoverStateService(this::getRoverInfo);
 
     roverController = new RoverController(
             roverAttributes,
@@ -102,13 +99,15 @@ public class RoverDecorator extends Rover {
             .stream()
             .collect(Collectors.toList());
     messages.clear();
+    if(!messagesList.isEmpty()) {
+      getLog().info("Pushing {} new messages!", messagesList.size());
+    }
     return messagesList;
   }
 
   private ScenarioInfo getWorldInfo() {
     return new ScenarioInfo(
             getWorldHeight(),
-            getWorldWidth(),
             isWorldCompetitive(),
             getWorldResources(),
             getScenario());

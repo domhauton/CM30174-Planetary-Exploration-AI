@@ -8,10 +8,12 @@ package rover.mediators.data.update.item;
 public class ScannerItem {
   private final ScannerItemType scannerItemType;
   private final RelativeCoordinates relativeCoordinates;
+  private final ResourceType resourceType;
 
-  public ScannerItem(ScannerItemType scannerItemType, RelativeCoordinates relativeCoordinates) {
+  public ScannerItem(ScannerItemType scannerItemType, RelativeCoordinates relativeCoordinates, ResourceType resourceType) {
     this.scannerItemType = scannerItemType;
     this.relativeCoordinates = relativeCoordinates;
+    this.resourceType = resourceType;
   }
 
   public ScannerItemType getScannerItemType() {
@@ -20,6 +22,10 @@ public class ScannerItem {
 
   public RelativeCoordinates getRelativeCoordinates() {
     return relativeCoordinates;
+  }
+
+  public ResourceType getResourceType() {
+    return resourceType;
   }
 
   @Override

@@ -20,20 +20,8 @@ public class ScanResultTest {
   }
 
   @Test
-  public void testInsufficientScanApply() throws Exception {
-    ScanResult scanResult = new ScanResult(new GridPos(0, 0), 1);
-    scanResult.applyScan(scanMap1);
-    Assert.assertEquals(scanMap1.get(0, 0), ScanState.PARTIAL);
-
-    Assert.assertEquals(scanMap1.get(-1, 0), ScanState.UNKNOWN);
-    Assert.assertEquals(scanMap1.get(1, 0), ScanState.UNKNOWN);
-    Assert.assertEquals(scanMap1.get(0, -1), ScanState.UNKNOWN);
-    Assert.assertEquals(scanMap1.get(0, 1), ScanState.UNKNOWN);
-  }
-
-  @Test
   public void testBasicScanApply() throws Exception {
-    ScanResult scanResult = new ScanResult(new GridPos(0, 0), 2);
+    ScanResult scanResult = new ScanResult(new GridPos(0, 0), 1);
     scanResult.applyScan(scanMap1);
     Assert.assertEquals(scanMap1.get(0, 0), ScanState.SCANNED);
 
@@ -51,7 +39,6 @@ public class ScanResultTest {
   @Test
   public void testBasicValuation() throws Exception {
     ScanResult scanResult = new ScanResult(new GridPos(0, 0), 1);
-    Assert.assertEquals(1, scanResult.calculateScanSearchValue(scanMap1));
     scanResult.applyScan(scanMap1);
     Assert.assertEquals(0, scanResult.calculateScanSearchValue(scanMap1));
   }
@@ -59,7 +46,6 @@ public class ScanResultTest {
   @Test
   public void testBasicValuationLarge() throws Exception {
     ScanResult scanResult = new ScanResult(new GridPos(2, 2), 2);
-    Assert.assertEquals(6, scanResult.calculateScanSearchValue(scanMap1));
     scanResult.applyScan(scanMap1);
     Assert.assertEquals(0, scanResult.calculateScanSearchValue(scanMap1));
   }
@@ -68,7 +54,6 @@ public class ScanResultTest {
   public void testBasicValuationOffSet() throws Exception {
     testBasicValuationLarge();
     ScanResult scanResult = new ScanResult(new GridPos(3, 2), 2);
-    Assert.assertEquals(4, scanResult.calculateScanSearchValue(scanMap1));
     scanResult.applyScan(scanMap1);
     Assert.assertEquals(0, scanResult.calculateScanSearchValue(scanMap1));
   }

@@ -1,5 +1,8 @@
 package rover.mediators.bus;
 
+
+import org.slf4j.LoggerFactory;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +15,7 @@ import rover.mediators.data.update.UpdateEvent;
 import rover.mediators.data.update.UpdateEventType;
 import rover.mediators.data.update.UpdateStatus;
 import rover.mediators.data.update.item.RelativeCoordinates;
+import rover.mediators.data.update.item.ResourceType;
 import rover.mediators.data.update.item.ScannerItem;
 import rover.mediators.data.update.item.ScannerItemType;
 
@@ -23,6 +27,7 @@ import rover.mediators.data.update.item.ScannerItemType;
 abstract class RoverBusBrokerUtils {
 
   static InboundMessage stringToMessage(String message) {
+    LoggerFactory.getLogger("AGENT").info("PROCESSING MESSAGE.");
     return new InboundMessage(message);
   }
 
@@ -44,6 +49,7 @@ abstract class RoverBusBrokerUtils {
     RelativeCoordinates relativeCoordinates =
             new RelativeCoordinates(scanItem.getxOffset(), scanItem.getyOffset());
     ScannerItemType scannerItemType = ScannerItemType.fromInt(scanItem.getItemType());
-    return new ScannerItem(scannerItemType, relativeCoordinates);
+    ResourceType resourceType = ResourceType.getById(scanItem.getResourceType());
+    return new ScannerItem(scannerItemType, relativeCoordinates, resourceType);
   }
 }

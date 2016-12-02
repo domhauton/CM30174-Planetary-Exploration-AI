@@ -20,7 +20,7 @@ public abstract class RoverBusFactory {
           Supplier<Collection<String>> messageSupplier) {
     return new RoverPollingBus<>(
             RoverBusBrokerUtils::stringToMessage,
-            Duration.ofMillis(100),
+            Duration.ofMillis(300),
             messageSupplier)
             .getSubProvider();
   }
@@ -33,7 +33,7 @@ public abstract class RoverBusFactory {
           Supplier<ScenarioInfo> supplier) {
     return new RoverMonitoringBus<>(
             (ScenarioInfo item) -> item,
-            Duration.ofMillis(100),
+            Duration.ofMillis(300),
             () -> Collections.singleton(supplier.get()))
             .getSubProvider();
   }
@@ -42,7 +42,7 @@ public abstract class RoverBusFactory {
           Supplier<RoverStateInfo> supplier) {
     return new RoverMonitoringBus<>(
             (RoverStateInfo item) -> item,
-            Duration.ofMillis(100),
+            Duration.ofMillis(300),
             () -> Collections.singleton(supplier.get()))
             .getSubProvider();
   }

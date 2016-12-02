@@ -12,31 +12,32 @@ import util.Pair;
  * Created by dominic on 25/11/16.
  */
 public class ScanResult {
-  private static double COLLECT_EFFORT_IMPORTANCE = 0.3;
+  private static double COLLECT_EFFORT_IMPORTANCE = 0.7;
   private static double MOVE_TO_SCAN_EFFORT_IMPORTANCE = 0.7;
 
-  private final Set<GridPos> newScanned;
-  private final Set<GridPos> newPartial;
   private final GridPos scanPos;
   private final int scanRange;
 
   ScanResult(GridPos scanPos, final int scanRange) {
-    newScanned = new HashSet<>();
-    newPartial = new HashSet<>();
     this.scanPos = scanPos;
     this.scanRange = scanRange;
-    scanRasterizer(scanPos.getX(), scanPos.getY(), scanRange);
   }
 
-  private void scanRasterizer(final int xCenter, int yCenter, int scanRange) {
-    int x = scanRange - 1;
+  private Pair<HashSet<GridPos>, HashSet<GridPos>> scanRasterizer() {
+    return scanRasterizer(scanPos, scanRange);
+  }
+
+  private Pair<HashSet<GridPos>, HashSet<GridPos>> scanRasterizer(GridPos scanPos, int scanRange) {
+    HashSet<GridPos> newScanned = new HashSet<>();
+    HashSet<GridPos> newPartial = new HashSet<>();
+    int x = (scanRange * 2) - 1;
     int y = 0;
     int err = 0;
 
     while (x >= y) {
-      newPartial.addAll(getMirroredValueSet(xCenter, yCenter, x, y));
+      newPartial.addAll(getMirroredValueSet(scanPos.getX(), scanPos.getY(), x, y));
       for (int tmpX = x - 1; tmpX >= y; tmpX--) {
-        newScanned.addAll(getMirroredValueSet(xCenter, yCenter, tmpX, y));
+        newScanned.addAll(getMirroredValueSet(scanPos.getX(), scanPos.getY(), tmpX, y));
       }
       y += 1;
       err += 1 + 2 * y;
@@ -45,6 +46,7 @@ public class ScanResult {
         err += 1 - 2 * x;
       }
     }
+    return new Pair<>(newScanned, newPartial);
   }
 
   private Set<GridPos> getMirroredValueSet(int xCenter, int yCenter, int x, int y) {
@@ -61,8 +63,9 @@ public class ScanResult {
   }
 
   void applyScan(ScanMap scanMap) {
-    newPartial.forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.PARTIAL));
-    newScanned.forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.SCANNED));
+    Pair<HashSet<GridPos>, HashSet<GridPos>> positions = scanRasterizer();
+    positions.getB().forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.PARTIAL));
+    positions.getA().forEach(val -> scanMap.put(val.getX(), val.getY(), ScanState.SCANNED));
   }
 
   double discoveryChance(ScanMap scanMap) {
@@ -136,10 +139,10 @@ public class ScanResult {
             new GridPos(scanMap.normaliseCoordinate(scanPos.getX()), scanMap.normaliseCoordinate(scanPos.getY() - distance)),
             new GridPos(scanMap.normaliseCoordinate(scanPos.getX() - distance), scanMap.normaliseCoordinate(scanPos.getY())),
             new GridPos(scanMap.normaliseCoordinate(scanPos.getX() + distance), scanMap.normaliseCoordinate(scanPos.getY())),
-            new GridPos(scanMap.normaliseCoordinate(scanPos.getX()), scanMap.normaliseCoordinate(scanPos.getY() + (distance * 2))),
-            new GridPos(scanMap.normaliseCoordinate(scanPos.getX()), scanMap.normaliseCoordinate(scanPos.getY() - (distance * 2))),
-            new GridPos(scanMap.normaliseCoordinate(scanPos.getX() - (distance * 2)), scanMap.normaliseCoordinate(scanPos.getY())),
-            new GridPos(scanMap.normaliseCoordinate(scanPos.getX() + (distance * 2)), scanMap.normaliseCoordinate(scanPos.getY())))
+            new GridPos(scanMap.normaliseCoordinate(scanPos.getX()), scanMap.normaliseCoordinate(scanPos.getY() + (distance + scanRange))),
+            new GridPos(scanMap.normaliseCoordinate(scanPos.getX()), scanMap.normaliseCoordinate(scanPos.getY() - (distance + scanRange))),
+            new GridPos(scanMap.normaliseCoordinate(scanPos.getX() - (distance + scanRange)), scanMap.normaliseCoordinate(scanPos.getY())),
+            new GridPos(scanMap.normaliseCoordinate(scanPos.getX() + (distance + scanRange)), scanMap.normaliseCoordinate(scanPos.getY())))
             .filter(x -> !previouslyTried.contains(x))
             .peek(previouslyTried::add)
             .map((GridPos pos) -> new ScanResult(pos, scanRange))
@@ -150,11 +153,12 @@ public class ScanResult {
   }
 
   int calculateScanSearchValue(ScanMap scanMap) {
-    int partialValue = newPartial.stream()
+    Pair<HashSet<GridPos>, HashSet<GridPos>> positions = scanRasterizer();
+    int partialValue = positions.getB().stream()
             .filter(val -> scanMap.get(val.getX(), val.getY()).getValue() < ScanState.PARTIAL.getValue())
             .mapToInt(val -> ScanState.PARTIAL.getValue() - scanMap.get(val.getX(), val.getY()).getValue())
             .sum();
-    int scannedValue = newScanned.stream()
+    int scannedValue = positions.getA().stream()
             .filter(val -> scanMap.get(val.getX(), val.getY()).getValue() < ScanState.SCANNED.getValue())
             .mapToInt(val -> ScanState.SCANNED.getValue() - scanMap.get(val.getX(), val.getY()).getValue())
             .sum();
@@ -181,15 +185,19 @@ public class ScanResult {
   }
 
   Integer scanDesirability(ScanMap scanMap) {
-    int partialValue = newPartial.stream()
+    Pair<HashSet<GridPos>, HashSet<GridPos>> positions = scanRasterizer();
+    int partialValue = positions.getB().stream()
             .filter(val -> scanMap.get(val.getX(), val.getY()).getDesirable() < ScanState.PARTIAL.getDesirable())
             .mapToInt(val -> ScanState.PARTIAL.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
             .sum();
-    int scannedValue = newScanned.stream()
+    int scannedValue = positions.getA().stream()
             .filter(val -> scanMap.get(val.getX(), val.getY()).getDesirable() < ScanState.SCANNED.getDesirable())
             .mapToInt(val -> ScanState.SCANNED.getDesirable() - scanMap.get(val.getX(), val.getY()).getDesirable())
             .sum();
-    return partialValue + scannedValue;
+    double fullPercentage = (double)positions.getA().size()/(double)(positions.getA().size()+positions.getB().size());
+    double partialPenaltyBlunter = Math.pow(fullPercentage, 7);
+    int partialPenalty = (int) ((double)partialValue * partialPenaltyBlunter);
+    return partialPenalty + scannedValue;
   }
 
   GridPos getScanPos() {
@@ -215,18 +223,14 @@ public class ScanResult {
 
     ScanResult that = (ScanResult) o;
 
-    return getScanRange() == that.getScanRange()
-            && (newScanned != null ? newScanned.equals(that.newScanned) : that.newScanned == null
-            && (newPartial != null ? newPartial.equals(that.newPartial) : that.newPartial == null
-            && (getScanPos() != null ? getScanPos().equals(that.getScanPos()) : that.getScanPos() == null)));
+    return getScanRange() == that.getScanRange() && (getScanPos() != null
+            ? getScanPos().equals(that.getScanPos()) : that.getScanPos() == null);
 
   }
 
   @Override
   public int hashCode() {
-    int result = newScanned != null ? newScanned.hashCode() : 0;
-    result = 31 * result + (newPartial != null ? newPartial.hashCode() : 0);
-    result = 31 * result + (getScanPos() != null ? getScanPos().hashCode() : 0);
+    int result = getScanPos() != null ? getScanPos().hashCode() : 0;
     result = 31 * result + getScanRange();
     return result;
   }

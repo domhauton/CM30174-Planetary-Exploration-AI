@@ -1,7 +1,13 @@
 package rover.model.action.primitives;
 
 import rover.mediators.RoverFacade;
-import rover.model.RoverInfo;
+import rover.model.communication.CommunicationManager;
+import rover.model.communication.ontology.inform.CollectionPlanned;
+import rover.model.communication.ontology.inform.ScanComplete;
+import rover.model.communication.ontology.inform.ScanPlanned;
+import rover.model.maplocation.Coordinate;
+import rover.model.roverinfo.RoverInfo;
+import rover.model.scanning.ScanManager;
 import rover.model.scanning.ScanResult;
 
 /**
@@ -11,20 +17,32 @@ public class RoverScan extends RoverAction{
 
   private double scanPower;
   private ScanResult scanResult;
+  private ScanManager scanManager;
 
   public RoverScan(RoverInfo roverInfo,
+                   CommunicationManager communicationManager,
+                   ScanManager scanManager,
                    double scanPower,
                    ScanResult scanResult) {
-    super(roverInfo);
+    super(roverInfo, communicationManager);
     this.scanPower = scanPower;
     this.scanResult = scanResult;
+    this.scanManager = scanManager;
   }
 
   @Override
   public ActionCost getActionCost() {
     return new ActionCost(
             (10.0*scanPower)/roverInfo.getAttributes().getScanRange(),
-            2);
+            5);
+  }
+
+  @Override
+  public void selected() {
+    Coordinate scanCoordinate = scanManager.getRealScanCoordinates(scanResult);
+    String message = new ScanPlanned()
+            .generateCommand((int) scanPower, scanCoordinate.getX(), scanCoordinate.getY());
+    communicationManager.sendAll(message);
   }
 
   @Override
@@ -34,12 +52,16 @@ public class RoverScan extends RoverAction{
 
   @Override
   public void complete() {
-    roverInfo.getScanManager().applyScan(scanResult);
+    scanManager.applyScan(scanResult);
+    Coordinate scanCoordinate = scanManager.getRealScanCoordinates(scanResult);
+    String message = new ScanComplete()
+            .generateCommand((int) scanPower, scanCoordinate.getX(), scanCoordinate.getY());
+    communicationManager.sendAll(message);
   }
 
   @Override
   public void failed() {
-    //TODO Shouldn't really fail to scan. Check energy levels and maxScanRange
+    // Nothing to change if failed
   }
 
   @Override

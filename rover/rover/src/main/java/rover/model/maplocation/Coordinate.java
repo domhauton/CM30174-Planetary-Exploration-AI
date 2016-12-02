@@ -7,6 +7,7 @@ package rover.model.maplocation;
  */
 public class Coordinate {
   private static double ALLOWED_ERROR = Math.pow(10, -8);
+  public static Coordinate ORIGIN = new Coordinate(0, 0);
 
   private final double x;
   private final double y;
@@ -16,24 +17,43 @@ public class Coordinate {
     this.y = y;
   }
 
-  public double getX() {
+  public Coordinate(double x, double y, int mapSize) {
+    this(x, y);
+    moveCoordinate(0, 0, mapSize);
+  }
+
+  public Double getX() {
     return x;
   }
 
-  public double getY() {
+  public Double getY() {
     return y;
   }
 
-  public Coordinate moveCoordinate(double xOffset, double yOffset, double xSize, double ySize) {
-    double newX = (x + xOffset) % xSize;
-    double newY = (y + yOffset) % ySize;
+  public Coordinate moveCoordinate(double xOffset, double yOffset, double size) {
+    double newX = (x + xOffset) % size;
+    double newY = (y + yOffset) % size;
     while(newX < 0 ) {
-      newX += xSize;
+      newX += size;
     }
     while(newY < 0 ) {
-      newY += ySize;
+      newY += size;
     }
     return new Coordinate(newX, newY);
+  }
+
+  public Double getDistanceTo(Coordinate coordinate, Integer mapSize) {
+    double xDist = distanceToMove(x, coordinate.getX(), mapSize);
+    double yDist = distanceToMove(y, coordinate.getY(), mapSize);
+    return Math.sqrt((xDist*xDist)+(yDist*yDist));
+  }
+
+  public static double distanceToMove(double oldPosition, double targetPosition, double mapSize) {
+    double halfMapSize = mapSize/2;
+    double naiveMove = targetPosition-oldPosition;
+    if(naiveMove > halfMapSize) naiveMove -= mapSize;
+    if(naiveMove < -halfMapSize) naiveMove += mapSize;
+    return naiveMove;
   }
 
   @Override
