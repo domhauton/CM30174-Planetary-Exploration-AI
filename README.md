@@ -1,4 +1,4 @@
-# IA-AgentScape-Rover (Dominic Hauton)
+# IA-AgentScape-Rover
 
 Scenarios are in the scenario folder and are numbered as required. Rover names are aliases for sets of scenarios. The rover will adapt to use its attributes to the best of it's ability.
 
